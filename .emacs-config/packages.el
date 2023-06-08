@@ -185,7 +185,7 @@
          (html-mode       . lsp)
          (yaml-mode       . lsp)
          (sh-mode         . lsp)
-         (markdown-mode   . lsp)
+         ;; (markdown-mode   . lsp)
          (lsp-mode        . lsp-enable-which-key-integration)))
 
 ;; Sample:
