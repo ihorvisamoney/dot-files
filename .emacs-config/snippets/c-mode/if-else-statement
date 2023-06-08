@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: If else statement
+# key: ifel
+# --
+if ($0) {
+
+} else {}

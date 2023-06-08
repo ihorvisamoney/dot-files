@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: Include Guard
+# key: once
+# --
+
+#ifndef ${1:`(replace-regexp-in-string "-" "_" (upcase (file-name-nondirectory (file-name-sans-extension (buffer-file-name)))))`_H}
+#define $1
+
+$0
+
+#endif

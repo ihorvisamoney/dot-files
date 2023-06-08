@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: Personal Header Comment
+# key: phc
+# --
+
+/**
+ * ${Description of the current file}
+ *
+ * @author    ${Vernon Grant}
+ * @copyright ${`(format-time-string "%Y-%m-%d")`} ${Vernon Grant}
+ */

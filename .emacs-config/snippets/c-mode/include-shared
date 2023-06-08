@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Include Shared
+# key: incs
+# --
+#include <$0>

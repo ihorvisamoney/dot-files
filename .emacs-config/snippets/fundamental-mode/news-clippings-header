@@ -1,0 +1,103 @@
+# -*- mode: snippet -*-
+# name: news clippings header
+# key: nch
+# --
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width" />
+        <title>Clippings Selector</title>
+        <link href="https://cdn.jsdelivr.net/npm/featherlight@1.7.14/release/featherlight.min.css" type="text/css" rel="stylesheet" />
+        <style>
+            body {
+                background-color: #eee;
+            }
+            #clippings-selector-list {
+                width: 80%;
+                margin: 0 auto;
+            }
+            .clipping-selector-entry {
+                position: relative;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                grid-gap: 20px;
+                margin-bottom: 30px;
+            }
+            .clipping-selector-entry.clipping-done {
+                background-color: #507950;
+                color: #fff;
+            }
+            .clipping-selector-entry.clipping-unrelavent {
+                background-color: #9d3333;
+                color: #fff;
+            }
+            .clipping-selector-entry .images {
+                display: flex;
+                grid-column-gap: 20px;
+                height: 250px;
+                overflow: scroll;
+                background-color: #ccc;
+                padding: 0 50px;
+            }
+            .clipping-selector-entry .actions {
+                position: absolute;
+                right: 0;
+                bottom: 0;
+            }
+            .clipping-selector-entry .done {
+                display: inline-block;
+                background: #5d975d;
+                padding: 10px 20px;
+                color: white;
+                cursor: pointer;
+                text-transform: uppercase;
+            }
+            .clipping-selector-entry .unrelavent {
+                display: inline-block;
+                background: #b54545;
+                padding: 10px 20px;
+                color: white;
+                cursor: pointer;
+                text-transform: uppercase;
+            }
+            .clipping-selector-entry .images img {
+                height: auto;
+                width: 100%;
+                width: 250px;
+            }
+            .featherlight .featherlight-content .featherlight-close {
+                position: sticky !important;
+                background: black !important;
+                color: white !important;
+            }
+            .featherlight .featherlight-content img {
+                width: 100% !important;
+                max-width: 1300px !important;
+                height: auto !important;
+            }
+        </style>
+        <script src="https://code.jquery.com/jquery-latest.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/featherlight@1.7.14/release/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+        <script>
+            function highlight_me() {
+                console.log(event.srcElement.id);
+                var select = window.getSelection();
+                var range  = document.createRange();
+                range.selectNodeContents(event.srcElement);
+                select.addRange(range);
+            }
+            function done_me() {
+                event.srcElement.parentNode.parentNode.classList.remove("clipping-unrelavent");
+                event.srcElement.parentNode.parentNode.classList.toggle("clipping-done");
+                console.log(event.srcElement.parentNode.parentNode);
+            }
+            function unrelavent_me() {
+                event.srcElement.parentNode.parentNode.classList.remove("clipping-done");
+                event.srcElement.parentNode.parentNode.classList.toggle("clipping-unrelavent");
+                console.log(event.srcElement.parentNode.parentNode);
+            }
+        </script>
+    </head>
+    <body>
+    <div id="clippings-selector-list">$0

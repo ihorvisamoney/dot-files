@@ -1,0 +1,35 @@
+# -*- mode: snippet -*-
+# name: Initial .dir-locals.el configuration
+# key: dirl
+# --
+
+(
+ ;; PHPCS:
+ (php-mode
+  (eval . (setq-local
+           flycheck-php-phpcs-executable
+           (concat
+            (vg-get-project-root)
+            "vendor/bin/phpcs"))))
+
+ ;; ESlint:
+ (js-mode
+  (eval . (setq-local
+           flycheck-javascript-eslint-executable
+           (concat
+            (vg-get-project-root)
+            "node_modules/.bin/eslint"))))  
+ 
+ ;; Stylelint:
+ (css-mode
+  (eval . (setq-local
+           flycheck-css-stylelint-executable
+           (concat
+            (vg-get-project-root)
+            "node_modules/.bin/stylelint")
+           
+           flycheck-stylelintrc
+           (concat
+            (vg-get-project-root)
+            ".stylelintrc.json"))))
+)

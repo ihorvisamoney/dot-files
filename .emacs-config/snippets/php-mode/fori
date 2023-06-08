@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: For loop traditional
+# key: fori
+# --
+for (\$${1:i} = 0; \$$1 < count(\$${2:items}); ++\$$1) {
+    $0
+}
