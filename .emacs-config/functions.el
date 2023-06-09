@@ -5,15 +5,10 @@
   (if vg-presentation-mode
       (progn
         (setq vg-presentation-mode nil)
-        (set-face-attribute 'default nil :family "Monospace" :height 94)
-        ;; (set-face-attribute 'default nil :family "Menlo" :height 148 :weight 'normal)
-
-        )
+        (set-face-attribute 'default nil :family "DejaVu Sans Mono" :height 104))
     (progn
       (setq vg-presentation-mode t)
-      (set-face-attribute 'default nil :family "Monospace" :height 140)
-      ;; (set-face-attribute 'default nil :family "Menlo" :height 200 :weight 'normal)
-      )))
+      (set-face-attribute 'default nil :family "DejaVu Sans Mono" :height 140))))
 
 (defun vg-toggle-transparency ()
   (interactive)

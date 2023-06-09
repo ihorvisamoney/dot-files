@@ -68,7 +68,7 @@ VAL:"
 (setq-default x-select-enable-primary nil)
 
 ;; Org mode
-(setq-default org-agenda-window-setup 'current-window)
+(setq-default org-agenda-window-setup 'other-window)
 
 ;; Automatically reload changed files.
 (global-auto-revert-mode t)
@@ -93,10 +93,10 @@ VAL:"
 (add-hook 'ibuffer-mode-hook (lambda () (ibuffer-auto-mode 1)))
 
 ;; Fonts.
-(setq-default line-spacing 0.25)
+(setq-default line-spacing 0.5)
 
 (if (eq system-type 'gnu/linux)
-    (set-face-attribute 'default nil :family "DejaVu Sans Mono" :height 100))
+    (set-face-attribute 'default nil :family "DejaVu Sans Mono" :height 104))
 
 ;; Moves Emacs customization to separate file.el
 (setq custom-file (concat user-emacs-directory ".emacs-custom.el"))

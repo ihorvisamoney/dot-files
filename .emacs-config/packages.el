@@ -33,6 +33,11 @@
 (use-package dockerfile-mode :ensure t)
 (use-package typescript-mode :ensure t)
 
+;; (use-package nyan-mode
+;;   :ensure t
+;;   :config
+;;   (nyan-mode))
+
 (use-package web-mode
   :ensure t
   :init
@@ -87,10 +92,7 @@
 ;;   :config
 ;;   (editorconfig-mode 1))
 
-(use-package magit
-  :ensure t
-  ;; :bind (("C-c g" . magit-status))
-  )
+(use-package magit :ensure t)
 
 (use-package helm
   ;; TAB: Shows the actions.
@@ -118,26 +120,7 @@
    ("C-x r b" . helm-filtered-bookmarks)
    ("C-x C-b" . helm-buffers-list)
    ("C-x C-f" . helm-find-files)
-   ("C-c g"   . helm-do-grep-ag)
-   ("C-c r"   . helm-recentf)
-   ("C-c s"   . yas-insert-snippet)
-   ("C-c e"   . emmet-expand-line)
-   ;; ("C-q p"   . project-switch-project)
-   ;; ("C-q f"   . project-find-file)
-   ;; ("C-q b"   . project-switch-to-buffer)
-   ;; ("C-q d"   . project-dired)
-   ))
-
-;; (use-package flycheck
-;;   :ensure t
-;;   :init (global-flycheck-mode)
-;;   :bind
-;;   (
-;;    ("M-p" . flycheck-previous-error)
-;;    ("<f5>" . flycheck-previous-error)
-;;    ("M-n" . flycheck-next-error)
-;;    ("<f6>" . flycheck-next-error)
-;;    ("<f7>" . flycheck-list-errors)))
+   ("C-c g"   . helm-do-grep-ag)))
 
 (use-package which-key
   :ensure t
@@ -261,8 +244,7 @@
   ;;   (flycheck-add-mode 'php-phpcs 'web-mode)
   ;;   (setq-default flycheck-checker-error-threshold 400)
   :bind
-  (
-   ("M-p" . flycheck-previous-error)
+  (("M-p" . flycheck-previous-error)
    ("<f5>" . flycheck-previous-error)
    ("M-n" . flycheck-next-error)
    ("<f6>" . flycheck-next-error)

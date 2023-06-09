@@ -1,6 +1,25 @@
 (define-key global-map (kbd "<f12>") 'vg-presentation-toggle)
 (global-set-key (kbd "<f9>") 'vg-toggle-transparency)
 
+;; Personal mappings.
+(global-set-key (kbd "s-p") 'project-other-window-command)
+(global-set-key (kbd "s-g") 'magit-status)
+(global-set-key (kbd "s-a") 'org-agenda-list)
+(global-set-key (kbd "s-A") 'org-agenda)
+(global-set-key (kbd "s-r") 'helm-recentf)
+(global-set-key (kbd "s-b") 'helm-filtered-bookmarks)
+(global-set-key (kbd "s-B") 'bookmark-set)
+(global-set-key (kbd "s-s") 'helm-do-grep-ag)
+(global-set-key (kbd "s-o") 'helm-occur)
+(global-set-key (kbd "s-e") 'emmet-expand-line)
+(global-set-key (kbd "s-y") 'yas-insert-snippet)
+(global-set-key (kbd "s-Y") 'helm-yas-create-snippet-on-region)
+
+;; (call-interactively)
+;; (global-set-key (kbd "s-p") (lambda ()
+;;                               (interactive)
+;;                               (call-interactively 'project-switch-project t )))
+
 ;; Helps move the cursor to the new split.
 ;; (global-set-key "\C-x2" (lambda () (interactive)(split-window-vertically) (other-window 1)))
 ;; (global-set-key "\C-x3" (lambda () (interactive)(split-window-horizontally) (other-window 1)))
@@ -89,7 +108,7 @@ C: The character to zap up to."
 (define-key global-map (kbd "<f5>")
   (lambda ()
     (interactive)
-    (vg-async-shell-command-no-window "gnome-terminal `pwd`")))
+    (vg-async-shell-command-no-window "kitty `pwd`")))
 
 ;; Open finder in current files folder.
 (define-key global-map (kbd "<f6>")
