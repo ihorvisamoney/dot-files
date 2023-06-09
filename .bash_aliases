@@ -10,7 +10,7 @@ alias reset-permissions='find . -type f -exec chmod 644 {} \; && find . -type d 
 
 # Gnome keyboard typing speed.
 alias setup-gnome="
-gsettings set org.gnome.desktop.peripherals.keyboard repeat-interval 20
+gsettings set org.gnome.desktop.peripherals.keyboard repeat-interval 15
 gsettings set org.gnome.desktop.peripherals.keyboard delay 150
 gsettings set org.gnome.rhythmbox.podcast download-interval 'manual'
 gsettings set org.gnome.desktop.wm.keybindings activate-window-menu ['']
@@ -32,6 +32,28 @@ alias gr='git rebase '
 alias gri='git rebase -i '
 alias gra='git rebase --abort'
 alias git-set-origin-url='git remote set-url origin '
+
+########
+# TMUX #
+########
+
+# Attaches tmux to a session (example: ta portal).
+alias ta='tmux attach'
+
+# Creates a new session.
+alias tn='tmux new-session -s'
+
+# Lists all ongoing sessions.
+alias tl='tmux list-sessions'
+
+# Kill a session.
+alias tk='tmux kill-session -t'
+
+# Kill all sessions.
+alias tka='tmux kill-server'
+
+# Setup tmux sessions. (Babashka)
+alias ts="~/Dotfiles/scripts/setup-tmux-sessions.sh"
 
 ###############################
 # Media And File Manipulation #

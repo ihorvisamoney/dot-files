@@ -76,11 +76,10 @@
 ;;   ;; Corrects (and improves) org-mode's native fontification.
 ;;   (doom-themes-org-config))
 
-;; (use-package zenburn-theme
-;;   :ensure t
-;;   :init
-;;   :config
-;;   (load-theme 'zenburn t))
+(use-package zenburn-theme
+  :ensure t
+  :config
+  (load-theme 'zenburn t))
 
 ;; (use-package doom
 ;;   :ensure t
@@ -90,7 +89,8 @@
 
 (use-package magit
   :ensure t
-  :bind (("C-c g" . magit-status)))
+  ;; :bind (("C-c g" . magit-status))
+  )
 
 (use-package helm
   ;; TAB: Shows the actions.
@@ -118,25 +118,26 @@
    ("C-x r b" . helm-filtered-bookmarks)
    ("C-x C-b" . helm-buffers-list)
    ("C-x C-f" . helm-find-files)
-   ("C-q g"   . helm-do-grep-ag)
-   ("C-q r"   . helm-recentf)
-   ("C-q s"   . yas-insert-snippet)
-   ("C-q e"   . emmet-expand-line)
-   ("C-q p"   . project-switch-project)
-   ("C-q f"   . project-find-file)
-   ("C-q b"   . project-switch-to-buffer)
-   ("C-q d"   . project-dired)))
+   ("C-c g"   . helm-do-grep-ag)
+   ("C-c r"   . helm-recentf)
+   ("C-c s"   . yas-insert-snippet)
+   ("C-c e"   . emmet-expand-line)
+   ;; ("C-q p"   . project-switch-project)
+   ;; ("C-q f"   . project-find-file)
+   ;; ("C-q b"   . project-switch-to-buffer)
+   ;; ("C-q d"   . project-dired)
+   ))
 
-(use-package flycheck
-  :ensure t
-  :init (global-flycheck-mode)
-  :bind
-  (
-   ("M-p" . flycheck-previous-error)
-   ("<f5>" . flycheck-previous-error)
-   ("M-n" . flycheck-next-error)
-   ("<f6>" . flycheck-next-error)
-   ("<f7>" . flycheck-list-errors)))
+;; (use-package flycheck
+;;   :ensure t
+;;   :init (global-flycheck-mode)
+;;   :bind
+;;   (
+;;    ("M-p" . flycheck-previous-error)
+;;    ("<f5>" . flycheck-previous-error)
+;;    ("M-n" . flycheck-next-error)
+;;    ("<f6>" . flycheck-next-error)
+;;    ("<f7>" . flycheck-list-errors)))
 
 (use-package which-key
   :ensure t
@@ -205,7 +206,6 @@
 (define-derived-mode blade-mode web-mode "Blade"
   "Major mode derived from `web-mode' for blade templates.")
 
-
 (use-package lsp-ui
   :ensure t
   :commands lsp-ui-mode
@@ -244,20 +244,26 @@
 ;; Setup of linters.
 (use-package flycheck
   :ensure t
-  :init (global-flycheck-mode)
   :config
+  (global-flycheck-mode)
   ;; Controls how the errors buffer is displayed.
-  (add-to-list 'display-buffer-alist
-               `(,(rx bos "*Flycheck errors*" eos)
-                 (display-buffer-reuse-window
-                  display-buffer-in-side-window)
-                 (side            . bottom)
-                 (reusable-frames . visible)
-                 (window-height   . 0.2)))
-
-  ;; Disable jshint since we prefer eslint checking
-  ;; (setq-default flycheck-disabled-checkers
-  ;;               (append flycheck-disabled-checkers '(javascript-jshint)))
-  (flycheck-add-mode 'php-phpcs 'php-mode)
-  (flycheck-add-mode 'php-phpcs 'web-mode)
-  (setq-default flycheck-checker-error-threshold 400))
+  ;; (add-to-list
+  ;;  'display-buffer-alist `(,(rx bos "*Flycheck errors*" eos)
+  ;;                (display-buffer-reuse-window
+  ;;                 display-buffer-in-side-window)
+  ;;                (side            . bottom)
+  ;;                (reusable-frames . visible)
+  ;;                (window-height   . 0.2)))
+  ;;   ;; Disable jshint since we prefer eslint checking
+  ;;   ;; (setq-default flycheck-disabled-checkers
+  ;;   ;;               (append flycheck-disabled-checkers '(javascript-jshint)))
+  ;;   (flycheck-add-mode 'php-phpcs 'php-mode)
+  ;;   (flycheck-add-mode 'php-phpcs 'web-mode)
+  ;;   (setq-default flycheck-checker-error-threshold 400)
+  :bind
+  (
+   ("M-p" . flycheck-previous-error)
+   ("<f5>" . flycheck-previous-error)
+   ("M-n" . flycheck-next-error)
+   ("<f6>" . flycheck-next-error)
+   ("<f7>" . flycheck-list-errors)))

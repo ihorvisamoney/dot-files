@@ -92,20 +92,15 @@ VAL:"
 ;; Ibuffer.
 (add-hook 'ibuffer-mode-hook (lambda () (ibuffer-auto-mode 1)))
 
-;; Use Linux based system font.
-(if (eq system-type 'gnu/linux)
-    (set-face-attribute 'default nil :family "Monospace" :height 94))
+;; Fonts.
+(setq-default line-spacing 0.25)
 
-;; Use OSX based system font.
-;; (set-face-attribute 'default nil :family "Menlo" :height 148 :weight 'normal)
+(if (eq system-type 'gnu/linux)
+    (set-face-attribute 'default nil :family "DejaVu Sans Mono" :height 100))
 
 ;; Moves Emacs customization to separate file.el
 (setq custom-file (concat user-emacs-directory ".emacs-custom.el"))
 (load custom-file 'noerror)
-
-;; Line numbers
-(setq-default display-line-numbers-type 'relative)
-(global-display-line-numbers-mode 1)
 
 ;; Show matching parenthesis.
 (show-paren-mode 1)
@@ -113,8 +108,12 @@ VAL:"
 ;; Automatically close parenthesis.
 (electric-pair-mode t)
 
+;; Line numbers
+(setq-default display-line-numbers-type 'relative)
+(global-display-line-numbers-mode 1)
+
 ;; Highlight current line.
-(global-hl-line-mode t)
+;; (global-hl-line-mode t)
 
 ;; Enable recent f.
 (setq-default recentf-max-saved-items 50)
@@ -138,7 +137,9 @@ VAL:"
 (global-unset-key (kbd "C-q"))
 
 ;; Theme
-(load-theme 'modus-operandi t)
+;; (setq-default modus-themes-syntax '())
+;; ;; (load-theme 'modus-vivendi t)
+;; (load-theme 'modus-operandi t)
 
 ;;;;;;;;;;;;;;;;
 ;; Path Setup ;;
@@ -150,8 +151,39 @@ VAL:"
 
 ;; Node
 ;; /home/vernon/.nvm/versions/node/v18.16.0/bin
-(setq exec-path (append exec-path '("/home/vernon/.nvm/versions/node/v18.16.0/bin")))
-;; (setenv "PATH" (concat (getenv "PATH") ";/home/vernon/.nvm/versions/node/v18.16.0/bin"))
+;; (setq exec-path (append exec-path '("~/.nvm/versions/node/v18.16.0/bin")))
+
+;; Push the node path to the front so it takes presedence.
+(setenv "PATH" (concat "/home/vernon/.nvm/versions/node/v18.16.0/bin:" (getenv "PATH")))
+(setq exec-path (push "/home/vernon/.nvm/versions/node/v18.16.0/bin" exec-path))
+
+;; (getenv "PATH")
+;; We can also append other paths, if needed.
+;; (setq exec-path (append exec-path '("/home/vernon/.nvm/versions/node/v18.16.0/bin")))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Clipboard corrections inside tmux and wayland ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; credit: yorickvP on Github
+(setq wl-copy-process nil)
+
+(defun wl-copy (text)
+  (setq wl-copy-process (make-process :name "wl-copy"
+                                      :buffer nil
+                                      :command '("wl-copy" "-f" "-n")
+                                      :connection-type 'pipe))
+  (process-send-string wl-copy-process text)
+  (process-send-eof wl-copy-process))
+
+(defun wl-paste ()
+  (if (and wl-copy-process (process-live-p wl-copy-process))
+      nil ; should return nil if we're the current paste owner
+    (shell-command-to-string "wl-paste -n | tr -d \r")))
+
+(setq interprogram-cut-function 'wl-copy)
+(setq interprogram-paste-function 'wl-paste)
 
 ;;;;;;;;;;;;;;;;;
 ;; Compilation ;;
@@ -229,8 +261,8 @@ VAL:"
 
 ;; Whitespace color changes for gruvbox.
 (require 'color)
-(let* ((ws-lighten 80) ;; Amount in percentage to lighten up black.
-       (ws-color (color-lighten-name "#000000" ws-lighten)))
+(let* ((ws-lighten 7) ;; Amount in percentage to lighten up black.
+       (ws-color (color-lighten-name "#454545" ws-lighten)))
   (custom-set-faces
    `(whitespace-newline                ((t (:foreground ,ws-color :background nil))))
    `(whitespace-missing-newline-at-eof ((t (:foreground ,ws-color :background nil))))

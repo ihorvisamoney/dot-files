@@ -25,7 +25,7 @@
 ;; (define-key global-map (kbd "C-c m") 'recompile)
 
 ;; Open recent f.
-(define-key global-map (kbd "C-c r") 'recentf-open-files)
+;; (define-key global-map (kbd "C-c r") 'recentf-open-files)
 
 ;; Add a comment box.
 (define-key global-map (kbd "C-c b") 'comment-box)

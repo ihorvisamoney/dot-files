@@ -1,10 +1,12 @@
 #! /bin/bash
 
+sudo apt-get update
+
 # Generals
-sudo dnf -y install git gh curl lftp
+sudo apt install git curl lftp silversearcher-ag emacs28 ripgrep zeal tmux emacs28
 
 # Text editor
-sudo dnf -y install emacs ripgrep zeal
+sudo apt install ripgrep zeal
 
 # Development GUI tools
 # sudo dnf -y install filezilla poedit
