@@ -93,7 +93,7 @@ VAL:"
 (add-hook 'ibuffer-mode-hook (lambda () (ibuffer-auto-mode 1)))
 
 ;; Fonts.
-(setq-default line-spacing 0.5)
+(setq-default line-spacing 0.35)
 
 (if (eq system-type 'gnu/linux)
     (set-face-attribute 'default nil :family "DejaVu Sans Mono" :height 104))
@@ -123,6 +123,7 @@ VAL:"
 ;; I Search
 (setq-default isearch-lazy-count t)
 (setq-default isearch-allow-motion t)
+(setq-default search-whitespace-regexp ".*?")
 
 ;; Project.el
 (setq-default project-switch-commands 'project-find-file)

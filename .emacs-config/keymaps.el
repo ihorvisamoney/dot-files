@@ -14,6 +14,8 @@
 (global-set-key (kbd "s-e") 'emmet-expand-line)
 (global-set-key (kbd "s-y") 'yas-insert-snippet)
 (global-set-key (kbd "s-Y") 'helm-yas-create-snippet-on-region)
+(global-set-key (kbd "s-m") 'man)
+(global-set-key (kbd "s-;") 'comment-box)
 
 ;; (call-interactively)
 ;; (global-set-key (kbd "s-p") (lambda ()

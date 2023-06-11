@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+#name : html
+#key : html
+#contributor : Vernon
+# --
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>$1</title>
+    </head>
+    <body>
+        $0
+    </body>
+</html>

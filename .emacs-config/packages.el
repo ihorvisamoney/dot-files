@@ -1,4 +1,4 @@
-;;;;;;;;;;;
+;;;;;;;;;;
 ;; Melpa ;;
 ;;;;;;;;;;;
 
@@ -33,10 +33,7 @@
 (use-package dockerfile-mode :ensure t)
 (use-package typescript-mode :ensure t)
 
-;; (use-package nyan-mode
-;;   :ensure t
-;;   :config
-;;   (nyan-mode))
+(use-package wgrep  :ensure t)
 
 (use-package web-mode
   :ensure t
@@ -131,7 +128,7 @@
 (use-package lsp-mode
   :ensure t
   :init
-  (setq-default lsp-keymap-prefix "C-c l")
+  (setq-default lsp-keymap-prefix "s-l")
   (setq-default gc-cons-threshold 100000000)
   (setq-default read-process-output-max (* 1024 1024))
   :config
@@ -245,7 +242,5 @@
   ;;   (setq-default flycheck-checker-error-threshold 400)
   :bind
   (("M-p" . flycheck-previous-error)
-   ("<f5>" . flycheck-previous-error)
    ("M-n" . flycheck-next-error)
-   ("<f6>" . flycheck-next-error)
    ("<f7>" . flycheck-list-errors)))

@@ -1,8 +1,0 @@
-# -*- mode: snippet -*-
-#name : sample
-#key : sample
-#contributor : Vernon
-# --
-(global-set-key (kbd "s-o") 'helm-occur)
-(global-set-key (kbd "s-e") 'emmet-expand-line)
-(global-set-key (kbd "s-y") 'yas-insert-snippet)
