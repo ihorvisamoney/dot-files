@@ -1,6 +1,9 @@
 (define-key global-map (kbd "<f12>") 'vg-presentation-toggle)
 (global-set-key (kbd "<f9>") 'vg-toggle-transparency)
 
+;; Dired.
+(global-set-key (kbd "C-x d") 'dired-other-window)
+
 ;; Personal mappings.
 (global-set-key (kbd "s-p") 'project-other-window-command)
 (global-set-key (kbd "s-g") 'magit-status)
