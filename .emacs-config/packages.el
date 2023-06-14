@@ -241,6 +241,4 @@
   ;;   (flycheck-add-mode 'php-phpcs 'web-mode)
   ;;   (setq-default flycheck-checker-error-threshold 400)
   :bind
-  (("s-f p" . flycheck-previous-error)
-   ("s-f n" . flycheck-next-error)
-   ("s-f f" . flycheck-list-errors)))
+  (("s-f" . flycheck-list-errors)))

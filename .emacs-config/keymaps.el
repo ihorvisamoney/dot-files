@@ -1,8 +1,10 @@
 (define-key global-map (kbd "<f12>") 'vg-presentation-toggle)
 (global-set-key (kbd "<f9>") 'vg-toggle-transparency)
 
-;; Dired.
+;; Make things open in other windows by default.
 (global-set-key (kbd "C-x d") 'dired-other-window)
+;; (global-set-key (kbd "C-x b") 'switch-to-buffer-other-window)
+;; (global-set-key (kbd "C-x C-f") 'find-file-other-window)
 
 ;; Personal mappings.
 (global-set-key (kbd "s-p") 'project-other-window-command)
@@ -19,6 +21,7 @@
 (global-set-key (kbd "s-Y") 'helm-yas-create-snippet-on-region)
 (global-set-key (kbd "s-m") 'man)
 (global-set-key (kbd "s-;") 'comment-box)
+(global-set-key (kbd "s-f") 'flycheck-list-errors)
 
 ;; (call-interactively)
 ;; (global-set-key (kbd "s-p") (lambda ()
