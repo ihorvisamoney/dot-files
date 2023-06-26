@@ -69,6 +69,16 @@ VAL:"
 
 ;; Org mode
 (setq-default org-agenda-window-setup 'other-window)
+(setq-default org-highlight-latex-and-related '(latex script entities))
+(setq-default org-src-fontify-natively t)
+
+;; (add-to-list 'org-latex-packages-alist '("" "minted"))
+;; (setq-default org-latex-listings 'minted)
+
+;; (setq-default org-latex-pdf-process
+;;       '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+;;         "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+;;         "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
 
 ;; Automatically reload changed files.
 (global-auto-revert-mode t)

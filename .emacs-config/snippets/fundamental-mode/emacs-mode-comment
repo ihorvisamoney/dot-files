@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+#name : Emacs mode header comment
+#key : emode
+#contributor : Vernon
+# --
+
+-*- mode: $0 -*-

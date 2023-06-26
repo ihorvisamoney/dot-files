@@ -14,6 +14,9 @@ sudo apt install docker-compose composer
 sudo groupadd docker
 sudo usermod -aG docker $USER
 
+# Install required PHP extensions
+sudo apt install php8.1-bcmath php8.1-curl php8.1-mbstring php8.1-mysql php8.1-tokenizer php8.1-xml php8.1-zip
+
 # System tools
 # sudo apt install imagemagick vlc
 
@@ -23,6 +26,10 @@ sudo apt install poppler-utils qpdf
 # Design tools
 sudo apt-get install gimp inkscape handbrake
 
+# Latex tools
+sudo apt-get install texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra
+
+# pdflatex: command not found
 # Docker
 # sudo dnf -y install docker docker-compose composer
 # sudo groupadd docker

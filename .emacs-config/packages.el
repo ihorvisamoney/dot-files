@@ -3,11 +3,12 @@
 ;;;;;;;;;;;
 
 (require 'package)
-(package-initialize)
 
 ;; add Melpa packages.
-(add-to-list 'package-archives
-             '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+;; (add-to-list 'package-archives
+;;              '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+(package-initialize)
 
 ;; fetch the list of packages available.
 (unless package-archive-contents
@@ -32,6 +33,9 @@
 (use-package yaml-mode       :ensure t)
 (use-package dockerfile-mode :ensure t)
 (use-package typescript-mode :ensure t)
+(use-package apache-mode :ensure t)
+(use-package nginx-mode :ensure t)
+(use-package toml-mode :ensure t)
 
 (use-package wgrep  :ensure t)
 
@@ -39,6 +43,9 @@
   :ensure t
   :init
   (add-to-list 'auto-mode-alist '("\\.liquid" . web-mode)))
+
+(use-package restclient
+  :ensure t)
 
 (use-package editorconfig
   :ensure t
@@ -119,6 +126,15 @@
    ("C-x C-f" . helm-find-files)
    ("C-c g"   . helm-do-grep-ag)))
 
+(use-package helm-ag
+  :ensure t
+  :config
+  (setq-default
+   helm-ag-base-command "ag --nocolor --nogroup --ignore-case"
+   helm-ag-command-option "--hidden"
+   ;; helm-ag-command-option "--hidden --skip-vcs-ignores"
+   ))
+
 (use-package which-key
   :ensure t
   :config
@@ -144,12 +160,12 @@
             (lambda ()
               (when (derived-mode-p 'php-mode)
                 (flycheck-add-next-checker 'lsp 'php-phpcs 'php))
+              (when (derived-mode-p 'web-mode)
+                (flycheck-add-next-checker 'lsp 'php-phpcs 'javascript-eslint 'css-stylelint))
               (when (derived-mode-p 'css-mode)
                 (flycheck-add-next-checker 'lsp 'css-stylelint))
               (when (derived-mode-p 'js-mode)
                 (flycheck-add-next-checker 'lsp 'javascript-eslint))
-              (when (derived-mode-p 'web-mode)
-                (flycheck-add-next-checker 'lsp 'php-phpcs 'javascript-eslint 'css-stylelint))
               ))
   :commands (lsp lsp-deferred)
   ;; Manually enable the language server when needed.

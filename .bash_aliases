@@ -12,6 +12,7 @@ alias reset-permissions='find . -type f -exec chmod 644 {} \; && find . -type d 
 
 # Gnome keyboard typing speed.
 alias setup-gnome="
+gsettings set org.gnome.desktop.interface enable-animations false
 gsettings set org.gnome.desktop.peripherals.keyboard repeat-interval 15
 gsettings set org.gnome.desktop.peripherals.keyboard delay 150
 gsettings set org.gnome.rhythmbox.podcast download-interval 'manual'
@@ -68,6 +69,7 @@ alias gr='git rebase '
 alias gri='git rebase -i '
 alias gra='git rebase --abort'
 alias git-set-origin-url='git remote set-url origin '
+alias git-show-crlf='git ls-files --eol | grep crlf'
 
 ########
 # TMUX #

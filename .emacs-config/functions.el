@@ -54,7 +54,38 @@ COMMAND: The shell command."
         (setq i (- i 96))))))
 
 (defun vg-get-project-root ()
-  (locate-dominating-file default-directory ".dir-locals.el"))
+  ;; (let )
+  ;; Use project.el to get the directory of the current project.
+  ;; (concat (cdr (project-current)))
+  (locate-dominating-file default-directory ".dir-locals.el")
+  )
+
+(defun vg-func-region (start end func)
+  "Run a FUNC over the region between START and END in current buffer."
+  (save-excursion
+    (let ((text (delete-and-extract-region start end)))
+      (insert (funcall func text)))))
+
+(defun vg-url-encode (start end)
+  "Urlencode the region between START and END in current buffer."
+  (interactive "r")
+  (vg-func-region start end #'url-hexify-string))
+
+(defun vg-url-decode (start end)
+  "De-urlencode the region between START and END in current buffer."
+  (interactive "r")
+  (vg-func-region start end #'url-unhex-string))
+
+(defun vg-dired-do-command (command)
+  "Run COMMAND on marked files. Any files not already open will be opened.
+After this command has been run, any buffers it's modified will remain
+open and unsaved."
+  (interactive "CRun on marked files M-x ")
+  (save-window-excursion
+    (mapc (lambda (filename)
+            (find-file filename)
+            (call-interactively command))
+          (dired-get-marked-files))))
 
 ;;;;;;;;;;;;;;;;;
 ;; Note Taking ;;
