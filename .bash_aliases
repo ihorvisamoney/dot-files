@@ -97,6 +97,9 @@ alias ts="~/Dotfiles/scripts/setup-tmux-sessions.sh"
 # Media And File Manipulation #
 ###############################
 
+# Crop images
+# mogrify -crop 1920x840+0+80 ./*.jpg
+
 # ------------------------------------------------------------------------------
 # Will resize all images inside a folder. Images that matches the given format
 # will be overwritten.

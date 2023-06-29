@@ -14,6 +14,7 @@
 (global-set-key (kbd "s-r") 'helm-recentf)
 (global-set-key (kbd "s-b") 'helm-filtered-bookmarks)
 (global-set-key (kbd "s-B") 'bookmark-set)
+;; You can do: -G\.el$ pattern to search only specific files.
 ;; see: https://github.com/emacsorphanage/helm-ag#keymap
 (global-set-key (kbd "s-s") 'helm-do-ag-project-root)
 (global-set-key (kbd "s-o") 'helm-occur)
@@ -23,6 +24,14 @@
 (global-set-key (kbd "s-m") 'man)
 (global-set-key (kbd "s-;") 'comment-box)
 (global-set-key (kbd "s-f") 'flycheck-list-errors)
+(global-set-key (kbd "s-c") 'recompile)
+(global-set-key (kbd "s-C") 'compile)
+
+;; Window movement.
+(global-set-key (kbd "s-x <right>") 'windmove-swap-states-right)
+(global-set-key (kbd "s-x <left>") 'windmove-swap-states-left)
+
+;; TODO: Implement smerge bindings.
 (global-set-key (kbd "s-c") 'recompile)
 (global-set-key (kbd "s-C") 'compile)
 
