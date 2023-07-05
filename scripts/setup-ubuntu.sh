@@ -21,7 +21,7 @@ sudo apt install php8.1-bcmath php8.1-curl php8.1-mbstring php8.1-mysql php8.1-t
 # sudo apt install imagemagick vlc
 
 # PDF tools
-sudo apt install poppler-utils qpdf
+sudo apt install poppler-utils qpdf pandoc
 
 # Design tools
 sudo apt-get install gimp inkscape handbrake

@@ -35,6 +35,21 @@
 (global-set-key (kbd "s-c") 'recompile)
 (global-set-key (kbd "s-C") 'compile)
 
+;; Git smerge
+(global-set-key (kbd "s-G r") 'smerge-refine)
+(global-set-key (kbd "s-G p") 'smerge-prev)
+(global-set-key (kbd "s-G n") 'smerge-next)
+
+(global-set-key (kbd "s-G u") 'smerge-keep-upper)
+(global-set-key (kbd "s-G m") 'smerge-keep-base)
+(global-set-key (kbd "s-G l") 'smerge-keep-lower)
+
+
+;; C-c ^ a         smerge-keep-all
+;; C-c ^ b         smerge-keep-base
+;; C-c ^ l         smerge-keep-lower
+;; C-c ^ m         smerge-keep-upper
+
 ;; (call-interactively)
 ;; (global-set-key (kbd "s-p") (lambda ()
 ;;                               (interactive)
@@ -57,7 +72,7 @@
 ;;                                        (switch-to-buffer (other-buffer))))
 
 ;; Use Ibuffer instead.
-;; (define-key global-map (kbd "C-x C-b") 'ibuffer-other-window)
+(define-key global-map (kbd "C-x C-b") 'ibuffer-other-window)
 
 ;; Compile, make.
 ;; (define-key global-map (kbd "C-c M") 'compile)

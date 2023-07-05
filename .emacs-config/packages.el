@@ -23,7 +23,6 @@
   (unless (require 'use-package nil 'noerror) (package-install 'use-package))
   (require 'use-package))
 
-;; (use-package flymake-easy  :ensure t)
 (use-package markdown-mode   :ensure t)
 (use-package go-mode         :ensure t)
 (use-package php-mode        :ensure t)
@@ -34,10 +33,12 @@
 (use-package yaml-mode       :ensure t)
 (use-package dockerfile-mode :ensure t)
 (use-package typescript-mode :ensure t)
-(use-package apache-mode :ensure t)
-(use-package nginx-mode :ensure t)
-(use-package toml-mode :ensure t)
+(use-package apache-mode     :ensure t)
+(use-package nginx-mode      :ensure t)
+(use-package toml-mode       :ensure t)
+(use-package haskell-mode    :ensure t)
 
+(use-package wrap-region  :ensure t)
 (use-package wgrep  :ensure t)
 
 (use-package web-mode
@@ -46,7 +47,16 @@
   (add-to-list 'auto-mode-alist '("\\.liquid" . web-mode)))
 
 (use-package restclient
+  :ensure t
+  :config
+  (setq-default restclient-log-request t))
+
+(use-package verb
   :ensure t)
+
+;; (use-package org
+;;   :mode ("\\.org\\'" . org-mode)
+;;   :config (define-key org-mode-map (kbd "C-c C-r") verb-command-map))
 
 (use-package editorconfig
   :ensure t
@@ -123,7 +133,7 @@
   :bind
   (("M-x"     . helm-M-x)
    ("C-x r b" . helm-filtered-bookmarks)
-   ("C-x C-b" . helm-buffers-list)
+   ;; ("C-x C-b" . helm-buffers-list)
    ("C-x C-f" . helm-find-files)
    ("C-c g"   . helm-do-grep-ag)))
 
@@ -184,6 +194,7 @@
          (html-mode       . lsp)
          (yaml-mode       . lsp)
          (sh-mode         . lsp)
+         (haskell-mode    . lsp)
          ;; (markdown-mode   . lsp)
          (lsp-mode        . lsp-enable-which-key-integration)))
 

@@ -25,7 +25,7 @@ gsettings set org.gnome.desktop.wm.keybindings show-desktop ['']
 gsettings set org.gnome.desktop.wm.keybindings switch-applications ['']
 gsettings set org.gnome.mutter.keybindings switch-monitor ['']
 gsettings set org.gnome.settings-daemon.plugins.media-keys help ['']
-gsettings set org.gnome.settings-daemon.plugins.media-keys rotate-video-lock-static ['XF86RotationLockToggle']
+gsettings set org.gnome.settings-daemon.plugins.media-keys rotate-video-lock-static ['']
 gsettings set org.gnome.settings-daemon.plugins.media-keys screensaver ['']
 gsettings set org.gnome.shell.extensions.dash-to-dock app-hotkey-1 ['']
 gsettings set org.gnome.shell.extensions.dash-to-dock app-hotkey-10 ['']
@@ -53,7 +53,6 @@ gsettings set org.gnome.shell.keybindings toggle-application-view ['']
 gsettings set org.gnome.shell.keybindings toggle-message-tray ['']
 gsettings set org.gnome.shell.keybindings toggle-overview ['']
 gsettings set org.freedesktop.ibus.general.hotkey triggers ['']
-org.gnome.settings-daemon.plugins.media-keys rotate-video-lock-static ['']
 "
 
 #######
