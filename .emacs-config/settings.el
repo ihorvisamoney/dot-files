@@ -34,7 +34,9 @@
 ;; Enable delete region selection deletion.
 (delete-selection-mode 1)
 
-;; Save backup files to specific folder.
+;; Stop creating backup files.
+(setq-default make-backup-files nil)
+;; When backup files enabled, save them to a specific folder.
 (setq-default backup-directory-alist `(("." . "~/.emacs-saves")))
 
 ;; Set the tramp mode. /ssh:Name:path.
@@ -233,6 +235,7 @@ VAL:"
 ;;;;;;;;;;;;;;;
 
 ;; (load-theme 'gruvbox t)
+
 
 ;;;;;;;;;;;;;;;;;;;;;
 ;; Whitespace Mode ;;

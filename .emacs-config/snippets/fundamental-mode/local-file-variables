@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+#name : Local File Variables (Emacs)
+#key : lvars
+#contributor : Vernon
+# --
+
+-*- mode: $0; eval: (message "Hello World");  -*-

@@ -37,6 +37,9 @@
 (use-package nginx-mode      :ensure t)
 (use-package toml-mode       :ensure t)
 (use-package haskell-mode    :ensure t)
+(use-package dotenv-mode    :ensure t)
+
+
 
 (use-package wrap-region  :ensure t)
 (use-package wgrep  :ensure t)
@@ -44,7 +47,10 @@
 (use-package web-mode
   :ensure t
   :init
-  (add-to-list 'auto-mode-alist '("\\.liquid" . web-mode)))
+  (add-to-list 'auto-mode-alist '("\\.liquid" . web-mode))
+  :config
+  (setq-default web-mode-enable-auto-indentation nil)
+  )
 
 (use-package restclient
   :ensure t
@@ -72,7 +78,9 @@
   (yas-global-mode 1))
 
 (use-package emmet-mode
-  :ensure t)
+  :ensure t
+  :config
+  (setq-default emmet-indent-after-insert nil))
 
 (use-package helm-c-yasnippet
   :ensure t
@@ -158,13 +166,27 @@
   (setq-default lsp-keymap-prefix "s-l")
   (setq-default gc-cons-threshold 100000000)
   (setq-default read-process-output-max (* 1024 1024))
+  (advice-add 'json-parse-buffer :around
+              (lambda (orig &rest rest)
+                (while (re-search-forward "\\u0000" nil t)
+                  (replace-match ""))
+                (apply orig rest)))
   :config
   (setq-default
    lsp-enable-on-type-formatting nil
    lsp-auto-guess-root t
    lsp-enable-snippet t
    lsp-keep-workspace-alive nil
-   lsp-headerline-breadcrumb-enable nil)
+   ;; lsp-javascript-update-imports-on-file-move-enabled nil
+   lsp-headerline-breadcrumb-enable nil
+
+   ;; Typescript and JavaScript.
+   ;; Temp files causing issue with import paths.
+   ;; lsp-javascript-update-imports-on-file-move-enabled "never"
+   ;; lsp-typescript-update-imports-on-file-move-enabled "never"
+   ;; lsp-javascript-suggest-auto-imports nil
+   ;; lsp-typescript-suggest-auto-imports nil
+   )
 
   ;; Adds additional checkers along side lsp.
   (add-hook 'lsp-after-initialize-hook

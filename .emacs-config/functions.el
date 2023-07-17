@@ -57,6 +57,11 @@ COMMAND: The shell command."
   ;; (let )
   ;; Use project.el to get the directory of the current project.
   ;; (concat (cdr (project-current)))
+  ;; (if (vc-root-dir)
+  ;;     (vc-root-dir)
+  ;;   (locate-dominating-file default-directory ".dir-locals.el")
+  ;;   )
+  ;; (when (vc-root-dir))
   (locate-dominating-file default-directory ".dir-locals.el")
   )
 
@@ -86,6 +91,58 @@ open and unsaved."
             (find-file filename)
             (call-interactively command))
           (dired-get-marked-files))))
+
+(defun vg-shell-command-in-project-root (command)
+  "Run the provided command in the project root directory.
+COMMAND: The shell command."
+  (interactive)
+  (let*
+      ;; TODO: make root directory more intelligent.
+      ((project-root (vc-root-dir))
+       (final-command (concat "cd" " " project-root " && " command)))
+    (shell-command final-command)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Project specific bindings? ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; The .dir-locals.el file should hold a specially-constructed list, which maps
+;; major mode names (symbols) to alists (see Association Lists in The Emacs Lisp
+;; Reference Manual). Each alist entry consists of a variable name and the
+;; directory-local value to assign to that variable, when the specified major
+;; mode is enabled. Instead of a mode name, you can specify ‘nil’, which means
+;; that the alist applies to any mode; or you can specify a subdirectory (a
+;; string), in which case the alist applies to all files in that subdirectory.
+
+;; List of tasks.
+(defvar vg-project-tasks '(("Hello World" . "echo 'Hello World'")))
+(defun vg-project-tasks-run (choice)
+  "..."
+  (interactive
+   (list (completing-read "Choose Task: "
+                          vg-project-tasks
+                           nil t)))
+  ;; (message "You chose `%s'" choice)
+  (let ((command (cdr (assoc choice vg-project-tasks))))
+    (vg-shell-command-in-project-root command)))
+
+(global-set-key (kbd "s-t") 'vg-project-tasks-run)
+
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; Formatting On Save ;;
+;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; (add-hook 'js2-mode-hook
+;;     (lambda ()
+;;       (add-hook 'before-save-hook 'prettier-js nil 'make-it-local)))
+
+;; (defun eslint-fmt-region-or-buffer ()
+;;   "use shell command to format buffer or region via eslint"
+;;   (interactive)
+;;   (if (region-active-p)
+;; 	  (shell-command-on-region "eslint --fix")
+;; 	(mark-whole-buffer)
+;; 	(shell-command-on-region "eslint --fix")))
 
 ;;;;;;;;;;;;;;;;;
 ;; Note Taking ;;

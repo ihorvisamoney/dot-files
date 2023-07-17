@@ -4,6 +4,12 @@
 # --
 
 (
+ ;; Global tasks
+ (nil . ((vg-project-tasks . (
+                              ;; Tasks here:
+                              ("Format Files" . "pnpm run format")
+                              ))))
+
  ;; PHPCS:
  (php-mode
   (eval . (setq-local
@@ -18,8 +24,8 @@
            flycheck-javascript-eslint-executable
            (concat
             (vg-get-project-root)
-            "node_modules/.bin/eslint"))))  
- 
+            "node_modules/.bin/eslint"))))
+
  ;; Stylelint:
  (css-mode
   (eval . (setq-local
@@ -27,7 +33,7 @@
            (concat
             (vg-get-project-root)
             "node_modules/.bin/stylelint")
-           
+
            flycheck-stylelintrc
            (concat
             (vg-get-project-root)

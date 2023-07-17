@@ -24,16 +24,13 @@
 (global-set-key (kbd "s-m") 'man)
 (global-set-key (kbd "s-;") 'comment-box)
 (global-set-key (kbd "s-f") 'flycheck-list-errors)
-(global-set-key (kbd "s-c") 'recompile)
-(global-set-key (kbd "s-C") 'compile)
+;; Project.el can do this
+;; (global-set-key (kbd "s-m") 'recompile)
+;; (global-set-key (kbd "s-M") 'compile)
 
 ;; Window movement.
 (global-set-key (kbd "s-x <right>") 'windmove-swap-states-right)
 (global-set-key (kbd "s-x <left>") 'windmove-swap-states-left)
-
-;; TODO: Implement smerge bindings.
-(global-set-key (kbd "s-c") 'recompile)
-(global-set-key (kbd "s-C") 'compile)
 
 ;; Git smerge
 (global-set-key (kbd "s-G r") 'smerge-refine)
@@ -44,6 +41,22 @@
 (global-set-key (kbd "s-G m") 'smerge-keep-base)
 (global-set-key (kbd "s-G l") 'smerge-keep-lower)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Mode Specific Bindings ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Verb
+
+(add-hook 'verb-mode-hook
+          (lambda ()
+            (local-set-key (kbd "s-c s") #'verb-send-request-on-point)
+            ))
+
+(add-hook 'verb-response-body-mode-hook
+          (lambda ()
+            (local-set-key (kbd "s-c s") #'verb-re-send-request)
+            (local-set-key (kbd "s-c h") #'verb-toggle-show-headers)
+            ))
 
 ;; C-c ^ a         smerge-keep-all
 ;; C-c ^ b         smerge-keep-base
