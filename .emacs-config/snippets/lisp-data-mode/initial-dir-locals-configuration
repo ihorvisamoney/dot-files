@@ -4,38 +4,24 @@
 # --
 
 (
- ;; Global tasks
+ ;; Project tasks
  (nil . ((vg-project-tasks . (
-                              ;; Tasks here:
-                              ("Format Files" . "pnpm run format")
+                              ("PNPM: Install" . "pnpm install")
+                              ("PNPM: Format" . "pnpm run format")
                               ))))
 
+ ;; Typescript
+ (typescript-mode . ((vg-on-save-lambda . (lambda()
+                                            (vg-shell-command-in-project-root-no-window (concat "pnpm exec prettier --write " (buffer-file-name)))
+                                            (message "The file has been formatted using prettier!")))))
+
  ;; PHPCS:
- (php-mode
-  (eval . (setq-local
-           flycheck-php-phpcs-executable
-           (concat
-            (vg-get-project-root)
-            "vendor/bin/phpcs"))))
+ (php-mode . ((flycheck-php-phpcs-executable . (concat (vg-get-project-root) "vendor/bin/phpcs"))))
 
  ;; ESlint:
- (js-mode
-  (eval . (setq-local
-           flycheck-javascript-eslint-executable
-           (concat
-            (vg-get-project-root)
-            "node_modules/.bin/eslint"))))
+ (js-mode . ((flycheck-javascript-eslint-executable . (concat (vg-get-project-root) "node_modules/.bin/eslint"))))
 
  ;; Stylelint:
- (css-mode
-  (eval . (setq-local
-           flycheck-css-stylelint-executable
-           (concat
-            (vg-get-project-root)
-            "node_modules/.bin/stylelint")
-
-           flycheck-stylelintrc
-           (concat
-            (vg-get-project-root)
-            ".stylelintrc.json"))))
+ (css-mode . ((flycheck-css-stylelint-executable . (concat (vc-root-dir) "node_modules/.bin/stylelint"))
+              (flycheck-stylelintrc . (concat (vc-root-dir) ".stylelintrc.json"))))
 )

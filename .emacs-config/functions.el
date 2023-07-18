@@ -92,15 +92,63 @@ open and unsaved."
             (call-interactively command))
           (dired-get-marked-files))))
 
+;; TODO: Maybe combine the following two functions.
 (defun vg-shell-command-in-project-root (command)
   "Run the provided command in the project root directory.
 COMMAND: The shell command."
   (interactive)
-  (let*
-      ;; TODO: make root directory more intelligent.
+
+  ;; TODO: Handle this better. Just in case we run the command in a non project buffer.
+  (when (vc-root-dir)
+    (let*
+        ;; TODO: make root directory more intelligent.
       ((project-root (vc-root-dir))
        (final-command (concat "cd" " " project-root " && " command)))
-    (shell-command final-command)))
+    (async-shell-command final-command)
+    (message "Task running..."))))
+
+(defun vg-shell-command-in-project-root-no-window (command)
+  "Run the provided command in the project root directory.
+COMMAND: The shell command."
+  (interactive)
+
+  ;; TODO: Handle this better. Just in case we run the command in a non project buffer.
+  (when (vc-root-dir)
+    (let*
+        ;; TODO: make root directory more intelligent.
+        ((project-root (vc-root-dir))
+         (final-command (concat "cd" " " project-root " && " command)))
+      (vg-async-shell-command-no-window final-command)
+      (message "Task running..."))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; Dir Locals Helpers ;;
+;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun vg-reload-dir-locals-for-current-buffer ()
+  "Reload dir locals for the current buffer."
+  (interactive)
+  (let ((enable-local-variables :all))
+    (hack-dir-local-variables-non-file-buffer)))
+
+;; (defun vg-reload-dir-locals-for-all-buffer-in-this-directory ()
+;;   "For every buffer with the same `default-directory` as the current buffer,
+;;  reload dir-locals."
+;;   (interactive)
+;;   (let ((dir default-directory))
+;;     (dolist (buffer (buffer-list))
+;;       (with-current-buffer buffer
+;;         (when (equal default-directory dir)
+;;           (vg-reload-dir-locals-for-current-buffer))))))
+
+;; (add-hook 'emacs-lisp-mode-hook
+;;           (defun enable-autoreload-for-dir-locals ()
+;;             (when (and (buffer-file-name)
+;;                        (equal dir-locals-file
+;;                               (file-name-nondirectory (buffer-file-name))))
+;;               (add-hook 'after-save-hook
+;;                         'my-reload-dir-locals-for-all-buffer-in-this-directory
+;;                         nil t))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Project specific bindings? ;;
@@ -115,34 +163,54 @@ COMMAND: The shell command."
 ;; string), in which case the alist applies to all files in that subdirectory.
 
 ;; List of tasks.
+
+;; TODO: Define global tasks.
+;; Define your global tasks here.
+(defvar vg-global-tasks '(("List files" . "ls -la ./")))
+
+;; These tasks should be defined within your projects .dir-locals.el
 (defvar vg-project-tasks '(("Hello World" . "echo 'Hello World'")))
+
+(defun vg-get-appended-tasks()
+  "Append global and project task lists."
+  (append vg-global-tasks vg-project-tasks))
+
 (defun vg-project-tasks-run (choice)
-  "..."
+  "Run global and project specific tasks.
+CHOICE: The command key to run."
   (interactive
-   (list (completing-read "Choose Task: "
-                          vg-project-tasks
+   (list (completing-read "Run Task: "
+                          (vg-get-appended-tasks)
                            nil t)))
-  ;; (message "You chose `%s'" choice)
-  (let ((command (cdr (assoc choice vg-project-tasks))))
+  (let ((command (cdr (assoc choice (vg-get-appended-tasks)))))
     (vg-shell-command-in-project-root command)))
 
 (global-set-key (kbd "s-t") 'vg-project-tasks-run)
 
-;;;;;;;;;;;;;;;;;;;;;;;;
-;; Formatting On Save ;;
-;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;
+;; On Save ;;
+;;;;;;;;;;;;;
 
-;; (add-hook 'js2-mode-hook
-;;     (lambda ()
-;;       (add-hook 'before-save-hook 'prettier-js nil 'make-it-local)))
+;; This should be defined within your .dir-locals.el file for each mode.
+(defvar vg-on-save-lambda (lambda() (message "The on save command has been called.")))
 
-;; (defun eslint-fmt-region-or-buffer ()
-;;   "use shell command to format buffer or region via eslint"
-;;   (interactive)
-;;   (if (region-active-p)
-;; 	  (shell-command-on-region "eslint --fix")
-;; 	(mark-whole-buffer)
-;; 	(shell-command-on-region "eslint --fix")))
+(defun vg-before-save-hook ()
+  "Run the defined `vg-on-save-lambda` lambda on all defined major modes."
+  (when (or
+         (eq major-mode 'sh-mode)
+         (eq major-mode 'js-mode)
+         (eq major-mode 'c-mode)
+         (eq major-mode 'c++-mode)
+         (eq major-mode 'yaml-mode)
+         (eq major-mode 'markdown-mode)
+         (eq major-mode 'json-mode)
+         (eq major-mode 'web-mode)
+         (eq major-mode 'php-mode)
+         (eq major-mode 'typescript-mode))
+    (funcall vg-on-save-lambda)))
+
+;; Call the before save functions.
+(add-hook 'before-save-hook #'vg-before-save-hook)
 
 ;;;;;;;;;;;;;;;;;
 ;; Note Taking ;;
