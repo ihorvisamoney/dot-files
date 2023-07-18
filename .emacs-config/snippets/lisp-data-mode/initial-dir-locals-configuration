@@ -4,15 +4,23 @@
 # --
 
 (
- ;; Project tasks
+ ;; Project Tasks
  (nil . ((vg-project-tasks . (
-                              ("PNPM: Install" . "pnpm install")
-                              ("PNPM: Format" . "pnpm run format")
+                              ("PNPM: Install" . (lambda()
+                                                  (vg-shell-command-in-project-root "pnpm install")
+                                                  ))
+                              ("PNPM: Format" . (lambda()
+                                                  (vg-shell-command-in-project-root "pnpm run format")
+                                                  ))
+                              ("PNPM:Root Test" . (lambda()
+                                                  (vg-shell-command-in-project-root "pnpm --filter @root/root run test")
+                                                  ))
                               ))))
 
  ;; Typescript
- (typescript-mode . ((vg-on-save-lambda . (lambda()
-                                            (vg-shell-command-in-project-root-no-window (concat "pnpm exec prettier --write " (buffer-file-name)))
+ (typescript-mode . (
+                     (vg-on-save-lambda . (lambda()
+                                            (vg-shell-command-in-project-root (concat "pnpm exec prettier --write " (buffer-file-name)) t)
                                             (message "The file has been formatted using prettier!")))))
 
  ;; PHPCS:

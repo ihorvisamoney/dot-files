@@ -54,16 +54,10 @@ COMMAND: The shell command."
         (setq i (- i 96))))))
 
 (defun vg-get-project-root ()
-  ;; (let )
-  ;; Use project.el to get the directory of the current project.
-  ;; (concat (cdr (project-current)))
-  ;; (if (vc-root-dir)
-  ;;     (vc-root-dir)
-  ;;   (locate-dominating-file default-directory ".dir-locals.el")
-  ;;   )
-  ;; (when (vc-root-dir))
-  (locate-dominating-file default-directory ".dir-locals.el")
-  )
+  "Return a project's root directory."
+  (interactive)
+  (or (vc-root-dir)
+      (locate-dominating-file default-directory ".dir-locals.el")))
 
 (defun vg-func-region (start end func)
   "Run a FUNC over the region between START and END in current buffer."
@@ -93,33 +87,18 @@ open and unsaved."
           (dired-get-marked-files))))
 
 ;; TODO: Maybe combine the following two functions.
-(defun vg-shell-command-in-project-root (command)
+(defun vg-shell-command-in-project-root (command &optional hidden)
   "Run the provided command in the project root directory.
-COMMAND: The shell command."
+COMMAND: The shell command.
+HIDDEN: If non nil, hide the command in the background."
   (interactive)
-
-  ;; TODO: Handle this better. Just in case we run the command in a non project buffer.
-  (when (vc-root-dir)
-    (let*
-        ;; TODO: make root directory more intelligent.
-      ((project-root (vc-root-dir))
-       (final-command (concat "cd" " " project-root " && " command)))
-    (async-shell-command final-command)
-    (message "Task running..."))))
-
-(defun vg-shell-command-in-project-root-no-window (command)
-  "Run the provided command in the project root directory.
-COMMAND: The shell command."
-  (interactive)
-
-  ;; TODO: Handle this better. Just in case we run the command in a non project buffer.
-  (when (vc-root-dir)
-    (let*
-        ;; TODO: make root directory more intelligent.
-        ((project-root (vc-root-dir))
+  (let* ((project-root (vg-get-project-root))
          (final-command (concat "cd" " " project-root " && " command)))
-      (vg-async-shell-command-no-window final-command)
-      (message "Task running..."))))
+    (if project-root
+        (if hidden
+            (vg-async-shell-command-no-window final-command)
+          (async-shell-command final-command))
+        (message "Project root could not be found..."))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Dir Locals Helpers ;;
@@ -131,15 +110,15 @@ COMMAND: The shell command."
   (let ((enable-local-variables :all))
     (hack-dir-local-variables-non-file-buffer)))
 
-;; (defun vg-reload-dir-locals-for-all-buffer-in-this-directory ()
-;;   "For every buffer with the same `default-directory` as the current buffer,
-;;  reload dir-locals."
-;;   (interactive)
-;;   (let ((dir default-directory))
-;;     (dolist (buffer (buffer-list))
-;;       (with-current-buffer buffer
-;;         (when (equal default-directory dir)
-;;           (vg-reload-dir-locals-for-current-buffer))))))
+(defun vg-reload-dir-locals-for-all-buffer-in-this-directory ()
+  "For every buffer with the same `default-directory` as the current buffer,
+ reload dir-locals."
+  (interactive)
+  (let ((dir default-directory))
+    (dolist (buffer (buffer-list))
+      (with-current-buffer buffer
+        (when (equal default-directory dir)
+          (vg-reload-dir-locals-for-current-buffer))))))
 
 ;; (add-hook 'emacs-lisp-mode-hook
 ;;           (defun enable-autoreload-for-dir-locals ()
@@ -166,24 +145,27 @@ COMMAND: The shell command."
 
 ;; TODO: Define global tasks.
 ;; Define your global tasks here.
-(defvar vg-global-tasks '(("List files" . "ls -la ./")))
+;; (defvar vg-global-tasks '(("List files" . (lambda () (message "Hello Global World")))))
 
 ;; These tasks should be defined within your projects .dir-locals.el
-(defvar vg-project-tasks '(("Hello World" . "echo 'Hello World'")))
+(defvar vg-project-tasks '(("Hello World" . (lambda () (message "Hello Project World")))))
 
-(defun vg-get-appended-tasks()
-  "Append global and project task lists."
-  (append vg-global-tasks vg-project-tasks))
+;; (defun vg-get-appended-tasks()
+;;   "Append global and project task lists."
+;;   (append vg-global-tasks vg-project-tasks))
 
 (defun vg-project-tasks-run (choice)
   "Run global and project specific tasks.
 CHOICE: The command key to run."
   (interactive
    (list (completing-read "Run Task: "
-                          (vg-get-appended-tasks)
-                           nil t)))
-  (let ((command (cdr (assoc choice (vg-get-appended-tasks)))))
-    (vg-shell-command-in-project-root command)))
+                          vg-project-tasks
+                          nil t)))
+
+  (let ((f  (cdr (assoc choice vg-project-tasks))))
+    (message "Task running...")
+    (funcall f))
+  )
 
 (global-set-key (kbd "s-t") 'vg-project-tasks-run)
 
@@ -197,6 +179,7 @@ CHOICE: The command key to run."
 (defun vg-before-save-hook ()
   "Run the defined `vg-on-save-lambda` lambda on all defined major modes."
   (when (or
+         (eq major-mode 'fundamental-mode)
          (eq major-mode 'sh-mode)
          (eq major-mode 'js-mode)
          (eq major-mode 'c-mode)
