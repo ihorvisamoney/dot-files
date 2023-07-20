@@ -23,6 +23,12 @@
                                             (vg-shell-command-in-project-root (concat "pnpm exec prettier --write " (buffer-file-name)) t)
                                             (message "The file has been formatted using prettier!")))))
 
+ ;; JSON
+ (json-mode . (
+                     (vg-on-save-lambda . (lambda()
+                                            (vg-shell-command-in-project-root (concat "pnpm exec prettier --write " (buffer-file-name)) t)
+                                            (message "The file has been formatted using prettier!")))))
+
  ;; PHPCS:
  (php-mode . ((flycheck-php-phpcs-executable . (concat (vg-get-project-root) "vendor/bin/phpcs"))))
 

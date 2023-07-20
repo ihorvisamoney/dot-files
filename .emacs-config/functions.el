@@ -86,7 +86,7 @@ open and unsaved."
             (call-interactively command))
           (dired-get-marked-files))))
 
-;; TODO: Maybe combine the following two functions.
+;; TODO: Can we close the shell command buffer with q?
 (defun vg-shell-command-in-project-root (command &optional hidden)
   "Run the provided command in the project root directory.
 COMMAND: The shell command.
@@ -97,8 +97,32 @@ HIDDEN: If non nil, hide the command in the background."
     (if project-root
         (if hidden
             (vg-async-shell-command-no-window final-command)
-          (async-shell-command final-command))
-        (message "Project root could not be found..."))))
+          (progn
+            ;; TODO: Check if this other window command actually works.
+            (async-shell-command final-command)
+                 (other-window 1)))
+      (message "Project root could not be found..."))))
+
+;;;;;;;;;;;;;;;;;;;;;;
+;; Markdown Helpers ;;
+;;;;;;;;;;;;;;;;;;;;;;
+
+(defun vg-markdown-to-pdf ()
+  "Convert the current Markdown buffer to a PDF in the downloads folder."
+  (interactive)
+  (let ((file-path (buffer-file-name))
+        (file-ext (url-file-extension buffer-file-name))
+        (file-pdf-name (concat "~/Documents/" (file-name-base (buffer-file-name)) "-" (format-time-string "%Y-%m-%d-%H%M") ".pdf")))
+    (if (and
+         file-path
+         (string-equal file-ext ".md")
+         (string-equal major-mode "markdown-mode"))
+        (shell-command (concat "pandoc -V geometry:margin=2cm --pdf-engine=xelatex -f markdown-implicit_figures -t pdf"
+                               " -o "
+                               file-pdf-name
+                               " "
+                               file-path))
+      (message "This is not a markdown file!"))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Dir Locals Helpers ;;
@@ -111,8 +135,7 @@ HIDDEN: If non nil, hide the command in the background."
     (hack-dir-local-variables-non-file-buffer)))
 
 (defun vg-reload-dir-locals-for-all-buffer-in-this-directory ()
-  "For every buffer with the same `default-directory` as the current buffer,
- reload dir-locals."
+  "For every buffer with the same `default-directory`, reload dir-locals."
   (interactive)
   (let ((dir default-directory))
     (dolist (buffer (buffer-list))
@@ -141,18 +164,15 @@ HIDDEN: If non nil, hide the command in the background."
 ;; that the alist applies to any mode; or you can specify a subdirectory (a
 ;; string), in which case the alist applies to all files in that subdirectory.
 
-;; List of tasks.
-
-;; TODO: Define global tasks.
+;; TODO: Maybe implement global tasks, that are available across all files.
 ;; Define your global tasks here.
 ;; (defvar vg-global-tasks '(("List files" . (lambda () (message "Hello Global World")))))
-
-;; These tasks should be defined within your projects .dir-locals.el
-(defvar vg-project-tasks '(("Hello World" . (lambda () (message "Hello Project World")))))
-
 ;; (defun vg-get-appended-tasks()
 ;;   "Append global and project task lists."
 ;;   (append vg-global-tasks vg-project-tasks))
+
+;; These tasks should be defined within your projects .dir-locals.el
+(defvar vg-project-tasks '(("Hello World" . (lambda () (message "Hello Project World")))))
 
 (defun vg-project-tasks-run (choice)
   "Run global and project specific tasks.
@@ -161,11 +181,9 @@ CHOICE: The command key to run."
    (list (completing-read "Run Task: "
                           vg-project-tasks
                           nil t)))
-
   (let ((f  (cdr (assoc choice vg-project-tasks))))
     (message "Task running...")
-    (funcall f))
-  )
+    (funcall f)))
 
 (global-set-key (kbd "s-t") 'vg-project-tasks-run)
 
@@ -173,7 +191,8 @@ CHOICE: The command key to run."
 ;; On Save ;;
 ;;;;;;;;;;;;;
 
-;; This should be defined within your .dir-locals.el file for each mode.
+;; This should be defined within your .dir-locals.el file for each mode. It
+;; allows you to specify a lambda function to call on save.
 (defvar vg-on-save-lambda (lambda() (message "The on save command has been called.")))
 
 (defun vg-before-save-hook ()

@@ -32,14 +32,19 @@
 (global-set-key (kbd "s-x <right>") 'windmove-swap-states-right)
 (global-set-key (kbd "s-x <left>") 'windmove-swap-states-left)
 
+;; NOTE: Maybe move this to mode specific bindings?
 ;; Git smerge
 (global-set-key (kbd "s-G r") 'smerge-refine)
 (global-set-key (kbd "s-G p") 'smerge-prev)
 (global-set-key (kbd "s-G n") 'smerge-next)
-
 (global-set-key (kbd "s-G u") 'smerge-keep-upper)
 (global-set-key (kbd "s-G m") 'smerge-keep-base)
 (global-set-key (kbd "s-G l") 'smerge-keep-lower)
+
+;; C-c ^ a         smerge-keep-all
+;; C-c ^ b         smerge-keep-base
+;; C-c ^ l         smerge-keep-lower
+;; C-c ^ m         smerge-keep-upper
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Mode Specific Bindings ;;
@@ -49,28 +54,20 @@
 
 (add-hook 'verb-mode-hook
           (lambda ()
-            (local-set-key (kbd "s-c s") #'verb-send-request-on-point)
-            ))
+            (local-set-key (kbd "s-c s") #'verb-send-request-on-point)))
 
 (add-hook 'verb-response-body-mode-hook
           (lambda ()
             (local-set-key (kbd "s-c s") #'verb-re-send-request)
-            (local-set-key (kbd "s-c h") #'verb-toggle-show-headers)
-            ))
+            (local-set-key (kbd "s-c h") #'verb-toggle-show-headers)))
 
-;; C-c ^ a         smerge-keep-all
-;; C-c ^ b         smerge-keep-base
-;; C-c ^ l         smerge-keep-lower
-;; C-c ^ m         smerge-keep-upper
+;; Async Shell Commands
 
-;; (call-interactively)
-;; (global-set-key (kbd "s-p") (lambda ()
-;;                               (interactive)
-;;                               (call-interactively 'project-switch-project t )))
-
-;; Helps move the cursor to the new split.
-;; (global-set-key "\C-x2" (lambda () (interactive)(split-window-vertically) (other-window 1)))
-;; (global-set-key "\C-x3" (lambda () (interactive)(split-window-horizontally) (other-window 1)))
+(add-hook 'shell-mode-hook
+          (lambda ()
+            ;; Easily kill shell command buffers with q.
+            (when (string-match-p (regexp-quote "Async Shell Command") (buffer-name))
+              (local-set-key (kbd "q") #'kill-current-buffer))))
 
 ;; Save the current buffer.
 (define-key global-map (kbd "<C-return>") 'save-buffer)
@@ -86,13 +83,6 @@
 
 ;; Use Ibuffer instead.
 (define-key global-map (kbd "C-x C-b") 'ibuffer-other-window)
-
-;; Compile, make.
-;; (define-key global-map (kbd "C-c M") 'compile)
-;; (define-key global-map (kbd "C-c m") 'recompile)
-
-;; Open recent f.
-;; (define-key global-map (kbd "C-c r") 'recentf-open-files)
 
 ;; Add a comment box.
 (define-key global-map (kbd "C-c b") 'comment-box)
@@ -163,5 +153,3 @@ C: The character to zap up to."
   (lambda ()
     (interactive)
     (vg-async-shell-command-no-window "nautilus .")))
-
-(define-key global-map (kbd "C-c a") 'org-agenda-list)

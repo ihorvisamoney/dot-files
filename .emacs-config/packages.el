@@ -38,9 +38,6 @@
 (use-package toml-mode       :ensure t)
 (use-package haskell-mode    :ensure t)
 (use-package dotenv-mode    :ensure t)
-
-
-
 (use-package wrap-region  :ensure t)
 (use-package wgrep  :ensure t)
 
@@ -49,16 +46,14 @@
   :init
   (add-to-list 'auto-mode-alist '("\\.liquid" . web-mode))
   :config
-  (setq-default web-mode-enable-auto-indentation nil)
-  )
+  (setq-default web-mode-enable-auto-indentation nil))
 
 (use-package restclient
   :ensure t
   :config
   (setq-default restclient-log-request t))
 
-(use-package verb
-  :ensure t)
+(use-package verb :ensure t)
 
 ;; (use-package org
 ;;   :mode ("\\.org\\'" . org-mode)
@@ -139,9 +134,9 @@
 
   ;; Basically bind everything.
   :bind
-  (("M-x"     . helm-M-x)
+  ( ;; ("C-x C-b" . helm-buffers-list)
+   ("M-x"     . helm-M-x)
    ("C-x r b" . helm-filtered-bookmarks)
-   ;; ("C-x C-b" . helm-buffers-list)
    ("C-x C-f" . helm-find-files)
    ("C-c g"   . helm-do-grep-ag)))
 
@@ -149,10 +144,9 @@
   :ensure t
   :config
   (setq-default
-   helm-ag-base-command "ag --nocolor --nogroup --ignore-case"
-   helm-ag-command-option "--hidden"
    ;; helm-ag-command-option "--hidden --skip-vcs-ignores"
-   ))
+   helm-ag-base-command "ag --nocolor --nogroup --ignore-case"
+   helm-ag-command-option "--hidden"))
 
 (use-package which-key
   :ensure t
@@ -160,6 +154,8 @@
   (setq-default which-key-idle-delay 1.0)
   (which-key-mode))
 
+;; Maybe at some point I can switch to Eglot.
+;; https://github.com/intramurz/flycheck-eglot/
 (use-package lsp-mode
   :ensure t
   :init
@@ -173,22 +169,18 @@
                 (apply orig rest)))
   :config
   (setq-default
-   lsp-enable-on-type-formatting nil
+   ;; Automatically guess the project root using projectile/project.
    lsp-auto-guess-root t
+   ;; Enable ‘textDocument/onTypeFormatting’ integration.
+   lsp-enable-on-type-formatting nil
+   ;; Enable/disable snippet completion support.
    lsp-enable-snippet t
+   ;; If non nil keep workspace alive when the last workspace buffer is closed
    lsp-keep-workspace-alive nil
-   ;; lsp-javascript-update-imports-on-file-move-enabled nil
-   lsp-headerline-breadcrumb-enable nil
+   ;; Whether to enable breadcrumb on headerline.
+   lsp-headerline-breadcrumb-enable nil)
 
-   ;; Typescript and JavaScript.
-   ;; Temp files causing issue with import paths.
-   ;; lsp-javascript-update-imports-on-file-move-enabled "never"
-   ;; lsp-typescript-update-imports-on-file-move-enabled "never"
-   ;; lsp-javascript-suggest-auto-imports nil
-   ;; lsp-typescript-suggest-auto-imports nil
-   )
-
-  ;; Adds additional checkers along side lsp.
+  ;; Adds additional checkers alongside lsp.
   (add-hook 'lsp-after-initialize-hook
             (lambda ()
               (when (derived-mode-p 'php-mode)
@@ -204,7 +196,9 @@
   ;; Manually enable the language server when needed.
   ;; :bind
   ;; ("C-c l l" . lsp-mode)
-  :hook ((js-mode         . lsp)
+  :hook (
+         ;; (markdown-mode   . lsp)
+         (js-mode         . lsp)
          (php-mode        . lsp)
          (web-mode        . lsp)
          (css-mode        . lsp)
@@ -217,7 +211,6 @@
          (yaml-mode       . lsp)
          (sh-mode         . lsp)
          (haskell-mode    . lsp)
-         ;; (markdown-mode   . lsp)
          (lsp-mode        . lsp-enable-which-key-integration)))
 
 ;; Sample:
@@ -248,7 +241,8 @@
    lsp-ui-doc-show-with-cursor t
    lsp-ui-doc-delay 1.25
    lsp-ui-doc-position 'at-point
-   lsp-ui-doc-alignment 'frame)
+   ;; lsp-ui-doc-alignment 'frame
+   )
   ;; Sideline
   (setq-default
    lsp-ui-sideline-show-hover nil
