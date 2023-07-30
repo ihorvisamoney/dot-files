@@ -9,6 +9,9 @@ sudo apt install git curl wget lftp imagemagick silversearcher-ag emacs28 ripgre
 # Text editor
 sudo apt install ripgrep zeal
 
+# Books
+sudo apt install bookworm
+
 # Docker and docker compose
 sudo apt install docker-compose composer
 sudo groupadd docker

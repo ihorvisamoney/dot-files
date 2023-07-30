@@ -17,6 +17,12 @@
                                                   ))
                               ))))
 
+ ;; Scala
+ (scala-mode . (
+                (vg-on-save-lambda . (lambda()
+                                       (vg-shell-command-in-project-root (concat "scalafmt " (buffer-file-name)) t)
+                                       (message "The file has been formatted using prettier!")))))
+
  ;; Typescript
  (typescript-mode . (
                      (vg-on-save-lambda . (lambda()

@@ -143,10 +143,12 @@ VAL:"
 ;; Registers
 (setq-default register-preview-delay 0)
 
+;; Shells (Very Important for all shell based functions and operations)
+(setq-default async-shell-command-buffer "new-buffer")
+
 ;; Mac Emacs
 ;; Checkout: https://github.com/railwaycat/homebrew-emacsmacport
 (setq-default mac-option-modifier 'meta)
-
 (global-unset-key (kbd "C-q"))
 
 ;; Theme
@@ -166,9 +168,21 @@ VAL:"
 ;; /home/vernon/.nvm/versions/node/v18.16.0/bin
 ;; (setq exec-path (append exec-path '("~/.nvm/versions/node/v18.16.0/bin")))
 
-;; Push the node path to the front so it takes presedence.
-(setenv "PATH" (concat "/home/vernon/.nvm/versions/node/v18.16.0/bin:" (getenv "PATH")))
-(setq exec-path (push "/home/vernon/.nvm/versions/node/v18.16.0/bin" exec-path))
+;; Push the node version manager path to the front so it takes presedence.
+;; Push Scala Coursier on the our Emacs path.
+(setenv "PATH" (concat
+                ;; "/home/vernon/.cache/coursier/arc/https/github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u292-b10/OpenJDK8U-jdk_x64_linux_hotspot_8u292b10.tar.gz/jdk8u292-b10/bin:"
+                ;; "/home/vernon/.local/share/coursier/bin:"
+                "/home/vernon/.nvm/versions/node/v18.16.0/bin:"
+                (getenv "PATH")))
+
+(setq exec-path (push
+                 "/home/vernon/.nvm/versions/node/v18.16.0/bin"
+                 ;; (concat
+                 ;;  ;; "/home/vernon/.cache/coursier/arc/https/github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u292-b10/OpenJDK8U-jdk_x64_linux_hotspot_8u292b10.tar.gz/jdk8u292-b10/bin:"
+                 ;;  ;; "/home/vernon/.local/share/coursier/bin:"
+                 ;;  "/home/vernon/.nvm/versions/node/v18.16.0/bin")
+                 exec-path))
 
 ;; (getenv "PATH")
 ;; We can also append other paths, if needed.

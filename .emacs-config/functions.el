@@ -103,6 +103,17 @@ HIDDEN: If non nil, hide the command in the background."
                  (other-window 1)))
       (message "Project root could not be found..."))))
 
+(defun vg-shell-command-in-kitty-project-root (command &optional)
+  "Run the command in a new kitty window based in the project root directory.
+COMMAND: The shell command."
+  (interactive)
+  (let* ((project-root (vg-get-project-root))
+         (kitty-command (concat "kitty" " " "bash -c \"" command "; exec bash\""))
+         (final-command (concat "cd" " " project-root " && " kitty-command)))
+    (if project-root
+        (vg-async-shell-command-no-window final-command)
+      (message "Project root could not be found..."))))
+
 ;;;;;;;;;;;;;;;;;;;;;;
 ;; Markdown Helpers ;;
 ;;;;;;;;;;;;;;;;;;;;;;
@@ -117,7 +128,7 @@ HIDDEN: If non nil, hide the command in the background."
          file-path
          (string-equal file-ext ".md")
          (string-equal major-mode "markdown-mode"))
-        (shell-command (concat "pandoc -V geometry:margin=2cm --pdf-engine=xelatex -f markdown-implicit_figures -t pdf"
+        (shell-command (concat "pandoc -V geometry:margin=2cm -top-level-division=section --pdf-engine=xelatex -f markdown-implicit_figures -t pdf"
                                " -o "
                                file-pdf-name
                                " "
@@ -207,6 +218,7 @@ CHOICE: The command key to run."
          (eq major-mode 'markdown-mode)
          (eq major-mode 'json-mode)
          (eq major-mode 'web-mode)
+         (eq major-mode 'scala-mode)
          (eq major-mode 'php-mode)
          (eq major-mode 'typescript-mode))
     (funcall vg-on-save-lambda)))

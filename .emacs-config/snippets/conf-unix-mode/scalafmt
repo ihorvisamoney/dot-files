@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: scalafmt init
+# key: scalafmt
+# --
+
+preset = default
+version = 3.0.0
+runner.dialect = scala3
+maxColumn = 80

@@ -22,9 +22,12 @@ ln -s $DOTFILES/.emacs $HOME/.emacs
 rm -f $HOME/.emacs-config
 ln -s $DOTFILES/.emacs-config/ $HOME/
 
-################
-# Bash Aliases #
-################
+############################
+# Bash Aliases and Profile #
+############################
+
+rm -f $HOME/.profile
+ln -s $DOTFILES/.profile $HOME/.profile
 
 rm -f $HOME/.bash_aliases
 ln -s $DOTFILES/.bash_aliases $HOME/.bash_aliases
