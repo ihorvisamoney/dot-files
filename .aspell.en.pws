@@ -1,8 +1,11 @@
-personal_ws-1.1 en 7 
-Cloudflare
-FormData
-OAuth
-RequestMethod
-Strava
-tokenRequest
-truthy
+personal_ws-1.1 en 10 
+Defence
+Reddit
+Whitespace
+bool
+el
+initializer
+kyu
+microservice
+substring
+variadic

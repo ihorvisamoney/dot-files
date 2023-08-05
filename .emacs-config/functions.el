@@ -5,10 +5,20 @@
   (if vg-presentation-mode
       (progn
         (setq vg-presentation-mode nil)
-        (set-face-attribute 'default nil :family "DejaVu Sans Mono" :height 104))
+
+        (when (eq system-type 'gnu/linux)
+          (set-face-attribute 'default nil :family "DejaVu Sans Mono" :height 104))
+
+        (when (eq system-type 'darwin)
+          (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 130)))
     (progn
       (setq vg-presentation-mode t)
-      (set-face-attribute 'default nil :family "DejaVu Sans Mono" :height 140))))
+
+      (when (eq system-type 'gnu/linux)
+        (set-face-attribute 'default nil :family "DejaVu Sans Mono" :height 104))
+
+      (when (eq system-type 'darwin)
+        (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 160)))))
 
 (defun vg-toggle-transparency ()
   (interactive)
@@ -219,6 +229,7 @@ CHOICE: The command key to run."
          (eq major-mode 'json-mode)
          (eq major-mode 'web-mode)
          (eq major-mode 'scala-mode)
+         (eq major-mode 'toml-mode)
          (eq major-mode 'php-mode)
          (eq major-mode 'typescript-mode))
     (funcall vg-on-save-lambda)))

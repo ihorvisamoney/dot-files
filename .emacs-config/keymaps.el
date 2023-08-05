@@ -29,8 +29,8 @@
 ;; (global-set-key (kbd "s-M") 'compile)
 
 ;; Window movement.
-(global-set-key (kbd "s-x <right>") 'windmove-swap-states-right)
-(global-set-key (kbd "s-x <left>") 'windmove-swap-states-left)
+;; (global-set-key (kbd "s-x <right>") 'windmove-swap-states-right)
+;; (global-set-key (kbd "s-x <left>") 'windmove-swap-states-left)
 
 ;; NOTE: Maybe move this to mode specific bindings?
 ;; Git smerge
@@ -152,4 +152,7 @@ C: The character to zap up to."
 (define-key global-map (kbd "<f6>")
   (lambda ()
     (interactive)
-    (vg-async-shell-command-no-window "nautilus .")))
+    (when (eq system-type 'gnu/linux)
+      (vg-async-shell-command-no-window "nautilus ."))
+    (when (eq system-type 'darwin)
+      (vg-async-shell-command-no-window "open ."))))

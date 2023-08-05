@@ -5,55 +5,42 @@
 ###########
 
 # Re-source the current file.
-alias reload='. ~/.bash_aliases'
+alias reload='. ~/.zshrc'
 
 # Restore permissions of everything in the current folder.
 alias reset-permissions='find . -type f -exec chmod 644 {} \; && find . -type d -exec chmod 755 {} \;'
 
-# Gnome keyboard typing speed.
-alias setup-gnome="
-gsettings set org.gnome.desktop.interface enable-animations false
-gsettings set org.gnome.desktop.peripherals.keyboard repeat-interval 15
-gsettings set org.gnome.desktop.peripherals.keyboard delay 150
-gsettings set org.gnome.rhythmbox.podcast download-interval 'manual'
-gsettings set org.gnome.desktop.wm.keybindings activate-window-menu ['']
-gsettings set org.freedesktop.ibus.panel.emoji hotkey ['']
-gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-down ['']
-gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-up ['']
-gsettings set org.gnome.desktop.wm.keybindings minimize ['']
-gsettings set org.gnome.desktop.wm.keybindings show-desktop ['']
-gsettings set org.gnome.desktop.wm.keybindings switch-applications ['']
-gsettings set org.gnome.mutter.keybindings switch-monitor ['']
-gsettings set org.gnome.settings-daemon.plugins.media-keys help ['']
-gsettings set org.gnome.settings-daemon.plugins.media-keys rotate-video-lock-static ['']
-gsettings set org.gnome.settings-daemon.plugins.media-keys screensaver ['']
-gsettings set org.gnome.shell.extensions.dash-to-dock app-hotkey-1 ['']
-gsettings set org.gnome.shell.extensions.dash-to-dock app-hotkey-10 ['']
-gsettings set org.gnome.shell.extensions.dash-to-dock app-hotkey-2 ['']
-gsettings set org.gnome.shell.extensions.dash-to-dock app-hotkey-3 ['']
-gsettings set org.gnome.shell.extensions.dash-to-dock app-hotkey-4 ['']
-gsettings set org.gnome.shell.extensions.dash-to-dock app-hotkey-5 ['']
-gsettings set org.gnome.shell.extensions.dash-to-dock app-hotkey-6 ['']
-gsettings set org.gnome.shell.extensions.dash-to-dock app-hotkey-7 ['']
-gsettings set org.gnome.shell.extensions.dash-to-dock app-hotkey-8 ['']
-gsettings set org.gnome.shell.extensions.dash-to-dock app-hotkey-9 ['']
-gsettings set org.gnome.shell.extensions.dash-to-dock shortcut ['']
-gsettings set org.gnome.shell.extensions.dash-to-dock shortcut-text ''
-gsettings set org.gnome.shell.keybindings focus-active-notification ['']
-gsettings set org.gnome.shell.keybindings switch-to-application-1 ['']
-gsettings set org.gnome.shell.keybindings switch-to-application-2 ['']
-gsettings set org.gnome.shell.keybindings switch-to-application-3 ['']
-gsettings set org.gnome.shell.keybindings switch-to-application-4 ['']
-gsettings set org.gnome.shell.keybindings switch-to-application-5 ['']
-gsettings set org.gnome.shell.keybindings switch-to-application-6 ['']
-gsettings set org.gnome.shell.keybindings switch-to-application-7 ['']
-gsettings set org.gnome.shell.keybindings switch-to-application-8 ['']
-gsettings set org.gnome.shell.keybindings switch-to-application-9 ['']
-gsettings set org.gnome.shell.keybindings toggle-application-view ['']
-gsettings set org.gnome.shell.keybindings toggle-message-tray ['']
-gsettings set org.gnome.shell.keybindings toggle-overview ['']
-gsettings set org.freedesktop.ibus.general.hotkey triggers ['']
-"
+
+#################################
+# Terminal Prompt Configuration #
+#################################
+
+setopt prompt_subst
+autoload -Uz vcs_info
+zstyle ':vcs_info:*' actionformats \
+    '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%b%F{3}|%F{1}%a%F{5}]%f '
+zstyle ':vcs_info:*' formats       \
+    '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%b%F{5}]%f '
+zstyle ':vcs_info:(sv[nk]|bzr):*' branchformat '%b%F{1}:%F{3}%r'
+
+zstyle ':vcs_info:*' enable git cvs svn
+
+# or use pre_cmd, see man zshcontrib
+vcs_info_wrapper() {
+  vcs_info
+  if [ -n "$vcs_info_msg_0_" ]; then
+    echo "%{$fg[grey]%}${vcs_info_msg_0_}%{$reset_color%}$del"
+  fi
+}
+RPROMPT=$'$(vcs_info_wrapper)'
+
+################
+# Mac Keyboard #
+################
+
+alias mac-set-keyrate='
+defaults write -g InitialKeyRepeat -int 11 &&
+defaults write -g KeyRepeat -int 1'
 
 #######
 # GIT #

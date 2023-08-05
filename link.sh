@@ -1,5 +1,5 @@
-HOME=/home/vernon
-DOTFILES=/home/vernon/Dotfiles
+HOME=/Users/vernon
+DOTFILES=/Users/vernon/Dotfiles
 
 ##############
 # Copy Overs #
@@ -16,27 +16,28 @@ cp $HOME/.aspell.en.pws   $DOTFILES/.aspell.en.pws
 # Emacs #
 #########
 
-rm -f $HOME/.emacs
+rm -fR $HOME/.emacs
 ln -s $DOTFILES/.emacs $HOME/.emacs
 
-rm -f $HOME/.emacs-config
+rm -fR $HOME/.emacs-config
 ln -s $DOTFILES/.emacs-config/ $HOME/
 
 ############################
 # Bash Aliases and Profile #
 ############################
 
-rm -f $HOME/.profile
-ln -s $DOTFILES/.profile $HOME/.profile
+rm -f $HOME/.zshrc
+ln -s $DOTFILES/.zshrc $HOME/.zshrc
 
-rm -f $HOME/.bash_aliases
-ln -s $DOTFILES/.bash_aliases $HOME/.bash_aliases
+# Linux only.
+# rm -f $HOME/.bash_aliases
+# ln -s $DOTFILES/.bash_aliases $HOME/.bash_aliases
 
 #########
 # Kitty #
 #########
 
-rm -f $HOME/.config/kitty
+rm -fR $HOME/.config/kitty
 ln -s $DOTFILES/.config/kitty/ $HOME/.config
 
 ########

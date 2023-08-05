@@ -9,7 +9,7 @@
 ;; Configuration Files ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(load-file "/home/vernon/.emacs-config/settings.el")
-(load-file "/home/vernon/.emacs-config/functions.el")
-(load-file "/home/vernon/.emacs-config/packages.el")
-(load-file "/home/vernon/.emacs-config/keymaps.el")
+(load-file "/Users/vernon/.emacs-config/settings.el")
+(load-file "/Users/vernon/.emacs-config/functions.el")
+(load-file "/Users/vernon/.emacs-config/packages.el")
+(load-file "/Users/vernon/.emacs-config/keymaps.el")

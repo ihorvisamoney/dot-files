@@ -106,9 +106,10 @@ VAL:"
 
 ;; Fonts.
 (setq-default line-spacing 0.35)
-
-(if (eq system-type 'gnu/linux)
+(when (eq system-type 'gnu/linux)
     (set-face-attribute 'default nil :family "DejaVu Sans Mono" :height 104))
+(when (eq system-type 'darwin)
+    (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 130))
 
 ;; Moves Emacs customization to separate file.el
 (setq custom-file (concat user-emacs-directory ".emacs-custom.el"))
@@ -193,24 +194,23 @@ VAL:"
 ;; Clipboard corrections inside tmux and wayland ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; credit: yorickvP on Github
-(setq wl-copy-process nil)
+(when (eq system-type 'gnu/linux)
+  (setq wl-copy-process nil)
+  (defun wl-copy (text)
+    (setq wl-copy-process (make-process :name "wl-copy"
+                                        :buffer nil
+                                        :command '("wl-copy" "-f" "-n")
+                                        :connection-type 'pipe))
+    (process-send-string wl-copy-process text)
+    (process-send-eof wl-copy-process))
 
-(defun wl-copy (text)
-  (setq wl-copy-process (make-process :name "wl-copy"
-                                      :buffer nil
-                                      :command '("wl-copy" "-f" "-n")
-                                      :connection-type 'pipe))
-  (process-send-string wl-copy-process text)
-  (process-send-eof wl-copy-process))
+  (defun wl-paste ()
+    (if (and wl-copy-process (process-live-p wl-copy-process))
+        nil ; should return nil if we're the current paste owner
+      (shell-command-to-string "wl-paste -n | tr -d \r")))
 
-(defun wl-paste ()
-  (if (and wl-copy-process (process-live-p wl-copy-process))
-      nil ; should return nil if we're the current paste owner
-    (shell-command-to-string "wl-paste -n | tr -d \r")))
-
-(setq interprogram-cut-function 'wl-copy)
-(setq interprogram-paste-function 'wl-paste)
+  (setq interprogram-cut-function 'wl-copy)
+  (setq interprogram-paste-function 'wl-paste))
 
 ;;;;;;;;;;;;;;;;;
 ;; Compilation ;;

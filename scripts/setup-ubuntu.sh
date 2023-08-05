@@ -32,6 +32,9 @@ sudo apt-get install gimp inkscape handbrake
 # Latex tools
 sudo apt-get install texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra
 
+# Emacs build requirements
+sudo apt-get install build-essential texinfo libx11-dev libxpm-dev libjpeg-dev libpng-dev libgif-dev libtiff-dev libgtk2.0-dev libncurses-dev gnutls-dev libgtk-3-dev
+
 # pdflatex: command not found
 # Docker
 # sudo dnf -y install docker docker-compose composer
