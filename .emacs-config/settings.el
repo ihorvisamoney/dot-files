@@ -152,6 +152,10 @@ VAL:"
 (setq-default mac-option-modifier 'meta)
 (global-unset-key (kbd "C-q"))
 
+;; Enable precision scroll.
+(setq-default pixel-scroll-precision-mode t)
+(pixel-scroll-precision-mode)
+
 ;; Theme
 ;; (setq-default modus-themes-syntax '())
 ;; ;; (load-theme 'modus-vivendi t)

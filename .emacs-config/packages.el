@@ -261,7 +261,7 @@
    lsp-ui-doc-enable t
    lsp-ui-doc-header t
    lsp-ui-doc-show-with-cursor t
-   lsp-ui-doc-delay 1.25
+   lsp-ui-doc-delay 2.25
    lsp-ui-doc-position 'at-point
    ;; lsp-ui-doc-alignment 'frame
    )

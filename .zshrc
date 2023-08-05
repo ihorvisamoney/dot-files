@@ -38,9 +38,7 @@ RPROMPT=$'$(vcs_info_wrapper)'
 # Mac Keyboard #
 ################
 
-alias mac-set-keyrate='
-defaults write -g InitialKeyRepeat -int 11 &&
-defaults write -g KeyRepeat -int 1'
+alias mac-set-keyrate='defaults write -g InitialKeyRepeat -int 10 && defaults write -g KeyRepeat -int 1'
 
 #######
 # GIT #
