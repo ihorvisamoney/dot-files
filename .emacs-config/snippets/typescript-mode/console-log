@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+#name : console log
+#key : cl
+#contributor : Vernon Grant
+# --
+console.log($0);

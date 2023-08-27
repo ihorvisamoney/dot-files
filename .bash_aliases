@@ -4,6 +4,9 @@
 # General #
 ###########
 
+# Install Emacs:
+# brew install emacs-plus@29 --with-modern-black-gnu-head-icon --with-imagemagick --with-native-comp
+
 # Re-source the current file.
 alias reload='. ~/.bash_aliases'
 

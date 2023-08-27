@@ -5,20 +5,10 @@
   (if vg-presentation-mode
       (progn
         (setq vg-presentation-mode nil)
-
-        (when (eq system-type 'gnu/linux)
-          (set-face-attribute 'default nil :family "DejaVu Sans Mono" :height 104))
-
-        (when (eq system-type 'darwin)
-          (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 130)))
+        (set-face-attribute 'default nil :height 150))
     (progn
       (setq vg-presentation-mode t)
-
-      (when (eq system-type 'gnu/linux)
-        (set-face-attribute 'default nil :family "DejaVu Sans Mono" :height 104))
-
-      (when (eq system-type 'darwin)
-        (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 160)))))
+      (set-face-attribute 'default nil :height 180))))
 
 (defun vg-toggle-transparency ()
   (interactive)

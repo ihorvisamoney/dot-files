@@ -11,6 +11,18 @@
 (scroll-bar-mode -1)
 (menu-bar-mode -1)
 
+;; Remove gaps
+(setq-default frame-resize-pixelwise t)
+
+;; Fringe mode
+
+;; Remove title bar
+;; (add-to-list 'default-frame-alist '(undecorated-round . t))
+
+;; Enable precision scroll.
+(setq-default pixel-scroll-precision-mode t)
+(pixel-scroll-precision-mode)
+
 ;; Encoding.
 (setq-default buffer-file-coding-system 'utf-8-unix)
 
@@ -106,10 +118,12 @@ VAL:"
 
 ;; Fonts.
 (setq-default line-spacing 0.35)
-(when (eq system-type 'gnu/linux)
-    (set-face-attribute 'default nil :family "DejaVu Sans Mono" :height 104))
-(when (eq system-type 'darwin)
-    (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 130))
+(set-face-attribute 'default nil :height 150)
+
+;; (when (eq system-type 'gnu/linux)
+;;     (set-face-attribute 'default nil :family "DejaVu Sans Mono" :height 104))
+;; (when (eq system-type 'darwin)
+;;     (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 140))
 
 ;; Moves Emacs customization to separate file.el
 (setq custom-file (concat user-emacs-directory ".emacs-custom.el"))
@@ -122,8 +136,8 @@ VAL:"
 (electric-pair-mode t)
 
 ;; Line numbers
-(setq-default display-line-numbers-type 'relative)
-(global-display-line-numbers-mode 1)
+;; (setq-default display-line-numbers-type 'relative)
+;; (global-display-line-numbers-mode 1)
 
 ;; Highlight current line.
 ;; (global-hl-line-mode t)
@@ -152,9 +166,7 @@ VAL:"
 (setq-default mac-option-modifier 'meta)
 (global-unset-key (kbd "C-q"))
 
-;; Enable precision scroll.
-(setq-default pixel-scroll-precision-mode t)
-(pixel-scroll-precision-mode)
+
 
 ;; Theme
 ;; (setq-default modus-themes-syntax '())
@@ -293,9 +305,10 @@ VAL:"
 
 ;; Whitespace color changes for gruvbox.
 (require 'color)
-(let* ((ws-lighten 7) ;; Amount in percentage to lighten up black.
+(let* ((ws-lighten 10) ;; Amount in percentage to lighten up black.
        (ws-color (color-lighten-name "#454545" ws-lighten)))
   (custom-set-faces
+   `(fill-column-indicator ((t (:foreground ,ws-color :background nil))))
    `(whitespace-newline                ((t (:foreground ,ws-color :background nil))))
    `(whitespace-missing-newline-at-eof ((t (:foreground ,ws-color :background nil))))
    `(whitespace-space                  ((t (:foreground ,ws-color :background nil))))
