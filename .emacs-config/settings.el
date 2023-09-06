@@ -48,6 +48,7 @@
 
 ;; Stop creating backup files.
 (setq-default make-backup-files nil)
+
 ;; When backup files enabled, save them to a specific folder.
 (setq-default backup-directory-alist `(("." . "~/.emacs-saves")))
 
@@ -166,12 +167,20 @@ VAL:"
 (setq-default mac-option-modifier 'meta)
 (global-unset-key (kbd "C-q"))
 
+;;;;;;;;;;;;;;
+;; Fake IDO ;;
+;;;;;;;;;;;;;;
 
-
-;; Theme
-;; (setq-default modus-themes-syntax '())
-;; ;; (load-theme 'modus-vivendi t)
-;; (load-theme 'modus-operandi t)
+(setq-default completion-styles '(initials partial-completion flex)) ; > Emacs 27.1
+(setq-default completion-cycle-threshold 10)
+(setq-default completion-ignore-case t)
+(setq-default read-buffer-completion-ignore-case t)
+(setq-default read-file-name-completion-ignore-case t)
+(setq-default icomplete-compute-delay 0)
+(setq-default icomplete-max-delay-chars 0)
+(setq-default max-mini-window-height 0.35)
+(fido-mode)
+(fido-vertical-mode)
 
 ;;;;;;;;;;;;;;;;
 ;; Path Setup ;;
@@ -190,16 +199,18 @@ VAL:"
 (setenv "PATH" (concat
                 ;; "/home/vernon/.cache/coursier/arc/https/github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u292-b10/OpenJDK8U-jdk_x64_linux_hotspot_8u292b10.tar.gz/jdk8u292-b10/bin:"
                 ;; "/home/vernon/.local/share/coursier/bin:"
-                "/home/vernon/.nvm/versions/node/v18.16.0/bin:"
+                "/Users/vernon/.nvm/versions/node/v18.16.0/bin:"
                 (getenv "PATH")))
 
 (setq exec-path (push
-                 "/home/vernon/.nvm/versions/node/v18.16.0/bin"
+                 "/Users/vernon/.nvm/versions/node/v18.16.0/bin"
                  ;; (concat
                  ;;  ;; "/home/vernon/.cache/coursier/arc/https/github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u292-b10/OpenJDK8U-jdk_x64_linux_hotspot_8u292b10.tar.gz/jdk8u292-b10/bin:"
                  ;;  ;; "/home/vernon/.local/share/coursier/bin:"
                  ;;  "/home/vernon/.nvm/versions/node/v18.16.0/bin")
                  exec-path))
+
+;; typescript-language-server --stdio
 
 ;; (getenv "PATH")
 ;; We can also append other paths, if needed.
@@ -260,13 +271,6 @@ VAL:"
 ;;                  (inhibit-same-window . t)
 ;;                  (window-height . fit-window-to-buffer))))
 
-;;;;;;;;;;;;;;;
-;; Themeing  ;;
-;;;;;;;;;;;;;;;
-
-;; (load-theme 'gruvbox t)
-
-
 ;;;;;;;;;;;;;;;;;;;;;
 ;; Whitespace Mode ;;
 ;;;;;;;;;;;;;;;;;;;;;
@@ -303,10 +307,14 @@ VAL:"
 (setq-default whitespace-action
               '(cleanup auto-cleanup))
 
-;; Whitespace color changes for gruvbox.
+;; Whitespace color changes.
 (require 'color)
-(let* ((ws-lighten 10) ;; Amount in percentage to lighten up black.
-       (ws-color (color-lighten-name "#454545" ws-lighten)))
+(let* (
+       (ws-lighten 0) ;; Amount in percentage to lighten up black.
+       (ws-color (color-lighten-name "#DDD" ws-lighten))
+       ;; (ws-lighten 128) ;; Amount in percentage to lighten up black.
+       ;; (ws-color (color-lighten-name "#a45a22" ws-lighten))
+       )
   (custom-set-faces
    `(fill-column-indicator ((t (:foreground ,ws-color :background nil))))
    `(whitespace-newline                ((t (:foreground ,ws-color :background nil))))
@@ -355,3 +363,29 @@ VAL:"
 ;; (add-hook 'go-mode-hook 'eldoc-mode)
 ;; (add-hook 'c-mode-hook 'eldoc-mode)
 ;; (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
+
+;;;;;;;;;;;
+;; Eglot ;;
+;;;;;;;;;;;
+
+;; TODO: Setup PHP LSP.
+;; ;; npm install -g intelephense
+;; (add-hook 'php-mode-hook 'eglot-ensure)
+
+;; npm install -g vscode-html-language-server
+(add-hook 'html-mode-hook 'eglot-ensure)
+
+;; npm install -g yaml-language-server
+(add-hook 'yaml-mode-hook 'eglot-ensure)
+
+;; npm install -g vscode-json-languageservice
+(add-hook 'json-mode-hook 'eglot-ensure)
+
+;; npm install -g typescript typescript-language-server
+(add-hook 'js-mode-hook 'eglot-ensure)
+(add-hook 'typescript-mode-hook 'eglot-ensure)
+
+;; brew install marksman
+(add-hook 'markdown-mode-hook 'eglot-ensure)
+
+;;; settings.el ends here

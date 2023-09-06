@@ -55,12 +55,6 @@
   :config
   (setq-default restclient-log-request t))
 
-(use-package verb :ensure t)
-
-;; (use-package org
-;;   :mode ("\\.org\\'" . org-mode)
-;;   :config (define-key org-mode-map (kbd "C-c C-r") verb-command-map))
-
 (use-package editorconfig
   :ensure t
   :init
@@ -83,72 +77,12 @@
   :ensure t
   :after 'helm)
 
-;; (use-package doom-themes
-;;   :ensure t
-;;   :config
-;;   ;; Global settings (defaults)
-;;   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-;;         doom-themes-enable-italic t) ; if nil, italics is universally disabled
-;;   (load-theme 'doom-one t)
-
-;;   ;; Enable flashing mode-line on errors
-;;   (doom-themes-visual-bell-config)
-;;   ;; Enable custom neotree theme (all-the-icons must be installed!)
-;;   (doom-themes-neotree-config)
-;;   ;; or for treemacs users
-;;   (setq doom-themes-treemacs-theme "doom-atom") ; use "doom-colors" for less minimal icon theme
-;;   (doom-themes-treemacs-config)
-;;   ;; Corrects (and improves) org-mode's native fontification.
-;;   (doom-themes-org-config))
-
-(use-package zenburn-theme
+(use-package modus-themes
   :ensure t
   :config
-  (load-theme 'zenburn t))
-
-;; (use-package doom
-;;   :ensure t
-;;   :init
-;;   :config
-;;   (editorconfig-mode 1))
+  (load-theme 'modus-operandi-tinted t))
 
 (use-package magit :ensure t)
-
-(use-package helm
-  ;; TAB: Shows the actions.
-  :ensure t
-  :init
-  (helm-mode 1)
-  :config
-  (setq-default helm-split-window-in-side-p t   ; open helm buffer inside current window, not occupy whole other window
-      helm-ff-search-library-in-sexp        t   ; search for library in `require' and `declare-function' sexp.
-      helm-scroll-amount                    8   ; scroll 8 lines other window using M-<next>/M-<prior>
-      helm-ff-file-name-history-use-recentf t
-      helm-echo-input-in-header-line        t)
-
-  ;; Enable helm mode.
-  (helm-mode 1)
-
-  ;; Helm resize restrictions.
-  (setq-default helm-autoresize-max-height 50
-                helm-autoresize-min-height 50)
-    (helm-autoresize-mode t)
-
-  ;; Basically bind everything.
-  :bind
-  ( ;; ("C-x C-b" . helm-buffers-list)
-   ("M-x"     . helm-M-x)
-   ("C-x r b" . helm-filtered-bookmarks)
-   ("C-x C-f" . helm-find-files)
-   ("C-c g"   . helm-do-grep-ag)))
-
-(use-package helm-ag
-  :ensure t
-  :config
-  (setq-default
-   ;; helm-ag-command-option "--hidden --skip-vcs-ignores"
-   helm-ag-base-command "ag --nocolor --nogroup --ignore-case"
-   helm-ag-command-option "--hidden"))
 
 (use-package which-key
   :ensure t
@@ -156,124 +90,15 @@
   (setq-default which-key-idle-delay 1.0)
   (which-key-mode))
 
-;; Maybe at some point I can switch to Eglot.
-;; https://github.com/intramurz/flycheck-eglot/
-(use-package lsp-mode
+(use-package flycheck-eglot
   :ensure t
-  :init
-  (setq-default lsp-keymap-prefix "s-l")
-  (setq-default gc-cons-threshold 100000000)
-  (setq-default read-process-output-max (* 1024 1024))
-  (advice-add 'json-parse-buffer :around
-              (lambda (orig &rest rest)
-                (while (re-search-forward "\\u0000" nil t)
-                  (replace-match ""))
-                (apply orig rest)))
+  :after (flycheck eglot)
   :config
-  (setq-default
-   ;; Automatically guess the project root using projectile/project.
-   lsp-auto-guess-root t
-   ;; Enable ‘textDocument/onTypeFormatting’ integration.
-   lsp-enable-on-type-formatting nil
-   ;; Enable/disable snippet completion support.
-   lsp-enable-snippet t
-   ;; If non nil keep workspace alive when the last workspace buffer is closed
-   lsp-keep-workspace-alive nil
-   ;; Whether to enable breadcrumb on headerline.
-   lsp-headerline-breadcrumb-enable nil)
-
-  ;; Adds additional checkers alongside lsp.
-  (add-hook 'lsp-after-initialize-hook
-            (lambda ()
-              (when (derived-mode-p 'php-mode)
-                (flycheck-add-next-checker 'lsp 'php-phpcs 'php))
-              (when (derived-mode-p 'web-mode)
-                (flycheck-add-next-checker 'lsp 'php-phpcs 'javascript-eslint 'css-stylelint))
-              (when (derived-mode-p 'css-mode)
-                (flycheck-add-next-checker 'lsp 'css-stylelint))
-              (when (derived-mode-p 'js-mode)
-                (flycheck-add-next-checker 'lsp 'javascript-eslint))
-              ))
-  :commands (lsp lsp-deferred)
-  ;; Manually enable the language server when needed.
-  ;; :bind
-  ;; ("C-c l l" . lsp-mode)
-  :hook (
-         ;; (markdown-mode   . lsp)
-         (js-mode         . lsp)
-         (php-mode        . lsp)
-         (web-mode        . lsp)
-         (css-mode        . lsp)
-         (json-mode       . lsp)
-         (typescript-mode . lsp)
-         (xml-mode        . lsp)
-         (rust-mode       . lsp)
-         (dockerfile-mode . lsp)
-         (html-mode       . lsp)
-         (yaml-mode       . lsp)
-         (sh-mode         . lsp)
-         (haskell-mode    . lsp)
-         (lsp-mode        . lsp-enable-which-key-integration)))
-
-
-(use-package lsp-metals
-  :ensure t
-  :custom
-  ;; You might set metals server options via -J arguments. This might not always work, for instance when
-  ;; metals is installed using nix. In this case you can use JAVA_TOOL_OPTIONS environment variable.
-  (lsp-metals-server-args '(;; Metals claims to support range formatting by default but it supports range
-                            ;; formatting of multiline strings only. You might want to disable it so that
-                            ;; emacs can use indentation provided by scala-mode.
-                            "-J-Dmetals.allow-multiline-string-formatting=off"
-                            ;; Enable unicode icons. But be warned that emacs might not render unicode
-                            ;; correctly in all cases.
-                            "-J-Dmetals.icons=unicode"))
-  ;; In case you want semantic highlighting. This also has to be enabled in lsp-mode using
-  ;; `lsp-semantic-tokens-enable' variable. Also you might want to disable highlighting of modifiers
-  ;; setting `lsp-semantic-tokens-apply-modifiers' to `nil' because metals sends `abstract' modifier
-  ;; which is mapped to `keyword' face.
-  (lsp-metals-enable-semantic-highlighting t)
-  :hook (scala-mode . lsp))
-
-;; Sample:
-;; (define-derived-mode shopify-mode web-mode "Shopify"
-;;   "Major mode derived from `web-mode'.")
-;; ;; Use shopify-cli / theme-check-language-server for Shopify's liquid syntax
-;; (with-eval-after-load 'lsp-mode
-;;   (add-to-list 'lsp-language-id-configuration
-;;     '(shopify-mode . "shopify"))
-
-;;   (lsp-register-client
-;;     (make-lsp-client :new-connection (lsp-stdio-connection "theme-check-language-server")
-;;                      :activation-fn (lsp-activate-on "shopify")
-;;                      :server-id 'theme-check)))
+  (global-flycheck-eglot-mode 1))
 
 ;; Blade:
 (define-derived-mode blade-mode web-mode "Blade"
   "Major mode derived from `web-mode' for blade templates.")
-
-(use-package lsp-ui
-  :ensure t
-  :commands lsp-ui-mode
-  :config
-  ;; Docs
-  (setq-default
-   lsp-ui-doc-enable t
-   lsp-ui-doc-header t
-   ;; lsp-ui-doc-show-with-cursor t
-   ;; lsp-ui-doc-delay 2.25
-   lsp-ui-doc-position 'at-point
-   ;; lsp-ui-doc-alignment 'frame
-   )
-  ;; Sideline
-  (setq-default
-   lsp-ui-sideline-show-hover nil
-   lsp-ui-sideline-delay 0.1
-   lsp-ui-sideline-show-code-actions t)
-  ;; TODO: Implement this.
-  ;; lsp-ui-doc-focus-frame
-  ;; lsp-ui-doc-unfocus-frame
-  )
 
 (use-package company
   :ensure t
@@ -309,3 +134,160 @@
   ;;   (setq-default flycheck-checker-error-threshold 400)
   :bind
   (("s-f" . flycheck-list-errors)))
+
+;;;;;;;;;;;;;;;;;;
+;; Legacy Stuff ;;
+;;;;;;;;;;;;;;;;;;
+
+;; (use-package lsp-ui
+;;   :ensure t
+;;   :commands lsp-ui-mode
+;;   :config
+;;   ;; Docs
+;;   (setq-default
+;;    lsp-ui-doc-enable t
+;;    lsp-ui-doc-header t
+;;    ;; lsp-ui-doc-show-with-cursor t
+;;    ;; lsp-ui-doc-delay 2.25
+;;    lsp-ui-doc-position 'at-point
+;;    ;; lsp-ui-doc-alignment 'frame
+;;    )
+;;   ;; Sideline
+;;   (setq-default
+;;    lsp-ui-sideline-show-hover nil
+;;    lsp-ui-sideline-delay 0.1
+;;    lsp-ui-sideline-show-code-actions t)
+;;   ;; TODO: Implement this.
+;;   ;; lsp-ui-doc-focus-frame
+;;   ;; lsp-ui-doc-unfocus-frame
+;;   )
+
+
+;; Maybe at some point I can switch to Eglot.
+;; https://github.com/intramurz/flycheck-eglot/
+;; (use-package lsp-mode
+;;   :ensure t
+;;   :init
+;;   (setq-default lsp-keymap-prefix "s-l")
+;;   (setq-default gc-cons-threshold 100000000)
+;;   (setq-default read-process-output-max (* 1024 1024))
+;;   (advice-add 'json-parse-buffer :around
+;;               (lambda (orig &rest rest)
+;;                 (while (re-search-forward "\\u0000" nil t)
+;;                   (replace-match ""))
+;;                 (apply orig rest)))
+;;   :config
+;;   (setq-default
+;;    ;; Automatically guess the project root using projectile/project.
+;;    lsp-auto-guess-root t
+;;    ;; Enable ‘textDocument/onTypeFormatting’ integration.
+;;    lsp-enable-on-type-formatting nil
+;;    ;; Enable/disable snippet completion support.
+;;    lsp-enable-snippet t
+;;    ;; If non nil keep workspace alive when the last workspace buffer is closed
+;;    lsp-keep-workspace-alive nil
+;;    ;; Whether to enable breadcrumb on headerline.
+;;    lsp-headerline-breadcrumb-enable nil)
+
+;;   ;; Adds additional checkers alongside lsp.
+;;   (add-hook 'lsp-after-initialize-hook
+;;             (lambda ()
+;;               (when (derived-mode-p 'php-mode)
+;;                 (flycheck-add-next-checker 'lsp 'php-phpcs 'php))
+;;               (when (derived-mode-p 'web-mode)
+;;                 (flycheck-add-next-checker 'lsp 'php-phpcs 'javascript-eslint 'css-stylelint))
+;;               (when (derived-mode-p 'css-mode)
+;;                 (flycheck-add-next-checker 'lsp 'css-stylelint))
+;;               (when (derived-mode-p 'js-mode)
+;;                 (flycheck-add-next-checker 'lsp 'javascript-eslint))
+;;               ))
+;;   :commands (lsp lsp-deferred)
+;;   ;; Manually enable the language server when needed.
+;;   ;; :bind
+;;   ;; ("C-c l l" . lsp-mode)
+;;   :hook (
+;;          ;; (markdown-mode   . lsp)
+;;          (js-mode         . lsp)
+;;          (php-mode        . lsp)
+;;          (web-mode        . lsp)
+;;          (css-mode        . lsp)
+;;          (json-mode       . lsp)
+;;          (typescript-mode . lsp)
+;;          (xml-mode        . lsp)
+;;          (rust-mode       . lsp)
+;;          (dockerfile-mode . lsp)
+;;          (html-mode       . lsp)
+;;          (yaml-mode       . lsp)
+;;          (sh-mode         . lsp)
+;;          (haskell-mode    . lsp)
+;;          (lsp-mode        . lsp-enable-which-key-integration)))
+
+
+;; (use-package lsp-metals
+;;   :ensure t
+;;   :custom
+;;   ;; You might set metals server options via -J arguments. This might not always work, for instance when
+;;   ;; metals is installed using nix. In this case you can use JAVA_TOOL_OPTIONS environment variable.
+;;   (lsp-metals-server-args '(;; Metals claims to support range formatting by default but it supports range
+;;                             ;; formatting of multiline strings only. You might want to disable it so that
+;;                             ;; emacs can use indentation provided by scala-mode.
+;;                             "-J-Dmetals.allow-multiline-string-formatting=off"
+;;                             ;; Enable unicode icons. But be warned that emacs might not render unicode
+;;                             ;; correctly in all cases.
+;;                             "-J-Dmetals.icons=unicode"))
+;;   ;; In case you want semantic highlighting. This also has to be enabled in lsp-mode using
+;;   ;; `lsp-semantic-tokens-enable' variable. Also you might want to disable highlighting of modifiers
+;;   ;; setting `lsp-semantic-tokens-apply-modifiers' to `nil' because metals sends `abstract' modifier
+;;   ;; which is mapped to `keyword' face.
+;;   (lsp-metals-enable-semantic-highlighting t)
+;;   :hook (scala-mode . lsp))
+
+;; Sample:
+;; (define-derived-mode shopify-mode web-mode "Shopify"
+;;   "Major mode derived from `web-mode'.")
+;; ;; Use shopify-cli / theme-check-language-server for Shopify's liquid syntax
+;; (with-eval-after-load 'lsp-mode
+;;   (add-to-list 'lsp-language-id-configuration
+;;     '(shopify-mode . "shopify"))
+
+;;   (lsp-register-client
+;;     (make-lsp-client :new-connection (lsp-stdio-connection "theme-check-language-server")
+;;                      :activation-fn (lsp-activate-on "shopify")
+;;                      :server-id 'theme-check)))
+
+
+;; (use-package helm
+;;   ;; TAB: Shows the actions.
+;;   :ensure t
+;;   :init
+;;   (helm-mode 1)
+;;   :config
+;;   (setq-default helm-split-window-in-side-p t   ; open helm buffer inside current window, not occupy whole other window
+;;       helm-ff-search-library-in-sexp        t   ; search for library in `require' and `declare-function' sexp.
+;;       helm-scroll-amount                    8   ; scroll 8 lines other window using M-<next>/M-<prior>
+;;       helm-ff-file-name-history-use-recentf t
+;;       helm-echo-input-in-header-line        t)
+
+;;   ;; Enable helm mode.
+;;   (helm-mode 1)
+
+;;   ;; Helm resize restrictions.
+;;   (setq-default helm-autoresize-max-height 50
+;;                 helm-autoresize-min-height 50)
+;;     (helm-autoresize-mode t)
+
+;;   ;; Basically bind everything.
+;;   :bind
+;;   ( ;; ("C-x C-b" . helm-buffers-list)
+;;    ("M-x"     . helm-M-x)
+;;    ("C-x r b" . helm-filtered-bookmarks)
+;;    ("C-x C-f" . helm-find-files)
+;;    ("C-c g"   . helm-do-grep-ag)))
+
+;; (use-package helm-ag
+;;   :ensure t
+;;   :config
+;;   (setq-default
+;;    ;; helm-ag-command-option "--hidden --skip-vcs-ignores"
+;;    helm-ag-base-command "ag --nocolor --nogroup --ignore-case"
+;;    helm-ag-command-option "--hidden"))

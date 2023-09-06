@@ -11,19 +11,25 @@
 (global-set-key (kbd "s-g") 'magit-status)
 (global-set-key (kbd "s-a") 'org-agenda-list)
 (global-set-key (kbd "s-A") 'org-agenda)
-(global-set-key (kbd "s-r") 'helm-recentf)
-(global-set-key (kbd "s-b") 'helm-filtered-bookmarks)
+(global-set-key (kbd "s-r") 'recentf)
+(global-set-key (kbd "s-b") 'bookmark-jump)
 (global-set-key (kbd "s-B") 'bookmark-set)
 ;; You can do: -G\.el$ pattern to search only specific files.
 ;; see: https://github.com/emacsorphanage/helm-ag#keymap
-(global-set-key (kbd "s-s") 'helm-do-ag-project-root)
-(global-set-key (kbd "s-o") 'helm-occur)
+;; (global-set-key (kbd "s-s") 'helm-do-ag-project-root)
+(global-set-key (kbd "s-o") 'occur)
 (global-set-key (kbd "s-e") 'emmet-expand-linge)
 (global-set-key (kbd "s-y") 'yas-insert-snippet)
-(global-set-key (kbd "s-Y") 'helm-yas-create-snippet-on-region)
 (global-set-key (kbd "s-m") 'man)
 (global-set-key (kbd "s-;") 'comment-box)
 (global-set-key (kbd "s-f") 'flycheck-list-errors)
+
+;; Eglot
+(global-unset-key (kbd "s-l"))
+(global-set-key (kbd "s-l r") 'eglot-rename)
+(global-set-key (kbd "s-l a") 'eglot-code-actions)
+(global-set-key (kbd "s-l f") 'eglot-format-buffer)
+
 ;; Project.el can do this
 ;; (global-set-key (kbd "s-m") 'recompile)
 ;; (global-set-key (kbd "s-M") 'compile)
