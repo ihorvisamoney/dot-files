@@ -83,9 +83,9 @@ VAL:"
 (setq-default x-select-enable-primary nil)
 
 ;; Org mode
-(setq-default org-agenda-window-setup 'other-window)
-(setq-default org-highlight-latex-and-related '(latex script entities))
-(setq-default org-src-fontify-natively t)
+(setq-default org-agenda-window-setup 'other-window
+              org-highlight-latex-and-related '(latex script entities)
+              org-src-fontify-natively t)
 
 ;; (add-to-list 'org-latex-packages-alist '("" "minted"))
 ;; (setq-default org-latex-listings 'minted)
@@ -99,16 +99,16 @@ VAL:"
 (global-auto-revert-mode t)
 
 ;; Indentation defaults.
-(setq-default indent-tabs-mode nil)
-(setq-default c-basic-indent 4)
-(setq-default tab-width 4)
+(setq-default indent-tabs-mode nil
+              c-basic-indent 4
+              tab-width 4)
 
 ;; Automatically resize splits.
 (setq window-combination-resize t)
 
 ;; Fill column ruler.
-(setq-default fill-column 80)
-(setq-default display-fill-column-indicator-character 124)
+(setq-default fill-column 80
+              display-fill-column-indicator-character 124)
 (global-display-fill-column-indicator-mode)
 
 ;; Grep settings.
@@ -144,14 +144,14 @@ VAL:"
 ;; (global-hl-line-mode t)
 
 ;; Enable recent f.
-(setq-default recentf-max-saved-items 50)
-(setq-default recentf-max-menu-items 50)
+(setq-default recentf-max-saved-items 50
+              recentf-max-menu-items 50)
 (recentf-mode t)
 
 ;; I Search
-(setq-default isearch-lazy-count t)
-(setq-default isearch-allow-motion t)
-(setq-default search-whitespace-regexp ".*?")
+(setq-default isearch-lazy-count t
+              isearch-allow-motion t
+              search-whitespace-regexp ".*?")
 
 ;; Project.el
 (setq-default project-switch-commands 'project-find-file)
@@ -171,14 +171,14 @@ VAL:"
 ;; Fake IDO ;;
 ;;;;;;;;;;;;;;
 
-(setq-default completion-styles '(initials partial-completion flex)) ; > Emacs 27.1
-(setq-default completion-cycle-threshold 10)
-(setq-default completion-ignore-case t)
-(setq-default read-buffer-completion-ignore-case t)
-(setq-default read-file-name-completion-ignore-case t)
-(setq-default icomplete-compute-delay 0)
-(setq-default icomplete-max-delay-chars 0)
-(setq-default max-mini-window-height 0.35)
+(setq-default completion-styles '(initials partial-completion flex)
+              completion-cycle-threshold 10
+              completion-ignore-case t
+              read-buffer-completion-ignore-case t
+              read-file-name-completion-ignore-case t
+              icomplete-compute-delay 0
+              icomplete-max-delay-chars 0
+              max-mini-window-height 0.35) ; > Emacs 27.1
 (fido-mode)
 (fido-vertical-mode)
 

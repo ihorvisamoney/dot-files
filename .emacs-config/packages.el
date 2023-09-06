@@ -73,14 +73,14 @@
   :config
   (setq-default emmet-indent-after-insert nil))
 
-(use-package helm-c-yasnippet
-  :ensure t
-  :after 'helm)
-
-(use-package modus-themes
+(use-package catppuccin-theme
   :ensure t
   :config
-  (load-theme 'modus-operandi-tinted t))
+  (setq-default catppuccin-flavor 'latte
+                catppuccin-enlarge-headings nil
+                catppuccin-highlight-matches t
+                catppuccin-italic-comments t)
+  (load-theme 'catppuccin t))
 
 (use-package magit :ensure t)
 
@@ -111,7 +111,7 @@
    company-selection-wrap-around t
    company-minimum-prefix-length 2
    company-idle-delay 0.3)
-  (global-company-mode t))
+  :hook (prog-mode . global-company-mode))
 
 ;; Setup of linters.
 (use-package flycheck
