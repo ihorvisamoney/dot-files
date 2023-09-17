@@ -14,11 +14,6 @@
 ;; Remove gaps
 (setq-default frame-resize-pixelwise t)
 
-;; Fringe mode
-
-;; Remove title bar
-;; (add-to-list 'default-frame-alist '(undecorated-round . t))
-
 ;; Enable precision scroll.
 (setq-default pixel-scroll-precision-mode t)
 (pixel-scroll-precision-mode)
@@ -83,17 +78,18 @@ VAL:"
 (setq-default x-select-enable-primary nil)
 
 ;; Org mode
+(require 'org)
 (setq-default org-agenda-window-setup 'other-window
               org-highlight-latex-and-related '(latex script entities)
-              org-src-fontify-natively t)
-
-;; (add-to-list 'org-latex-packages-alist '("" "minted"))
-;; (setq-default org-latex-listings 'minted)
-
-;; (setq-default org-latex-pdf-process
-;;       '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-;;         "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-;;         "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+              org-html-validation-link nil
+              org-publish-use-timestamps-flag nil
+              org-src-fontify-natively t
+              org-export-with-timestamps nil
+              org-html-postamble t
+              org-html-postamble-format '(("en" "<p class=\"author\">Author: %a (%e)</p>
+<p class=\"updated\">Updated on: %C</p>
+<p class=\"creator\">%c</p>
+<p class=\"validation\">%v</p>")))
 
 ;; Automatically reload changed files.
 (global-auto-revert-mode t)
@@ -121,11 +117,6 @@ VAL:"
 (setq-default line-spacing 0.35)
 (set-face-attribute 'default nil :height 150)
 
-;; (when (eq system-type 'gnu/linux)
-;;     (set-face-attribute 'default nil :family "DejaVu Sans Mono" :height 104))
-;; (when (eq system-type 'darwin)
-;;     (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 140))
-
 ;; Moves Emacs customization to separate file.el
 (setq custom-file (concat user-emacs-directory ".emacs-custom.el"))
 (load custom-file 'noerror)
@@ -136,12 +127,8 @@ VAL:"
 ;; Automatically close parenthesis.
 (electric-pair-mode t)
 
-;; Line numbers
-;; (setq-default display-line-numbers-type 'relative)
-;; (global-display-line-numbers-mode 1)
-
 ;; Highlight current line.
-;; (global-hl-line-mode t)
+(global-hl-line-mode t)
 
 ;; Enable recent f.
 (setq-default recentf-max-saved-items 50
@@ -167,9 +154,9 @@ VAL:"
 (setq-default mac-option-modifier 'meta)
 (global-unset-key (kbd "C-q"))
 
-;;;;;;;;;;;;;;
-;; Fake IDO ;;
-;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;
+;; Fake IDO (FIDO) ;;
+;;;;;;;;;;;;;;;;;;;;;
 
 (setq-default completion-styles '(initials partial-completion flex)
               completion-cycle-threshold 10
@@ -185,14 +172,6 @@ VAL:"
 ;;;;;;;;;;;;;;;;
 ;; Path Setup ;;
 ;;;;;;;;;;;;;;;;
-
-;; We have node and npm via nvm.
-;; We have node and npm from dfn.
-;; LSP uses the node version from dfn, so we should install our checkers and stuff globally
-
-;; Node
-;; /home/vernon/.nvm/versions/node/v18.16.0/bin
-;; (setq exec-path (append exec-path '("~/.nvm/versions/node/v18.16.0/bin")))
 
 ;; Push the node version manager path to the front so it takes presedence.
 ;; Push Scala Coursier on the our Emacs path.
@@ -210,12 +189,8 @@ VAL:"
                  ;;  "/home/vernon/.nvm/versions/node/v18.16.0/bin")
                  exec-path))
 
-;; typescript-language-server --stdio
-
-;; (getenv "PATH")
 ;; We can also append other paths, if needed.
 ;; (setq exec-path (append exec-path '("/home/vernon/.nvm/versions/node/v18.16.0/bin")))
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Clipboard corrections inside tmux and wayland ;;
@@ -238,38 +213,6 @@ VAL:"
 
   (setq interprogram-cut-function 'wl-copy)
   (setq interprogram-paste-function 'wl-paste))
-
-;;;;;;;;;;;;;;;;;
-;; Compilation ;;
-;;;;;;;;;;;;;;;;;
-
-;; (setq-default compilation-window-height 20)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Buffer Display Options ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; (setq-default display-buffer-alist
-;;               '(("\\*compilation\\*" (display-buffer-at-bottom)
-;;                  (inhibit-same-window . t)
-;;                  (window-height . fit-window-to-buffer))
-;;                 ("\\*eldoc\\*"
-;;                  (display-buffer-at-bottom)
-;;                  (inhibit-same-window . t)
-;;                  (window-height . fit-window-to-buffer))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Buffer Display Options ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; (setq-default display-buffer-alist
-;;               '(("\\*compilation\\*" (display-buffer-at-bottom)
-;;                  (inhibit-same-window . t)
-;;                  (window-height . fit-window-to-buffer))
-;;                 ("\\*eldoc\\*"
-;;                  (display-buffer-at-bottom)
-;;                  (inhibit-same-window . t)
-;;                  (window-height . fit-window-to-buffer))))
 
 ;;;;;;;;;;;;;;;;;;;;;
 ;; Whitespace Mode ;;
@@ -310,40 +253,100 @@ VAL:"
 ;; Whitespace color changes.
 (require 'color)
 (let* (
-       (ws-lighten 0) ;; Amount in percentage to lighten up black.
-       (ws-color (color-lighten-name "#DDD" ws-lighten))
-       ;; (ws-lighten 128) ;; Amount in percentage to lighten up black.
-       ;; (ws-color (color-lighten-name "#a45a22" ws-lighten))
-       )
+       (ws-lighten 85) ;; Amount in percentage to lighten up black.
+       (ws-color (color-lighten-name "#7f7f7f" ws-lighten)))
   (custom-set-faces
    `(fill-column-indicator ((t (:foreground ,ws-color :background nil))))
-   `(whitespace-newline                ((t (:foreground ,ws-color :background nil))))
-   `(whitespace-missing-newline-at-eof ((t (:foreground ,ws-color :background nil))))
-   `(whitespace-space                  ((t (:foreground ,ws-color :background nil))))
-   `(whitespace-space-after-tab        ((t (:foreground ,ws-color :background nil))))
-   `(whitespace-space-before-tab       ((t (:foreground ,ws-color :background nil))))
-   `(whitespace-tab                    ((t (:foreground ,ws-color :background nil))))
-   `(whitespace-trailing               ((t (:foreground ,ws-color :background nil))))))
+   `(whitespace-newline                ((t (:foreground ,ws-color :background "#ffffff"))))
+   `(whitespace-missing-newline-at-eof ((t (:foreground ,ws-color :background "#ffffff"))))
+   `(whitespace-space                  ((t (:foreground ,ws-color :background "#ffffff"))))
+   `(whitespace-space-after-tab        ((t (:foreground ,ws-color :background "#ffffff"))))
+   `(whitespace-space-before-tab       ((t (:foreground ,ws-color :background "#ffffff"))))
+   `(whitespace-tab                    ((t (:foreground ,ws-color :background "#ffffff"))))
+   `(whitespace-trailing               ((t (:foreground ,ws-color :background "#ffffff"))))))
 
 ;; Enable white space mode globally.
 (global-whitespace-mode t)
 
-;;;;;;;;;;;;;;;
-;; GDB Setup ;;
-;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Org Publishing Projects ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; ;; GDB setup, close GDB by typing C-x 4 0 (kill-buffer-and-window).
-;; (setq gdb-many-windows t)
+(defun vg-blog-publish-sitemap (title list)
+  "Default site map, as a string.
+TITLE is the title of the site map.  LIST is an internal
+representation for the files to include, as returned by
+`org-list-to-lisp'.  PROJECT is the current project."
+  (concat "#+TITLE: " title "\n"
+          "#+SUBTITLE: Welcome to my personal blog where I cover a variety of programming related topics\n"
+          "#+DESCRIPTION: Welcome to my personal blog where I cover a variety of programming related topics\n"
+          "#+KEYWORDS: Emacs, Programming, Coding\n"
+          "#+SETUPFILE: ./setup.org\n\n"
+          (org-list-to-org list)))
 
-;; ;; Start GDB debugging session.
-;; (define-key global-map (kbd "C-c cc") 'gdb)
+(setq-default org-publish-project-alist
+              (list
+               ;; TODO: Implement go RSS feed generation post published.
+               ;; Discovering Emacs:
+               (list "vg_blog"
+                     ;; Use the sitemap as the home page.
+                     ;; :auto-preamble t
+                     ;; :preparation-function
+                     ;; :completion-function
+                     :author "Vernon Grant"
+                     :email "info@vernon-grant.com"
+                     :base-directory "~/ProjectsP/vernon-grant/site/"
+                     :base-extension "org"
+                     :exclude "setup.org"
+                     :publishing-directory "~/ProjectsP/vernon-grant/docs/"
+                     :recursive t
+                     :publishing-function 'org-html-publish-to-html
+                     :headline-levels 4
+                     :auto-sitemap t
+                     :sitemap-title "Vernon Grant"
+                     :sitemap-filename "index.org"
+                     :sitemap-function 'vg-blog-publish-sitemap)
 
-;; (defun vg-gdb-set-local-bindings()
-;;   "Set key bindings specifically for gdb-mode.
-;; Helps exit GDB and all its windows."
-;;   (interactive)
-;;       (local-set-key (kbd "C-c c c") 'kill-buffer-and-window))
-;; (add-hook 'gdb-mode-hook 'vg-gdb-set-local-bindings)
+               ;; Attachments:
+               (list "vg_assets"
+                     :base-directory "~/ProjectsP/vernon-grant/site/"
+                     :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+                     :publishing-directory "~/ProjectsP/vernon-grant/docs/"
+                     :recursive t
+                     :publishing-function 'org-publish-attachment)
+
+               (list "vg" :components '("vg_assets" "vg_blog"))))
+
+;;;;;;;;;;;;;
+;; Removed ;;
+;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Configuration Settings ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Line numbers
+;; (setq-default display-line-numbers-type 'relative)
+;; (global-display-line-numbers-mode 1)
+
+;;;;;;;;;;;;;;;;;
+;; Compilation ;;
+;;;;;;;;;;;;;;;;;
+
+;; (setq-default compilation-window-height 10)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Buffer Display Options ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; (setq-default display-buffer-alist
+;;               '(("\\*compilation\\*" (display-buffer-at-bottom)
+;;                  (inhibit-same-window . t)
+;;                  (window-height . fit-window-to-buffer))
+;;                 ("\\*eldoc\\*"
+;;                  (display-buffer-at-bottom)
+;;                  (inhibit-same-window . t)
+;;                  (window-height . fit-window-to-buffer))))
 
 ;;;;;;;;;;;
 ;; Eldoc ;;
@@ -364,28 +367,19 @@ VAL:"
 ;; (add-hook 'c-mode-hook 'eldoc-mode)
 ;; (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
 
-;;;;;;;;;;;
-;; Eglot ;;
-;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+;; GDB Setup ;;
+;;;;;;;;;;;;;;;
 
-;; TODO: Setup PHP LSP.
-;; ;; npm install -g intelephense
-;; (add-hook 'php-mode-hook 'eglot-ensure)
+;; ;; GDB setup, close GDB by typing C-x 4 0 (kill-buffer-and-window).
+;; (setq gdb-many-windows t)
 
-;; npm install -g vscode-html-language-server
-(add-hook 'html-mode-hook 'eglot-ensure)
+;; ;; Start GDB debugging session.
+;; (define-key global-map (kbd "C-c cc") 'gdb)
 
-;; npm install -g yaml-language-server
-(add-hook 'yaml-mode-hook 'eglot-ensure)
-
-;; npm install -g vscode-json-languageservice
-(add-hook 'json-mode-hook 'eglot-ensure)
-
-;; npm install -g typescript typescript-language-server
-(add-hook 'js-mode-hook 'eglot-ensure)
-(add-hook 'typescript-mode-hook 'eglot-ensure)
-
-;; brew install marksman
-(add-hook 'markdown-mode-hook 'eglot-ensure)
-
-;;; settings.el ends here
+;; (defun vg-gdb-set-local-bindings()
+;;   "Set key bindings specifically for gdb-mode.
+;; Helps exit GDB and all its windows."
+;;   (interactive)
+;;       (local-set-key (kbd "C-c c c") 'kill-buffer-and-window))
+;; (add-hook 'gdb-mode-hook 'vg-gdb-set-local-bindings)

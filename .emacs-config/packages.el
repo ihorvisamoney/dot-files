@@ -1,6 +1,6 @@
-;;;;;;;;;;
-;; Melpa ;;
-;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;
+;; Package Archives ;;
+;;;;;;;;;;;;;;;;;;;;;;
 
 (require 'package)
 
@@ -55,6 +55,35 @@
   :config
   (setq-default restclient-log-request t))
 
+;; Export blog RSS:
+(use-package ox-rss :ensure t)
+
+;; Configure Elfeed
+(use-package elfeed
+  :ensure t
+  :config
+  (setq-default
+   elfeed-show-entry-switch 'display-buffer
+   elfeed-db-directory "~/.elfeed"
+   elfeed-feeds '(
+                  "http://feeds.feedburner.com/freetechbooks"
+                  "http://lambda-the-ultimate.org/rss.xml"
+                  "http://nullprogram.com/feed/"
+                  "https://blog.cleancoder.com/atom.xml"
+                  "https://eli.thegreenplace.net/feeds/all.atom.xml"
+                  "https://feeds.feedburner.com/TheDailyWtf"
+                  "https://henrikwarne.com/feed/"
+                  "https://irreal.org/blog/?feed=rss2"
+                  "https://okmij.org/ftp/rss.xml"
+                  "https://protesilaos.com/codelog.xml"
+                  "https://sachachua.com/blog/feed/"
+                  "https://www.johndcook.com/blog/feed/"
+                  "https://www.masteringemacs.org/feed"
+                  "https://writepermission.com/rss.xml"
+                  "https://go.dev/blog/feed.atom"))
+  :bind
+  ("s-2" . elfeed ))
+
 (use-package editorconfig
   :ensure t
   :init
@@ -73,14 +102,10 @@
   :config
   (setq-default emmet-indent-after-insert nil))
 
-(use-package catppuccin-theme
+(use-package standard-themes
   :ensure t
   :config
-  (setq-default catppuccin-flavor 'latte
-                catppuccin-enlarge-headings nil
-                catppuccin-highlight-matches t
-                catppuccin-italic-comments t)
-  (load-theme 'catppuccin t))
+  (load-theme 'standard-light t))
 
 (use-package magit :ensure t)
 
@@ -103,7 +128,6 @@
 (use-package company
   :ensure t
   :bind (:map company-active-map
-              ;; ("<tab>" . company-select-next)
               ("C-n" . company-select-next)
               ("C-p" . company-select-previous))
   :config
@@ -118,26 +142,68 @@
   :ensure t
   :config
   (global-flycheck-mode)
-  ;; Controls how the errors buffer is displayed.
-  ;; (add-to-list
-  ;;  'display-buffer-alist `(,(rx bos "*Flycheck errors*" eos)
-  ;;                (display-buffer-reuse-window
-  ;;                 display-buffer-in-side-window)
-  ;;                (side            . bottom)
-  ;;                (reusable-frames . visible)
-  ;;                (window-height   . 0.2)))
-  ;;   ;; Disable jshint since we prefer eslint checking
-  ;;   ;; (setq-default flycheck-disabled-checkers
-  ;;   ;;               (append flycheck-disabled-checkers '(javascript-jshint)))
-  ;;   (flycheck-add-mode 'php-phpcs 'php-mode)
-  ;;   (flycheck-add-mode 'php-phpcs 'web-mode)
-  ;;   (setq-default flycheck-checker-error-threshold 400)
   :bind
   (("s-f" . flycheck-list-errors)))
 
-;;;;;;;;;;;;;;;;;;
-;; Legacy Stuff ;;
-;;;;;;;;;;;;;;;;;;
+
+
+(use-package eglot
+  :ensure t
+  :init
+  (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
+  :bind (:map eglot-mode-map
+              ("s-l a" . eglot-code-actions)
+              ("s-l r" . eglot-rename)
+              ("s-l o" . eglot-code-action-organize-imports)
+              ("s-l f" . eglot-format)
+              ("s-l d" . eldoc))
+  ;; Installing language servers:
+  ;; Markdown   : brew install marksman
+  ;; Typescript : npm i -g typescript typescript-language-server
+  ;; JSON       : npm i -g vscode-json-languageservice
+  ;; YAML       : npm i -g yaml-language-server
+  ;; HTML       : npm i -g vscode-html-languageservice
+  ;; PHP        : npm i -g intelephense
+  :hook
+  (yaml-mode . eglot-ensure)
+  (json-mode . eglot-ensure)
+  (typescript-mode . eglot-ensure)
+  (markdown-mode . eglot-ensure)
+  (css-mode . eglot-ensure)
+  (js2-mode . eglot-ensure)
+  (go-mode . eglot-ensure)
+  (js-mode . eglot-ensure)
+  (web-mode . eglot-ensure)
+  (html-mode . eglot-ensure)
+  :config
+  (setq eglot-send-changes-idle-time 0.2)
+  (add-to-list 'eglot-server-programs '(web-mode . ("vscode-html-language-server" "--stdio")))
+  (add-to-list 'eglot-server-programs '(html-mode . ("vscode-html-language-server" "--stdio"))))
+
+;;;;;;;;;;;;;
+;; Removed ;;
+;;;;;;;;;;;;;
+
+;; (use-package flycheck
+;;   :ensure t
+;;   :config
+;;   (global-flycheck-mode)
+;;   ;; Controls how the errors buffer is displayed.
+;;   (add-to-list
+;;    'display-buffer-alist `(,(rx bos "*Flycheck errors*" eos)
+;;                  (display-buffer-reuse-window
+;;                   display-buffer-in-side-window)
+;;                  (side            . bottom)
+;;                  (reusable-frames . visible)
+;;                  (window-height   . 0.2)))
+;;     ;; Disable jshint since we prefer eslint checking
+;;     ;; (setq-default flycheck-disabled-checkers
+;;     ;;               (append flycheck-disabled-checkers '(javascript-jshint)))
+;;     (flycheck-add-mode 'php-phpcs 'php-mode)
+;;     (flycheck-add-mode 'php-phpcs 'web-mode)
+;;     (setq-default flycheck-checker-error-threshold 400)
+;;   :bind
+;;   (("s-f" . flycheck-list-errors)))
 
 ;; (use-package lsp-ui
 ;;   :ensure t
@@ -161,7 +227,6 @@
 ;;   ;; lsp-ui-doc-focus-frame
 ;;   ;; lsp-ui-doc-unfocus-frame
 ;;   )
-
 
 ;; Maybe at some point I can switch to Eglot.
 ;; https://github.com/intramurz/flycheck-eglot/
@@ -222,7 +287,6 @@
 ;;          (haskell-mode    . lsp)
 ;;          (lsp-mode        . lsp-enable-which-key-integration)))
 
-
 ;; (use-package lsp-metals
 ;;   :ensure t
 ;;   :custom
@@ -254,7 +318,6 @@
 ;;     (make-lsp-client :new-connection (lsp-stdio-connection "theme-check-language-server")
 ;;                      :activation-fn (lsp-activate-on "shopify")
 ;;                      :server-id 'theme-check)))
-
 
 ;; (use-package helm
 ;;   ;; TAB: Shows the actions.

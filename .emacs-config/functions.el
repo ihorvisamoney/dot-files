@@ -100,7 +100,7 @@ HIDDEN: If non nil, hide the command in the background."
           (progn
             ;; TODO: Check if this other window command actually works.
             (async-shell-command final-command)
-                 (other-window 1)))
+            (other-window 1)))
       (message "Project root could not be found..."))))
 
 (defun vg-shell-command-in-kitty-project-root (command &optional)
@@ -113,6 +113,13 @@ COMMAND: The shell command."
     (if project-root
         (vg-async-shell-command-no-window final-command)
       (message "Project root could not be found..."))))
+
+(defun vg-convert-markdown-buffer-to-org ()
+  "Convert the current buffer's content from markdown to orgmode format and save it with the current buffer's file name but with .org extension."
+  (interactive)
+  (shell-command-on-region (point-min) (point-max)
+                           (format "pandoc -f markdown -t org -o %s"
+                                   (concat (file-name-sans-extension (buffer-file-name)) ".org"))))
 
 ;;;;;;;;;;;;;;;;;;;;;;
 ;; Markdown Helpers ;;
@@ -154,6 +161,7 @@ COMMAND: The shell command."
         (when (equal default-directory dir)
           (vg-reload-dir-locals-for-current-buffer))))))
 
+;; Automatically reload the dir-locals, maybe not.
 ;; (add-hook 'emacs-lisp-mode-hook
 ;;           (defun enable-autoreload-for-dir-locals ()
 ;;             (when (and (buffer-file-name)
@@ -167,20 +175,15 @@ COMMAND: The shell command."
 ;; Project specific bindings? ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; TODO: Maybe implement global tasks, that are available across all files.
+
 ;; The .dir-locals.el file should hold a specially-constructed list, which maps
 ;; major mode names (symbols) to alists (see Association Lists in The Emacs Lisp
 ;; Reference Manual). Each alist entry consists of a variable name and the
 ;; directory-local value to assign to that variable, when the specified major
 ;; mode is enabled. Instead of a mode name, you can specify ‘nil’, which means
 ;; that the alist applies to any mode; or you can specify a subdirectory (a
-;; string), in which case the alist applies to all files in that subdirectory.
-
-;; TODO: Maybe implement global tasks, that are available across all files.
-;; Define your global tasks here.
-;; (defvar vg-global-tasks '(("List files" . (lambda () (message "Hello Global World")))))
-;; (defun vg-get-appended-tasks()
-;;   "Append global and project task lists."
-;;   (append vg-global-tasks vg-project-tasks))
+;; string), in which case the alist applies to all files in that sub-directory.
 
 ;; These tasks should be defined within your projects .dir-locals.el
 (defvar vg-project-tasks '(("Hello World" . (lambda () (message "Hello Project World")))))
@@ -221,11 +224,16 @@ CHOICE: The command key to run."
          (eq major-mode 'scala-mode)
          (eq major-mode 'toml-mode)
          (eq major-mode 'php-mode)
+         (eq major-mode 'go-mode)
          (eq major-mode 'typescript-mode))
     (funcall vg-on-save-lambda)))
 
 ;; Call the before save functions.
 (add-hook 'before-save-hook #'vg-before-save-hook)
+
+;;;;;;;;;;;;;
+;; Removed ;;
+;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;
 ;; Note Taking ;;
