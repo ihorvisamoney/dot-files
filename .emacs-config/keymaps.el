@@ -6,27 +6,31 @@
 (global-set-key (kbd "C-x b") 'switch-to-buffer-other-window)
 (global-set-key (kbd "C-x C-f") 'find-file-other-window)
 
-;; Org agenda.
-(global-set-key (kbd "s-1") 'org-agenda-list)
-(global-set-key (kbd "s-!") 'org-agenda)
-
 ;; Personal mappings.
 (global-set-key (kbd "s-p") 'project-other-window-command)
 (global-set-key (kbd "s-r") 'recentf)
-(global-set-key (kbd "s-b") 'bookmark-jump)
-(global-set-key (kbd "s-B") 'bookmark-set)
 (global-set-key (kbd "s-o") 'occur)
+(global-set-key (kbd "s-b") 'bookmark-jump-other-window)
+(global-set-key (kbd "s-B") 'bookmark-set)
 (global-set-key (kbd "s-e") 'emmet-expand-linge)
 (global-set-key (kbd "s-y") 'yas-insert-snippet)
 (global-set-key (kbd "s-m") 'man)
 (global-set-key (kbd "s-;") 'comment-box)
 (global-set-key (kbd "s-f") 'flycheck-list-errors)
 
+;; Tabs management.
+(global-set-key (kbd "s-[") 'tab-previous)
+(global-set-key (kbd "s-]") 'tab-next)
+(global-set-key (kbd "s-}") 'tab-move)
+(global-set-key (kbd "s-{") (lambda ()(interactive) (tab-bar-move-tab -1)))
+
 ;; Eglot.
 (global-unset-key (kbd "s-l"))
 (global-set-key (kbd "s-l r") 'eglot-rename)
 (global-set-key (kbd "s-l a") 'eglot-code-actions)
 (global-set-key (kbd "s-l f") 'eglot-format-buffer)
+(global-set-key (kbd "s-l g") 'xref-find-references)
+;; (global-set-key (kbd "s-p t") 'vg-project-tasks-run)
 
 ;; Version control (Magit, Smerge).
 (global-set-key (kbd "s-g") 'magit-status)
@@ -89,14 +93,27 @@ C: The character to zap up to."
                                        (forward-line 1)
                                        (yank)))
 
+;;;;;;;;;;;;;;;;;;;;;
+;; Prefix Bindings ;;
+;;;;;;;;;;;;;;;;;;;;;
+
+;; Org agenda
+(global-set-key (kbd "s-1") 'org-agenda-list)
+
+;; Elfeed
+(global-set-key (kbd "s-2") 'elfeed)
+
+;; Bookmark manager
+(global-set-key (kbd "s-3") 'edit-bookmarks)
+
 ;; Open terminal in current files folder.
-(define-key global-map (kbd "<f5>")
+(define-key global-map (kbd "s-4")
   (lambda ()
     (interactive)
     (vg-async-shell-command-no-window "kitty `pwd`")))
 
 ;; Open finder in current files folder.
-(define-key global-map (kbd "<f6>")
+(define-key global-map (kbd "s-5")
   (lambda ()
     (interactive)
     (when (eq system-type 'gnu/linux)

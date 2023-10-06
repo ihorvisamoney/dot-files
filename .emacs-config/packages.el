@@ -42,13 +42,77 @@
 (use-package dotenv-mode     :ensure t)
 (use-package wrap-region     :ensure t)
 (use-package wgrep           :ensure t)
-
 (use-package web-mode
   :ensure t
   :init
   (add-to-list 'auto-mode-alist '("\\.liquid" . web-mode))
   :config
   (setq-default web-mode-enable-auto-indentation nil))
+
+;; Bring back splits if needed.
+(use-package winner
+  :ensure t
+  :init
+  (winner-mode t))
+
+;; Who needs TMUX?
+(use-package desktop
+  :ensure t
+  :config
+  (desktop-save-mode 1))
+
+(use-package tab-bar :ensure t
+  :config
+  (setq tab-bar-new-tab-choice "*scratch*"
+        tab-bar-new-button-show nil
+        tab-bar-close-button-show nil)
+  (setq tab-bar-format '(tab-bar-format-history tab-bar-format-tabs-groups tab-bar-separator tab-bar-format-add-tab)))
+
+(use-package project :ensure t)
+
+(use-package project-tab-groups
+  :ensure t
+  :config
+  (project-tab-groups-mode 1))
+
+(use-package ibuffer-project
+  :ensure t
+  :config
+  (add-hook 'ibuffer-hook
+          (lambda ()
+            (setq ibuffer-filter-groups (ibuffer-project-generate-filter-groups))
+            (unless (eq ibuffer-sorting-mode 'project-file-relative)
+              (ibuffer-do-sort-by-project-file-relative)))))
+
+;; To execute code in org mode.
+(use-package ob-go :ensure t)
+(use-package ob-php :ensure t)
+(use-package ob-deno :ensure t)
+(use-package ob-restclient :ensure t)
+(use-package ob-typescript :ensure t)
+
+(use-package org
+  :ensure t
+  :config
+  (setq-default org-agenda-window-setup 'other-window
+                org-highlight-latex-and-related '(latex script entities)
+                org-html-validation-link nil
+                org-publish-use-timestamps-flag nil
+                org-src-fontify-natively t
+                org-export-with-timestamps nil
+                org-confirm-babel-evaluate nil
+                org-html-postamble t
+                org-html-postamble-format '(("en" "<p class=\"author\">Author: %a (%e)</p>
+<p class=\"updated\">Updated on: %C</p>
+<p class=\"creator\">%c</p>
+<p class=\"validation\">%v</p>")))
+  ;; Enable babel languages:
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((deno . t)
+     (php . t)
+     (typescript . t)
+     (go . t))))
 
 (use-package restclient
   :ensure t
@@ -81,8 +145,9 @@
                   "https://www.masteringemacs.org/feed"
                   "https://writepermission.com/rss.xml"
                   "https://go.dev/blog/feed.atom"))
-  :bind
-  ("s-2" . elfeed ))
+  ;; :bind
+  ;; ("s-2" . elfeed )
+  )
 
 (use-package editorconfig
   :ensure t
@@ -144,8 +209,6 @@
   (global-flycheck-mode)
   :bind
   (("s-f" . flycheck-list-errors)))
-
-
 
 (use-package eglot
   :ensure t

@@ -198,7 +198,6 @@ CHOICE: The command key to run."
   (let ((f  (cdr (assoc choice vg-project-tasks))))
     (message "Task running...")
     (funcall f)))
-
 (global-set-key (kbd "s-t") 'vg-project-tasks-run)
 
 ;;;;;;;;;;;;;

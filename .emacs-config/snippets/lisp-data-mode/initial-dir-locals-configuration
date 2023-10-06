@@ -5,7 +5,8 @@
 
 (
  ;; Project Tasks
- (nil . ((vg-project-tasks . (
+ (nil . ((project-name . "Your Project Name")
+         (vg-project-tasks . (
                               ("PNPM: Install" . (lambda()
                                                   (vg-shell-command-in-project-root "pnpm install")
                                                   ))

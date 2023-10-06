@@ -10,7 +10,6 @@ alias reload='. ~/.zshrc'
 # Restore permissions of everything in the current folder.
 alias reset-permissions='find . -type f -exec chmod 644 {} \; && find . -type d -exec chmod 755 {} \;'
 
-
 #################################
 # Terminal Prompt Configuration #
 #################################
@@ -150,7 +149,8 @@ function markdown-to-pdf() {
 # OUTPUTS: void
 # RETURNS: void
 function pdf-to-jpg() {
-    pdftoppm -jpeg -rx 200 -ry 200 $1 page
+    # pdftoppm -jpeg -rx 200 -ry 200 $1 page
+    pdftoppm -hide-annotations -cropbox -jpeg -rx 200 -ry 200 $1 page
 }
 
 # ------------------------------------------------------------------------------
@@ -240,7 +240,12 @@ function remote-pull-files() {
 #
 # OUTPUTS: void
 function remote-push-files() {
-    rsync -auv $2 $1:$3
+    # rsync -auv --exclude '*.zip' $2 $1:$3
+    # rsync -av --exclude '*.zip' $2 $1:$3
+    # rsync -av --include="*/" --include="*.htm" --exclude="*"  $2 $1:$3
+    rsync -avz --no-perms --no-owner --no-group --include="*/" --include="*.zip" --exclude="*"  $2 $1:$3
+
+    # rsync -avz --no-perms --no-owner --no-group --exclude '*.zip' $2 $1:$3
 }
 
 # ------------------------------------------------------------------------------

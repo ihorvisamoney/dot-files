@@ -77,20 +77,6 @@ VAL:"
 ;; Prevent mouse click pasting clipboard into Emacs.
 (setq-default x-select-enable-primary nil)
 
-;; Org mode
-(require 'org)
-(setq-default org-agenda-window-setup 'other-window
-              org-highlight-latex-and-related '(latex script entities)
-              org-html-validation-link nil
-              org-publish-use-timestamps-flag nil
-              org-src-fontify-natively t
-              org-export-with-timestamps nil
-              org-html-postamble t
-              org-html-postamble-format '(("en" "<p class=\"author\">Author: %a (%e)</p>
-<p class=\"updated\">Updated on: %C</p>
-<p class=\"creator\">%c</p>
-<p class=\"validation\">%v</p>")))
-
 ;; Automatically reload changed files.
 (global-auto-revert-mode t)
 
@@ -109,6 +95,10 @@ VAL:"
 
 ;; Grep settings.
 (setq-default grep-use-null-device nil)
+
+;; Xref
+(setq-default xref-search-program 'ripgrep
+              xref-truncation-width 200)
 
 ;; Ibuffer.
 (add-hook 'ibuffer-mode-hook (lambda () (ibuffer-auto-mode 1)))
@@ -158,8 +148,13 @@ VAL:"
 ;; Fake IDO (FIDO) ;;
 ;;;;;;;;;;;;;;;;;;;;;
 
-(setq-default completion-styles '(initials partial-completion flex)
-              completion-cycle-threshold 10
+(setq-default
+  completion-styles '(basic partial-completion emacs22)
+ ;; ;; completion-styles '(initials partial-completion flex)
+  completion-cycle-threshold nil
+  ;; completion-flex-nospace t
+  completions-sort nil
+  completions-format 'vertical
               completion-ignore-case t
               read-buffer-completion-ignore-case t
               read-file-name-completion-ignore-case t
