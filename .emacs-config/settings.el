@@ -10,6 +10,7 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 (menu-bar-mode -1)
+;; (add-to-list 'default-frame-alist '(undecorated . nil))
 
 ;; Remove gaps
 (setq-default frame-resize-pixelwise t)
@@ -130,9 +131,6 @@ VAL:"
               isearch-allow-motion t
               search-whitespace-regexp ".*?")
 
-;; Project.el
-(setq-default project-switch-commands 'project-find-file)
-
 ;; Registers
 (setq-default register-preview-delay 0)
 
@@ -149,20 +147,16 @@ VAL:"
 ;;;;;;;;;;;;;;;;;;;;;
 
 (setq-default
-  completion-styles '(basic partial-completion emacs22)
- ;; ;; completion-styles '(initials partial-completion flex)
   completion-cycle-threshold nil
-  ;; completion-flex-nospace t
-  completions-sort nil
   completions-format 'vertical
-              completion-ignore-case t
-              read-buffer-completion-ignore-case t
-              read-file-name-completion-ignore-case t
-              icomplete-compute-delay 0
-              icomplete-max-delay-chars 0
-              max-mini-window-height 0.35) ; > Emacs 27.1
+  completion-ignore-case t
+  read-buffer-completion-ignore-case t
+  read-file-name-completion-ignore-case t
+  icomplete-compute-delay 0
+  max-mini-window-height 0.35)
+
 (fido-mode)
-(fido-vertical-mode)
+(fido-vertical-mode nil)
 
 ;;;;;;;;;;;;;;;;
 ;; Path Setup ;;
@@ -301,7 +295,6 @@ representation for the files to include, as returned by
                      :sitemap-title "Vernon Grant"
                      :sitemap-filename "index.org"
                      :sitemap-function 'vg-blog-publish-sitemap)
-
                ;; Attachments:
                (list "vg_assets"
                      :base-directory "~/ProjectsP/vernon-grant/site/"
@@ -309,7 +302,6 @@ representation for the files to include, as returned by
                      :publishing-directory "~/ProjectsP/vernon-grant/docs/"
                      :recursive t
                      :publishing-function 'org-publish-attachment)
-
                (list "vg" :components '("vg_assets" "vg_blog"))))
 
 ;;;;;;;;;;;;;

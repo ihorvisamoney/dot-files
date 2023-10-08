@@ -17,6 +17,7 @@
 (global-set-key (kbd "s-m") 'man)
 (global-set-key (kbd "s-;") 'comment-box)
 (global-set-key (kbd "s-f") 'flycheck-list-errors)
+(global-set-key (kbd "s-t") 'vg-switch-tab-group)
 
 ;; Tabs management.
 (global-set-key (kbd "s-[") 'tab-previous)
@@ -30,7 +31,6 @@
 (global-set-key (kbd "s-l a") 'eglot-code-actions)
 (global-set-key (kbd "s-l f") 'eglot-format-buffer)
 (global-set-key (kbd "s-l g") 'xref-find-references)
-;; (global-set-key (kbd "s-p t") 'vg-project-tasks-run)
 
 ;; Version control (Magit, Smerge).
 (global-set-key (kbd "s-g") 'magit-status)

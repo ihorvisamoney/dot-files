@@ -200,6 +200,62 @@ CHOICE: The command key to run."
     (funcall f)))
 (global-set-key (kbd "s-t") 'vg-project-tasks-run)
 
+
+;;;;;;;;;;;;;;;;
+;; Tab Groups ;;
+;;;;;;;;;;;;;;;;
+
+(defun vg-tab-bar-groups-current-tab ()
+  "Retrieve original data about the current tab."
+  (assq 'current-tab (funcall tab-bar-tabs-function)))
+
+(defun vg-tab-bar-groups-tab-group-name (&optional tab)
+  "The group name of the given TAB (or the current tab)."
+  (alist-get 'group (or tab (vg-tab-bar-groups-current-tab))))
+
+(defun vg-tab-bar-groups-parse-groups ()
+  "Build an alist of tabs grouped by their group name.
+
+Successive tabs that don't belong to a group are grouped under
+intermitting nil keys.
+
+For example, consider this list of tabs: groupA:foo, groupB:bar,
+baz, qux, groupC:quux, quuz, groupB:corge, groupA:grault.
+
+Calling this function would yield this result:
+
+'((groupA (foo grault))
+  (groupB (bar corge))
+  (nil (baz qux))
+  (groupC (grault))
+  (nil (quuz)))"
+  (let* ((tabs (frame-parameter (selected-frame) 'tabs))
+         (result '()))
+    (dolist (tab tabs)
+      (let* ((group-name (vg-tab-bar-groups-tab-group-name tab))
+             (group (and group-name (intern group-name)))
+             (new-named-group-p (and group (null (assq group result))))
+             (in-nil-group-p (and (consp (car result)) (null (caar result))))
+             (new-nil-group-p (not (or group in-nil-group-p))))
+        (if (or new-named-group-p new-nil-group-p)
+            (push (cons group (list tab)) result)
+          (nconc (alist-get group result) (list tab)))))
+    (reverse result)))
+
+(defun vg-switch-tab-group (choice)
+  "Run global and project specific tasks.
+CHOICE: The command key to run."
+  (interactive
+   (list (completing-read "Tab Groups: "
+                          (vg-tab-bar-groups-parse-groups)
+                          nil t)))
+  (let* ((tabs (frame-parameter (selected-frame) 'tabs)))
+    (dolist (tab tabs)
+      (let* ((group-name (vg-tab-bar-groups-tab-group-name tab))
+             (group (and group-name (intern group-name))))
+        (when (string= group-name choice)
+          (tab-bar-select-tab (1+ (tab-bar--tab-index tab))))))))
+
 ;;;;;;;;;;;;;
 ;; On Save ;;
 ;;;;;;;;;;;;;
