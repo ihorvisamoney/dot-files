@@ -149,10 +149,7 @@
                   "https://www.johndcook.com/blog/feed/"
                   "https://www.masteringemacs.org/feed"
                   "https://writepermission.com/rss.xml"
-                  "https://go.dev/blog/feed.atom"))
-  ;; :bind
-  ;; ("s-2" . elfeed )
-  )
+                  "https://go.dev/blog/feed.atom")))
 
 (use-package editorconfig
   :ensure t
@@ -173,15 +170,10 @@
   (setq-default emmet-indent-after-insert nil))
 
 ;; ef-elea-dark
-;; (use-package ef-themes
-;;   :ensure t
-;;   :config
-;;   (load-theme 'ef-elea-dark t))
-
-(use-package standard-themes
+(use-package ef-themes
   :ensure t
   :config
-  (load-theme 'standard-light t))
+  (load-theme 'ef-elea-dark t))
 
 (use-package magit :ensure t)
 

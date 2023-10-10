@@ -241,18 +241,37 @@ VAL:"
 
 ;; Whitespace color changes.
 (require 'color)
+
 (let* (
-       (ws-lighten 85) ;; Amount in percentage to lighten up black.
-       (ws-color (color-lighten-name "#7f7f7f" ws-lighten)))
+       (ws-lighten 10) ;; Amount in percentage to lighten up black.
+       (ws-color (color-lighten-name "#333333" ws-lighten)))
   (custom-set-faces
    `(fill-column-indicator ((t (:foreground ,ws-color :background nil))))
-   `(whitespace-newline                ((t (:foreground ,ws-color :background "#ffffff"))))
-   `(whitespace-missing-newline-at-eof ((t (:foreground ,ws-color :background "#ffffff"))))
-   `(whitespace-space                  ((t (:foreground ,ws-color :background "#ffffff"))))
-   `(whitespace-space-after-tab        ((t (:foreground ,ws-color :background "#ffffff"))))
-   `(whitespace-space-before-tab       ((t (:foreground ,ws-color :background "#ffffff"))))
-   `(whitespace-tab                    ((t (:foreground ,ws-color :background "#ffffff"))))
-   `(whitespace-trailing               ((t (:foreground ,ws-color :background "#ffffff"))))))
+   `(whitespace-newline                ((t (:foreground ,ws-color ))))
+   `(whitespace-missing-newline-at-eof ((t (:foreground ,ws-color ))))
+   `(whitespace-space                  ((t (:foreground ,ws-color ))))
+   `(whitespace-space-after-tab        ((t (:foreground ,ws-color ))))
+   `(whitespace-space-before-tab       ((t (:foreground ,ws-color ))))
+   `(whitespace-tab                    ((t (:foreground ,ws-color ))))
+   `(whitespace-trailing               ((t (:foreground ,ws-color ))))
+
+   ;; ef-elea-dark custom.
+   `(git-commit-summary               ((t (:foreground ,"#eaf2ef"))))
+
+   ))
+;; Just in-case I want to use a light theme.
+;; (let* (
+;;        (ws-lighten 85) ;; Amount in percentage to lighten up black.
+;;        (ws-color (color-lighten-name "#7f7f7f" ws-lighten)))
+;;   (custom-set-faces
+;;    `(fill-column-indicator ((t (:foreground ,ws-color :background nil))))
+;;    `(whitespace-newline                ((t (:foreground ,ws-color :background "#ffffff"))))
+;;    `(whitespace-missing-newline-at-eof ((t (:foreground ,ws-color :background "#ffffff"))))
+;;    `(whitespace-space                  ((t (:foreground ,ws-color :background "#ffffff"))))
+;;    `(whitespace-space-after-tab        ((t (:foreground ,ws-color :background "#ffffff"))))
+;;    `(whitespace-space-before-tab       ((t (:foreground ,ws-color :background "#ffffff"))))
+;;    `(whitespace-tab                    ((t (:foreground ,ws-color :background "#ffffff"))))
+;;    `(whitespace-trailing               ((t (:foreground ,ws-color :background "#ffffff"))))))
 
 ;; Enable white space mode globally.
 (global-whitespace-mode t)

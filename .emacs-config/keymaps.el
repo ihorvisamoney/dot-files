@@ -18,6 +18,7 @@
 (global-set-key (kbd "s-;") 'comment-box)
 (global-set-key (kbd "s-f") 'flycheck-list-errors)
 (global-set-key (kbd "s-t") 'vg-switch-tab-group)
+(global-set-key (kbd "s-T") 'vg-switch-to-previous-tab-group)
 
 ;; Tabs management.
 (global-set-key (kbd "s-[") 'tab-previous)

@@ -242,6 +242,8 @@ Calling this function would yield this result:
           (nconc (alist-get group result) (list tab)))))
     (reverse result)))
 
+(defvar vg-previous-tab-group nil)
+
 (defun vg-switch-tab-group (choice)
   "Run global and project specific tasks.
 CHOICE: The command key to run."
@@ -250,11 +252,27 @@ CHOICE: The command key to run."
                           (vg-tab-bar-groups-parse-groups)
                           nil t)))
   (let* ((tabs (frame-parameter (selected-frame) 'tabs)))
+
+    ;; Set the previous tab, if different.
+    (let ((prev vg-previous-tab-group)
+          (cur (1+ (tab-bar--current-tab-index))))
+      (when (not (eql cur prev))
+        (setq vg-previous-tab-group cur)))
+
+    ;; Find and select the chosen tab.
     (dolist (tab tabs)
       (let* ((group-name (vg-tab-bar-groups-tab-group-name tab))
              (group (and group-name (intern group-name))))
         (when (string= group-name choice)
           (tab-bar-select-tab (1+ (tab-bar--tab-index tab))))))))
+
+(defun vg-switch-to-previous-tab-group ()
+  "Switch to the previous active tab group."
+  (interactive)
+  (let ((prev vg-previous-tab-group)
+        (cur (1+ (tab-bar--current-tab-index))))
+    (setq vg-previous-tab-group cur)
+    (tab-bar-select-tab prev)))
 
 ;;;;;;;;;;;;;
 ;; On Save ;;
