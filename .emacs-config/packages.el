@@ -206,11 +206,6 @@
   :config
   (global-flycheck-eglot-mode 1))
 
-(use-package flyspell
-  :ensure t
-  :bind (:map flyspell-mode-map
-              ("C-c" . nil)))
-
 ;; Blade:
 (define-derived-mode blade-mode web-mode "Blade"
   "Major mode derived from `web-mode' for blade templates.")
