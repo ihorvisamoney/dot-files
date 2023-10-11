@@ -68,6 +68,23 @@
         tab-bar-close-button-show nil
         tab-bar-format '(tab-bar-format-menu-bar tab-bar-format-history tab-bar-format-tabs-groups tab-bar-separator)))
 
+
+(use-package vertico
+  :ensure t
+  :config
+  (setq-default vertico-cycle t
+                vertico-count 15
+                read-buffer-completion-ignore-case t
+                read-file-name-completion-ignore-case t
+                completion-ignore-case t)
+  :init
+  (vertico-mode))
+
+;; Persist history over Emacs restarts. Vertico sorts by history position.
+(use-package savehist
+  :init
+  (savehist-mode))
+
 (use-package project
   :ensure t
   :bind (:map project-prefix-map
@@ -95,7 +112,6 @@
 (use-package ob-deno :ensure t)
 (use-package ob-restclient :ensure t)
 (use-package ob-typescript :ensure t)
-
 (use-package org
   :ensure t
   :config
@@ -186,8 +202,14 @@
 (use-package flycheck-eglot
   :ensure t
   :after (flycheck eglot)
+
   :config
   (global-flycheck-eglot-mode 1))
+
+(use-package flyspell
+  :ensure t
+  :bind (:map flyspell-mode-map
+              ("C-c" . nil)))
 
 ;; Blade:
 (define-derived-mode blade-mode web-mode "Blade"
@@ -240,8 +262,38 @@
   (go-mode . eglot-ensure)
   (js-mode . eglot-ensure)
   (web-mode . eglot-ensure)
+  (php-mode . eglot-ensure)
   (html-mode . eglot-ensure)
   :config
   (setq eglot-send-changes-idle-time 0.2)
-  (add-to-list 'eglot-server-programs '(web-mode . ("vscode-html-language-server" "--stdio")))
+  (add-to-list 'eglot-server-programs '((php-mode :language-id "php") . ("intelephense" "--stdio" :initializationOptions (:licenseKey "00T8M9912C8LAPQ"))))
+  (add-to-list 'eglot-server-programs '((web-mode :language-id "php") . ("intelephense" "--stdio" :initializationOptions (:licenseKey "00T8M9912C8LAPQ"))))
+  ;; (add-to-list 'eglot-server-programs '(web-mode . ("vscode-html-language-server" "--stdio")))
   (add-to-list 'eglot-server-programs '(html-mode . ("vscode-html-language-server" "--stdio"))))
+
+
+;;;;;;;;;;;;;;;;;;
+;; Maybe Remove ;;
+;;;;;;;;;;;;;;;;;;
+
+;; (use-package icomplete
+;;   :ensure t
+;;   :config
+;;   (setq-default
+;;    completion-styles '(emacs22 partial-completion)
+;;    read-buffer-completion-ignore-case t
+;;    read-file-name-completion-ignore-case t
+;;    completion-ignore-case t
+;;    completion-cycle-threshold nil
+;;    completions-format 'vertical
+;;    icomplete-compute-delay 0
+;;    icomplete-max-delay-chars 2
+;;    icomplete-show-matches-on-no-input t
+;;    icomplete-scroll t
+
+;;    max-mini-window-height 0.35)
+;;   :init
+;;   (icomplete-vertical-mode 1)
+;;   :bind
+;;   (:map icomplete-vertical-mode-minibuffer-map
+;;         ("<tab>" . icomplete-force-complete)))

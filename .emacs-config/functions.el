@@ -284,6 +284,8 @@ CHOICE: The command key to run."
 
 (defun vg-before-save-hook ()
   "Run the defined `vg-on-save-lambda` lambda on all defined major modes."
+  ;; Let's run a flyspell only on save, for performance reasons.
+  (flyspell-buffer)
   (when (or
          (eq major-mode 'fundamental-mode)
          (eq major-mode 'sh-mode)

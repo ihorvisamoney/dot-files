@@ -51,19 +51,19 @@
 ;; Set the tramp mode. /ssh:Name:path.
 (setq-default tramp-default-method "ssh")
 
-;; Toggle saving of minibuffer history.
+;; Toggle saving of mini-buffer history.
 (savehist-mode 1)
 
 ;; Automatically save bookmarks in custom file.
 (setq-default bookmark-save-flag 1)
 
-;; Minibuffer settings.
+;; Mini-buffer settings.
 (setq-default resize-mini-windows t)
-;; (setq-default max-mini-window-height 20) ;; Limit the minibuffer height.
+;; (setq-default max-mini-window-height 20) ;; Limit the mini-buffer height.
 
 ;; Flyspell.
-(add-hook 'text-mode-hook 'flyspell-mode)
-(add-hook 'prog-mode-hook 'flyspell-prog-mode)
+;; We basically call Flyspell-buffer on save, check functions.el.
+(setq-default flyspell-issue-message-flag nil)
 
 ;; Move deleted files to trash.
 (setq-default delete-by-moving-to-trash t)
@@ -141,22 +141,6 @@ VAL:"
 ;; Checkout: https://github.com/railwaycat/homebrew-emacsmacport
 (setq-default mac-option-modifier 'meta)
 (global-unset-key (kbd "C-q"))
-
-;;;;;;;;;;;;;;;;;;;;;
-;; Fake IDO (FIDO) ;;
-;;;;;;;;;;;;;;;;;;;;;
-
-(setq-default
-  completion-cycle-threshold nil
-  completions-format 'vertical
-  completion-ignore-case t
-  read-buffer-completion-ignore-case t
-  read-file-name-completion-ignore-case t
-  icomplete-compute-delay 0
-  max-mini-window-height 0.35)
-
-(fido-mode)
-(fido-vertical-mode nil)
 
 ;;;;;;;;;;;;;;;;
 ;; Path Setup ;;
@@ -256,9 +240,8 @@ VAL:"
    `(whitespace-trailing               ((t (:foreground ,ws-color ))))
 
    ;; ef-elea-dark custom.
-   `(git-commit-summary               ((t (:foreground ,"#eaf2ef"))))
+   `(git-commit-summary               ((t (:foreground ,"#eaf2ef"))))))
 
-   ))
 ;; Just in-case I want to use a light theme.
 ;; (let* (
 ;;        (ws-lighten 85) ;; Amount in percentage to lighten up black.
@@ -326,33 +309,6 @@ representation for the files to include, as returned by
 ;;;;;;;;;;;;;
 ;; Removed ;;
 ;;;;;;;;;;;;;
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Configuration Settings ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; Line numbers
-;; (setq-default display-line-numbers-type 'relative)
-;; (global-display-line-numbers-mode 1)
-
-;;;;;;;;;;;;;;;;;
-;; Compilation ;;
-;;;;;;;;;;;;;;;;;
-
-;; (setq-default compilation-window-height 10)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Buffer Display Options ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; (setq-default display-buffer-alist
-;;               '(("\\*compilation\\*" (display-buffer-at-bottom)
-;;                  (inhibit-same-window . t)
-;;                  (window-height . fit-window-to-buffer))
-;;                 ("\\*eldoc\\*"
-;;                  (display-buffer-at-bottom)
-;;                  (inhibit-same-window . t)
-;;                  (window-height . fit-window-to-buffer))))
 
 ;;;;;;;;;;;
 ;; Eldoc ;;
