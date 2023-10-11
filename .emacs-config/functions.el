@@ -284,10 +284,7 @@ CHOICE: The command key to run."
 
 (defun vg-before-save-hook ()
   "Run the defined `vg-on-save-lambda` lambda on all defined major modes."
-  ;; Let's run a flyspell only on save, for performance reasons.
-  ;; (flyspell-buffer)
   (when (or
-         (eq major-mode 'fundamental-mode)
          (eq major-mode 'sh-mode)
          (eq major-mode 'js-mode)
          (eq major-mode 'c-mode)
@@ -301,6 +298,8 @@ CHOICE: The command key to run."
          (eq major-mode 'php-mode)
          (eq major-mode 'go-mode)
          (eq major-mode 'typescript-mode))
+    ;; Let's run a flyspell only on save, for performance reasons.
+    (flyspell-buffer)
     (funcall vg-on-save-lambda)))
 
 ;; Call the before save functions.
