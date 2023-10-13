@@ -155,7 +155,7 @@ VAL:"
                 (getenv "PATH")))
 
 (setq exec-path (push
-                 "/Users/vernon/.nvm/versions/node/v18.16.0/bin"
+                  "/Users/vernon/.nvm/versions/node/v18.16.0/bin"
                  ;; (concat
                  ;;  ;; "/home/vernon/.cache/coursier/arc/https/github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u292-b10/OpenJDK8U-jdk_x64_linux_hotspot_8u292b10.tar.gz/jdk8u292-b10/bin:"
                  ;;  ;; "/home/vernon/.local/share/coursier/bin:"
@@ -227,34 +227,17 @@ VAL:"
 (require 'color)
 
 (let* (
-       (ws-lighten 10) ;; Amount in percentage to lighten up black.
-       (ws-color (color-lighten-name "#333333" ws-lighten)))
+       (ws-lighten 85) ;; Amount in percentage to lighten up black.
+       (ws-color (color-lighten-name "#7f7f7f" ws-lighten)))
   (custom-set-faces
    `(fill-column-indicator ((t (:foreground ,ws-color :background nil))))
-   `(whitespace-newline                ((t (:foreground ,ws-color ))))
-   `(whitespace-missing-newline-at-eof ((t (:foreground ,ws-color ))))
-   `(whitespace-space                  ((t (:foreground ,ws-color ))))
-   `(whitespace-space-after-tab        ((t (:foreground ,ws-color ))))
-   `(whitespace-space-before-tab       ((t (:foreground ,ws-color ))))
-   `(whitespace-tab                    ((t (:foreground ,ws-color ))))
-   `(whitespace-trailing               ((t (:foreground ,ws-color ))))
-
-   ;; ef-elea-dark custom.
-   `(git-commit-summary               ((t (:foreground ,"#eaf2ef"))))))
-
-;; Just in-case I want to use a light theme.
-;; (let* (
-;;        (ws-lighten 85) ;; Amount in percentage to lighten up black.
-;;        (ws-color (color-lighten-name "#7f7f7f" ws-lighten)))
-;;   (custom-set-faces
-;;    `(fill-column-indicator ((t (:foreground ,ws-color :background nil))))
-;;    `(whitespace-newline                ((t (:foreground ,ws-color :background "#ffffff"))))
-;;    `(whitespace-missing-newline-at-eof ((t (:foreground ,ws-color :background "#ffffff"))))
-;;    `(whitespace-space                  ((t (:foreground ,ws-color :background "#ffffff"))))
-;;    `(whitespace-space-after-tab        ((t (:foreground ,ws-color :background "#ffffff"))))
-;;    `(whitespace-space-before-tab       ((t (:foreground ,ws-color :background "#ffffff"))))
-;;    `(whitespace-tab                    ((t (:foreground ,ws-color :background "#ffffff"))))
-;;    `(whitespace-trailing               ((t (:foreground ,ws-color :background "#ffffff"))))))
+   `(whitespace-newline                ((t (:foreground ,ws-color :background "#ffffff"))))
+   `(whitespace-missing-newline-at-eof ((t (:foreground ,ws-color :background "#ffffff"))))
+   `(whitespace-space                  ((t (:foreground ,ws-color :background "#ffffff"))))
+   `(whitespace-space-after-tab        ((t (:foreground ,ws-color :background "#ffffff"))))
+   `(whitespace-space-before-tab       ((t (:foreground ,ws-color :background "#ffffff"))))
+   `(whitespace-tab                    ((t (:foreground ,ws-color :background "#ffffff"))))
+   `(whitespace-trailing               ((t (:foreground ,ws-color :background "#ffffff"))))))
 
 ;; Enable white space mode globally.
 (global-whitespace-mode t)
@@ -305,43 +288,3 @@ representation for the files to include, as returned by
                      :recursive t
                      :publishing-function 'org-publish-attachment)
                (list "vg" :components '("vg_assets" "vg_blog"))))
-
-;;;;;;;;;;;;;
-;; Removed ;;
-;;;;;;;;;;;;;
-
-;;;;;;;;;;;
-;; Eldoc ;;
-;;;;;;;;;;;
-
-;; (add-to-list 'display-buffer-alist
-;;              '("^\\*Open Recent\\*" display-buffer-reuse-window
-;;                                      (inhibit-same-window . t)))
-
-;; (add-to-list 'display-buffer-alist
-;;              '(("\\*eldoc\\*"
-;;                 (display-buffer-at-bottom)
-;;                 ;; (display-buffer-below-selected display-buffer-at-bottom)
-;;                 (inhibit-same-window . t)
-;;                 (window-height . fit-window-to-buffer))))
-
-;; (add-hook 'go-mode-hook 'eldoc-mode)
-;; (add-hook 'c-mode-hook 'eldoc-mode)
-;; (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
-
-;;;;;;;;;;;;;;;
-;; GDB Setup ;;
-;;;;;;;;;;;;;;;
-
-;; ;; GDB setup, close GDB by typing C-x 4 0 (kill-buffer-and-window).
-;; (setq gdb-many-windows t)
-
-;; ;; Start GDB debugging session.
-;; (define-key global-map (kbd "C-c cc") 'gdb)
-
-;; (defun vg-gdb-set-local-bindings()
-;;   "Set key bindings specifically for gdb-mode.
-;; Helps exit GDB and all its windows."
-;;   (interactive)
-;;       (local-set-key (kbd "C-c c c") 'kill-buffer-and-window))
-;; (add-hook 'gdb-mode-hook 'vg-gdb-set-local-bindings)

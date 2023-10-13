@@ -338,3 +338,11 @@ function wordpress-docker-setup-dev-plugins() {
     docker exec -i $1 sh -c "cd /var/www/html && wp plugin install disable-emails --activate --allow-root"
     docker exec -i $1 sh -c "cd /var/www/html && wp plugin install query-monitor --activate --allow-root"
 }
+
+##########
+# Source #
+##########
+
+source ~/.nvm/nvm.sh
+
+PATH="~/.composer/vendor/bin:${PATH}"

@@ -9,22 +9,30 @@
 ;; Personal mappings.
 (global-set-key (kbd "s-p") 'project-other-window-command)
 (global-set-key (kbd "s-r") 'recentf)
-(global-set-key (kbd "s-o") 'occur)
+(global-set-key (kbd "s-y") 'yas-insert-snippet)
 (global-set-key (kbd "s-b") 'bookmark-jump-other-window)
 (global-set-key (kbd "s-B") 'bookmark-set)
-(global-set-key (kbd "s-e") 'emmet-expand-linge)
-(global-set-key (kbd "s-y") 'yas-insert-snippet)
-(global-set-key (kbd "s-m") 'man)
-(global-set-key (kbd "s-;") 'comment-box)
-(global-set-key (kbd "s-f") 'flycheck-list-errors)
-(global-set-key (kbd "s-t") 'vg-switch-tab-group)
-(global-set-key (kbd "s-T") 'vg-switch-to-previous-tab-group)
+
+;; Remove
+;; (global-set-key (kbd "s-m") 'man)
+;; (global-set-key (kbd "s-;") 'comment-box)
+;; (global-set-key (kbd "s-o") 'occur)
+;; (global-set-key (kbd "s-f") 'flycheck-list-errors)
+
+;; (defun foo () (interactive) (execute-kbd-macro (kbd "<escape>")))
+;; (global-set-key (kbd "C-`") 'foo
+;; (funcall (global-key-binding "\C-x 4"))
+;; (call-interactively (global-key-binding "\C-x 4"))
+;; (global-set-key (kbd "s-f") 'project-find-file)
+;; (global-set-key (kbd "s-b") 'project-switch-to-buffer)
+;; (global-set-key (kbd "s-t") 'vg-switch-tab-group)
+;; (global-set-key (kbd "s-T") 'vg-switch-to-previous-tab-group)
 
 ;; Tabs management.
-(global-set-key (kbd "s-[") 'tab-previous)
-(global-set-key (kbd "s-]") 'tab-next)
-(global-set-key (kbd "s-}") 'tab-move)
-(global-set-key (kbd "s-{") (lambda ()(interactive) (tab-bar-move-tab -1)))
+;; (global-set-key (kbd "s-[") 'tab-previous)
+;; (global-set-key (kbd "s-]") 'tab-next)
+;; (global-set-key (kbd "s-}") 'tab-move)
+;; (global-set-key (kbd "s-{") (lambda ()(interactive) (tab-bar-move-tab -1)))
 
 ;; Eglot.
 (global-unset-key (kbd "s-l"))

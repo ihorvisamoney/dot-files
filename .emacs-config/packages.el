@@ -55,28 +55,23 @@
   :init
   (winner-mode t))
 
-;; Who needs TMUX?
+;; Keeps state across sessions.
 (use-package desktop
   :ensure t
   :config
   (desktop-save-mode 1))
 
-(use-package tab-bar :ensure t
-  :config
-  (setq tab-bar-new-tab-choice "*scratch*"
-        tab-bar-auto-width nil
-        tab-bar-close-button-show nil
-        tab-bar-format '(tab-bar-format-menu-bar tab-bar-format-history tab-bar-format-tabs-groups tab-bar-separator)))
-
-
+;; Better minibuffer completions.
 (use-package vertico
   :ensure t
   :config
-  (setq-default vertico-cycle t
-                vertico-count 15
-                read-buffer-completion-ignore-case t
-                read-file-name-completion-ignore-case t
-                completion-ignore-case t)
+  (setq-default
+   vertico-cycle t
+   vertico-count 15
+   read-buffer-completion-ignore-case t
+   read-file-name-completion-ignore-case t
+   completion-ignore-case t
+   completion-styles #'(flex))
   :init
   (vertico-mode))
 
@@ -87,16 +82,13 @@
 
 (use-package project
   :ensure t
-  :bind (:map project-prefix-map
-              ("t" . vg-project-tasks-run))
+  :bind
+  (:map project-prefix-map
+        ("t" . vg-project-tasks-run))
   :config
   (setq-default project-switch-commands 'project-find-file))
 
-(use-package project-tab-groups
-  :ensure t
-  :config
-  (project-tab-groups-mode 1))
-
+;; Shows buffers by project.
 (use-package ibuffer-project
   :ensure t
   :config
@@ -185,11 +177,10 @@
   :config
   (setq-default emmet-indent-after-insert nil))
 
-;; ef-elea-dark
-(use-package ef-themes
+(use-package standard-themes
   :ensure t
   :config
-  (load-theme 'ef-elea-dark t))
+  (load-theme 'standard-light t))
 
 (use-package magit :ensure t)
 
@@ -263,32 +254,4 @@
   (setq eglot-send-changes-idle-time 0.2)
   (add-to-list 'eglot-server-programs '((php-mode :language-id "php") . ("intelephense" "--stdio" :initializationOptions (:licenseKey "00T8M9912C8LAPQ"))))
   (add-to-list 'eglot-server-programs '((web-mode :language-id "php") . ("intelephense" "--stdio" :initializationOptions (:licenseKey "00T8M9912C8LAPQ"))))
-  ;; (add-to-list 'eglot-server-programs '(web-mode . ("vscode-html-language-server" "--stdio")))
   (add-to-list 'eglot-server-programs '(html-mode . ("vscode-html-language-server" "--stdio"))))
-
-
-;;;;;;;;;;;;;;;;;;
-;; Maybe Remove ;;
-;;;;;;;;;;;;;;;;;;
-
-;; (use-package icomplete
-;;   :ensure t
-;;   :config
-;;   (setq-default
-;;    completion-styles '(emacs22 partial-completion)
-;;    read-buffer-completion-ignore-case t
-;;    read-file-name-completion-ignore-case t
-;;    completion-ignore-case t
-;;    completion-cycle-threshold nil
-;;    completions-format 'vertical
-;;    icomplete-compute-delay 0
-;;    icomplete-max-delay-chars 2
-;;    icomplete-show-matches-on-no-input t
-;;    icomplete-scroll t
-
-;;    max-mini-window-height 0.35)
-;;   :init
-;;   (icomplete-vertical-mode 1)
-;;   :bind
-;;   (:map icomplete-vertical-mode-minibuffer-map
-;;         ("<tab>" . icomplete-force-complete)))

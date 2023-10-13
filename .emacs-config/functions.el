@@ -108,8 +108,9 @@ HIDDEN: If non nil, hide the command in the background."
 COMMAND: The shell command."
   (interactive)
   (let* ((project-root (vg-get-project-root))
-         (kitty-command (concat "kitty" " " "bash -c \"" command "; exec bash\""))
-         (final-command (concat "cd" " " project-root " && " kitty-command)))
+         (source-zshrc "source ~/.zshrc && ")
+         (kitty-command (concat "kitty" " " "zsh -c \"" source-zshrc command "; exec zsh\""))
+         (final-command (concat "cd" " " project-root " && " kitty-com mand)))
     (if project-root
         (vg-async-shell-command-no-window final-command)
       (message "Project root could not be found..."))))
@@ -200,80 +201,6 @@ CHOICE: The command key to run."
     (funcall f)))
 (global-set-key (kbd "s-t") 'vg-project-tasks-run)
 
-
-;;;;;;;;;;;;;;;;
-;; Tab Groups ;;
-;;;;;;;;;;;;;;;;
-
-(defun vg-tab-bar-groups-current-tab ()
-  "Retrieve original data about the current tab."
-  (assq 'current-tab (funcall tab-bar-tabs-function)))
-
-(defun vg-tab-bar-groups-tab-group-name (&optional tab)
-  "The group name of the given TAB (or the current tab)."
-  (alist-get 'group (or tab (vg-tab-bar-groups-current-tab))))
-
-(defun vg-tab-bar-groups-parse-groups ()
-  "Build an alist of tabs grouped by their group name.
-
-Successive tabs that don't belong to a group are grouped under
-intermitting nil keys.
-
-For example, consider this list of tabs: groupA:foo, groupB:bar,
-baz, qux, groupC:quux, quuz, groupB:corge, groupA:grault.
-
-Calling this function would yield this result:
-
-'((groupA (foo grault))
-  (groupB (bar corge))
-  (nil (baz qux))
-  (groupC (grault))
-  (nil (quuz)))"
-  (let* ((tabs (frame-parameter (selected-frame) 'tabs))
-         (result '()))
-    (dolist (tab tabs)
-      (let* ((group-name (vg-tab-bar-groups-tab-group-name tab))
-             (group (and group-name (intern group-name)))
-             (new-named-group-p (and group (null (assq group result))))
-             (in-nil-group-p (and (consp (car result)) (null (caar result))))
-             (new-nil-group-p (not (or group in-nil-group-p))))
-        (if (or new-named-group-p new-nil-group-p)
-            (push (cons group (list tab)) result)
-          (nconc (alist-get group result) (list tab)))))
-    (reverse result)))
-
-(defvar vg-previous-tab-group nil)
-
-(defun vg-switch-tab-group (choice)
-  "Run global and project specific tasks.
-CHOICE: The command key to run."
-  (interactive
-   (list (completing-read "Tab Groups: "
-                          (vg-tab-bar-groups-parse-groups)
-                          nil t)))
-  (let* ((tabs (frame-parameter (selected-frame) 'tabs)))
-
-    ;; Set the previous tab, if different.
-    (let ((prev vg-previous-tab-group)
-          (cur (1+ (tab-bar--current-tab-index))))
-      (when (not (eql cur prev))
-        (setq vg-previous-tab-group cur)))
-
-    ;; Find and select the chosen tab.
-    (dolist (tab tabs)
-      (let* ((group-name (vg-tab-bar-groups-tab-group-name tab))
-             (group (and group-name (intern group-name))))
-        (when (string= group-name choice)
-          (tab-bar-select-tab (1+ (tab-bar--tab-index tab))))))))
-
-(defun vg-switch-to-previous-tab-group ()
-  "Switch to the previous active tab group."
-  (interactive)
-  (let ((prev vg-previous-tab-group)
-        (cur (1+ (tab-bar--current-tab-index))))
-    (setq vg-previous-tab-group cur)
-    (tab-bar-select-tab prev)))
-
 ;;;;;;;;;;;;;
 ;; On Save ;;
 ;;;;;;;;;;;;;
@@ -299,7 +226,7 @@ CHOICE: The command key to run."
          (eq major-mode 'go-mode)
          (eq major-mode 'typescript-mode))
     ;; Let's run a flyspell only on save, for performance reasons.
-    (flyspell-buffer)
+    ;; (flyspell-buffer)
     (funcall vg-on-save-lambda)))
 
 ;; Call the before save functions.
