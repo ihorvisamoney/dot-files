@@ -371,5 +371,3 @@ function wordpress-docker-setup-dev-plugins() {
 ##########
 
 source ~/.nvm/nvm.sh
-
-PATH="~/.composer/vendor/bin:${PATH}"
