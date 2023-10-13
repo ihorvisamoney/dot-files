@@ -39,6 +39,33 @@ RPROMPT=$'$(vcs_info_wrapper)'
 
 alias mac-set-keyrate='defaults write -g InitialKeyRepeat -int 10 && defaults write -g KeyRepeat -int 1'
 
+######################
+# Block Social Media #
+######################
+
+# Block hosts
+alias social-unblock="
+sudo cat /etc/hosts > ~/.hosts_old
+sudo awk '!/facebook|tiktok|youtube|instagram|reddit|twitter/' /etc/hosts > ~/.hosts_new
+sudo mv ~/.hosts_new /etc/hosts
+"
+
+alias social-block="
+social-unblock
+sudo cat /etc/hosts > ~/.hosts_old && cat ~/.hosts_old > ~/.hosts_new
+sudo echo '0.0.0.0 youtube.com' >> ~/.hosts_new
+sudo echo '0.0.0.0 www.youtube.com' >> ~/.hosts_new
+sudo echo '0.0.0.0 facebook.com' >> ~/.hosts_new
+sudo echo '0.0.0.0 www.facebook.com' >> ~/.hosts_new
+sudo echo '0.0.0.0 tiktok.com' >> ~/.hosts_new
+sudo echo '0.0.0.0 www.tiktok.com' >> ~/.hosts_new
+sudo echo '0.0.0.0 instagram.com' >> ~/.hosts_new
+sudo echo '0.0.0.0 www.instagram.com' >> ~/.hosts_new
+sudo echo '0.0.0.0 twitter.com' >> ~/.hosts_new
+sudo echo '0.0.0.0 www.twitter.com' >> ~/.hosts_new
+sudo mv ~/.hosts_new /etc/hosts
+"
+
 #######
 # GIT #
 #######

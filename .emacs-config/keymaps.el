@@ -1,7 +1,12 @@
 (define-key global-map (kbd "<f12>") 'vg-presentation-toggle)
 (global-set-key (kbd "<f9>") 'vg-toggle-transparency)
 
-;; Make things open in other windows by default.
+;; This replaces the help map, but you can still use F1.
+;; Useful backspace bindings.
+(global-set-key (kbd "C-h") 'delete-backward-char)
+(global-set-key (kbd "M-h") (lambda ()
+                              (interactive)
+                              (kill-word -1)))
 (global-set-key (kbd "C-x d") 'dired-other-window)
 (global-set-key (kbd "C-x b") 'switch-to-buffer-other-window)
 (global-set-key (kbd "C-x C-f") 'find-file-other-window)
@@ -12,27 +17,6 @@
 (global-set-key (kbd "s-y") 'yas-insert-snippet)
 (global-set-key (kbd "s-b") 'bookmark-jump-other-window)
 (global-set-key (kbd "s-B") 'bookmark-set)
-
-;; Remove
-;; (global-set-key (kbd "s-m") 'man)
-;; (global-set-key (kbd "s-;") 'comment-box)
-;; (global-set-key (kbd "s-o") 'occur)
-;; (global-set-key (kbd "s-f") 'flycheck-list-errors)
-
-;; (defun foo () (interactive) (execute-kbd-macro (kbd "<escape>")))
-;; (global-set-key (kbd "C-`") 'foo
-;; (funcall (global-key-binding "\C-x 4"))
-;; (call-interactively (global-key-binding "\C-x 4"))
-;; (global-set-key (kbd "s-f") 'project-find-file)
-;; (global-set-key (kbd "s-b") 'project-switch-to-buffer)
-;; (global-set-key (kbd "s-t") 'vg-switch-tab-group)
-;; (global-set-key (kbd "s-T") 'vg-switch-to-previous-tab-group)
-
-;; Tabs management.
-;; (global-set-key (kbd "s-[") 'tab-previous)
-;; (global-set-key (kbd "s-]") 'tab-next)
-;; (global-set-key (kbd "s-}") 'tab-move)
-;; (global-set-key (kbd "s-{") (lambda ()(interactive) (tab-bar-move-tab -1)))
 
 ;; Eglot.
 (global-unset-key (kbd "s-l"))
@@ -109,20 +93,17 @@ C: The character to zap up to."
 ;; Org agenda
 (global-set-key (kbd "s-1") 'org-agenda-list)
 
-;; Elfeed
-(global-set-key (kbd "s-2") 'elfeed)
-
 ;; Bookmark manager
-(global-set-key (kbd "s-3") 'edit-bookmarks)
+(global-set-key (kbd "s-2") 'edit-bookmarks)
 
 ;; Open terminal in current files folder.
-(define-key global-map (kbd "s-4")
+(define-key global-map (kbd "s-3")
   (lambda ()
     (interactive)
     (vg-async-shell-command-no-window "kitty `pwd`")))
 
 ;; Open finder in current files folder.
-(define-key global-map (kbd "s-5")
+(define-key global-map (kbd "s-4")
   (lambda ()
     (interactive)
     (when (eq system-type 'gnu/linux)
@@ -130,29 +111,5 @@ C: The character to zap up to."
     (when (eq system-type 'darwin)
       (vg-async-shell-command-no-window "open ."))))
 
-;;;;;;;;;;;;;
-;; Removed ;;
-;;;;;;;;;;;;;
-
-;; Window movement.
-;; (global-set-key (kbd "s-x <right>") 'windmove-swap-states-right)
-;; (global-set-key (kbd "s-x <left>") 'windmove-swap-states-left)
-
-
-;; ;; Move up by text block (Thanks Xah Lee).
-;; (define-key global-map (kbd "C-S-p") (lambda (&optional n)
-;;                                      (interactive "p")
-;;                                      (let ((n (if (null n) 1 n))
-;;                                            ($i 1))
-;;                                        (while (<= $i n)
-;;                                          (if (re-search-backward "\n[\t\n ]*\n+" nil "NOERROR")
-;;                                              (progn (skip-chars-backward "\n\t "))
-;;                                            (progn (goto-char (point-min))
-;;                                                   (setq $i n)))
-;;                                          (setq $i (1+ $i))))))
-
-;; ;; Move down by text block (Thanks Xah Lee).
-;; (define-key global-map (kbd "C-S-n") (lambda (&optional n)
-;;                                      (interactive "p")
-;;                                      (let ((n (if (null n) 1 n)))
-;;                                        (re-search-forward "\n[\t\n ]*\n+" nil "NOERROR" n))))
+;; Elfeed
+(global-set-key (kbd "s-0") 'elfeed)

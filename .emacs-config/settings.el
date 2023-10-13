@@ -15,9 +15,19 @@
 ;; Remove gaps
 (setq-default frame-resize-pixelwise t)
 
+;; TODO: Check to see if this makes sense.
+;; Make C-k, kill the entire line (newline and all).
+(setq-default kill-wholeline t)
+
+;; Make resizing fonts not effect the window size.
+(setq-default frame-inhibit-implied-resize t)
+
 ;; Enable precision scroll.
 (setq-default pixel-scroll-precision-mode t)
 (pixel-scroll-precision-mode)
+
+;; No double spaceing for sentences please.
+(setq sentence-end-double-space nil)
 
 ;; Encoding.
 (setq-default buffer-file-coding-system 'utf-8-unix)
@@ -46,7 +56,10 @@
 (setq-default make-backup-files nil)
 
 ;; When backup files enabled, save them to a specific folder.
-(setq-default backup-directory-alist `(("." . "~/.emacs-saves")))
+(make-directory "~/.emacs-saves/" t)
+(make-directory "~/.emacs-autosaves/" t)
+(setq auto-save-file-name-transforms '((".*" "~/.emacs-autosaves/" t)))
+(setq backup-directory-alist '(("." . "~/.emacs-saves/")))
 
 ;; Set the tramp mode. /ssh:Name:path.
 (setq-default tramp-default-method "ssh")
@@ -55,7 +68,8 @@
 (savehist-mode 1)
 
 ;; Automatically save bookmarks in custom file.
-(setq-default bookmark-save-flag 1)
+(setq-default bookmark-save-flag 1
+              bookmark-sort-flag t)
 
 ;; Mini-buffer settings.
 (setq-default resize-mini-windows t)

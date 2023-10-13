@@ -143,6 +143,15 @@
    elfeed-show-entry-switch 'display-buffer
    elfeed-db-directory "~/.elfeed"
    elfeed-feeds '(
+                  "https://zenhabits.net/feed/"
+                  "https://idiomdrottning.org/blog"
+                  "http://planet.sbcl.org/rss20.xml"
+                  "http://planet.lisp.org/rss20.xml"
+                  "https://borretti.me/feed"
+                  "https://lisp-journey.gitlab.io/blog/index.xml"
+                  "https://matt-rickard.com/feed"
+                  "https://ferd.ca/feed.rss"
+                  "https://joy.recurse.com/feed.atom"
                   "http://feeds.feedburner.com/freetechbooks"
                   "http://lambda-the-ultimate.org/rss.xml"
                   "http://nullprogram.com/feed/"
