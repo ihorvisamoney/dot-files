@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: Blade Comment
+# key: bcom
+# --
+
+{{-- $0 --}}

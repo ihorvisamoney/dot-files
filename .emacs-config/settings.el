@@ -166,10 +166,11 @@ VAL:"
                 ;; "/home/vernon/.cache/coursier/arc/https/github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u292-b10/OpenJDK8U-jdk_x64_linux_hotspot_8u292b10.tar.gz/jdk8u292-b10/bin:"
                 ;; "/home/vernon/.local/share/coursier/bin:"
                 "/Users/vernon/.nvm/versions/node/v18.16.0/bin:"
+                "/Users/vernon/.composer/vendor/bin:"
                 (getenv "PATH")))
 
 (setq exec-path (push
-                  "/Users/vernon/.nvm/versions/node/v18.16.0/bin"
+                 "/Users/vernon/.nvm/versions/node/v18.16.0/bin"
                  ;; (concat
                  ;;  ;; "/home/vernon/.cache/coursier/arc/https/github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u292-b10/OpenJDK8U-jdk_x64_linux_hotspot_8u292b10.tar.gz/jdk8u292-b10/bin:"
                  ;;  ;; "/home/vernon/.local/share/coursier/bin:"

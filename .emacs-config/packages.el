@@ -49,6 +49,14 @@
   :config
   (setq-default web-mode-enable-auto-indentation nil))
 
+;; Terminal emulator.
+(use-package vterm :ensure t)
+
+;; TODO: Add local bindings.
+;; Clojure / Cider
+(use-package cider
+  :ensure t)
+
 ;; Bring back splits if needed.
 (use-package winner
   :ensure t
@@ -143,8 +151,9 @@
    elfeed-show-entry-switch 'display-buffer
    elfeed-db-directory "~/.elfeed"
    elfeed-feeds '(
+                  "https://dnaeon.github.io/feed.xml"
+                  "https://coredumped.dev/index.xm"
                   "https://zenhabits.net/feed/"
-                  "https://idiomdrottning.org/blog"
                   "http://planet.sbcl.org/rss20.xml"
                   "http://planet.lisp.org/rss20.xml"
                   "https://borretti.me/feed"

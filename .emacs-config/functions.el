@@ -110,7 +110,7 @@ COMMAND: The shell command."
   (let* ((project-root (vg-get-project-root))
          (source-zshrc "source ~/.zshrc && ")
          (kitty-command (concat "kitty" " " "zsh -c \"" source-zshrc command "; exec zsh\""))
-         (final-command (concat "cd" " " project-root " && " kitty-com mand)))
+         (final-command (concat "cd" " " project-root " && " kitty-command)))
     (if project-root
         (vg-async-shell-command-no-window final-command)
       (message "Project root could not be found..."))))
