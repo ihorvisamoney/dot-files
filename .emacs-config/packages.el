@@ -52,6 +52,12 @@
 ;; Terminal emulator.
 (use-package vterm :ensure t)
 
+;; Manige notes like a boss.
+(use-package denote
+  :ensure t
+  :config
+  (setq-default denote-directory "/Users/vernon/Notes/denote/"))
+
 ;; TODO: Add local bindings.
 ;; Clojure / Cider
 (use-package cider
@@ -90,9 +96,6 @@
 
 (use-package project
   :ensure t
-  :bind
-  (:map project-prefix-map
-        ("t" . vg-project-tasks-run))
   :config
   (setq-default project-switch-commands 'project-find-file))
 
@@ -236,8 +239,9 @@
   :ensure t
   :config
   (global-flycheck-mode)
-  :bind
-  (("s-f" . flycheck-list-errors)))
+  ;; :bind
+  ;; (("s-f" . flycheck-list-errors))
+  )
 
 (use-package eglot
   :ensure t

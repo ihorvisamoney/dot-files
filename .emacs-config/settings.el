@@ -156,6 +156,8 @@ VAL:"
 (setq-default mac-option-modifier 'meta)
 (global-unset-key (kbd "C-q"))
 
+;; (setq-default switch-to-buffer-obey-display-actions t)
+
 ;;;;;;;;;;;;;;;;
 ;; Path Setup ;;
 ;;;;;;;;;;;;;;;;

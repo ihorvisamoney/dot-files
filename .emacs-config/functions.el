@@ -1,3 +1,40 @@
+(defun vg-find-file-other-window()
+  (interactive)
+  (if (not (null (project-current nil)))
+      (progn
+        (other-window-prefix)
+        (project-find-file))
+    (find-file-other-window)))
+
+(defun vg-find-buffer-other-window()
+  (interactive)
+  (if (not (null (project-current nil)))
+      (progn (other-window-prefix)
+             (call-interactively 'project-switch-to-buffer))
+    (progn (call-interactively 'switch-to-buffer-other-window))))
+
+(defun vg-find-directory-other-window()
+  (interactive)
+  (when (not (null (project-current nil)))
+    (other-window-prefix)
+    (call-interactively 'project-find-dir)))
+
+(defun vg-find-project-other-window()
+  (interactive)
+  (other-window-prefix)
+    (call-interactively 'project-switch-project))
+
+(defun vg-open-kitty-here ()
+  (interactive)
+  (vg-async-shell-command-no-window "kitty `pwd`"))
+
+(defun vg-open-finder-here ()
+  (interactive)
+    (when (eq system-type 'gnu/linux)
+      (vg-async-shell-command-no-window "nautilus ."))
+    (when (eq system-type 'darwin)
+      (vg-async-shell-command-no-window "open .")))
+
 (defun vg-presentation-toggle()
   "Change font size for presentation use."
   (interactive)
@@ -151,7 +188,8 @@ COMMAND: The shell command."
   "Reload dir locals for the current buffer."
   (interactive)
   (let ((enable-local-variables :all))
-    (hack-dir-local-variables-non-file-buffer)))
+    (hack-dir-local-variables-non-file-buffer))
+  (message "Tasks reloaded!"))
 
 (defun vg-reload-dir-locals-for-all-buffer-in-this-directory ()
   "For every buffer with the same `default-directory`, reload dir-locals."
@@ -160,7 +198,8 @@ COMMAND: The shell command."
     (dolist (buffer (buffer-list))
       (with-current-buffer buffer
         (when (equal default-directory dir)
-          (vg-reload-dir-locals-for-current-buffer))))))
+          (vg-reload-dir-locals-for-current-buffer)))))
+  (message "Tasks reloaded for all buffers!"))
 
 ;; Automatically reload the dir-locals, maybe not.
 ;; (add-hook 'emacs-lisp-mode-hook
@@ -231,45 +270,3 @@ CHOICE: The command key to run."
 
 ;; Call the before save functions.
 (add-hook 'before-save-hook #'vg-before-save-hook)
-
-;;;;;;;;;;;;;
-;; Removed ;;
-;;;;;;;;;;;;;
-
-;;;;;;;;;;;;;;;;;
-;; Note Taking ;;
-;;;;;;;;;;;;;;;;;
-
-;; ;; Open notes folder.
-;; (define-key global-map (kbd "C-c n")
-;;   (lambda ()
-;;     (interactive)
-;;     (find-file "~/Devenv/notes/")))
-
-;; ;; Create a new note.
-;; (define-key global-map (kbd "C-c N")
-;;   (lambda ()
-;;   (interactive)
-;;   (let ((notes-file-extention ".md")
-;;         (notes-file-heading-prefix "# ")
-;;         (notes-directory "~/Devenv/notes/notebook/")
-;;         (note-name (replace-regexp-in-string
-;;                     " "
-;;                     "-"
-;;                     (downcase (read-string "Note Name: "))))
-;;         (note-date-string (format-time-string "%Y-%m-%d-")))
-
-;;     ;; Create the new note file.
-;;     (find-file-other-window (concat
-;;                 notes-directory
-;;                 note-date-string
-;;                 note-name
-;;                 notes-file-extention))
-
-;;     ;; Add title to note file.
-;;     (insert (concat
-;;              notes-file-heading-prefix)
-;;             (replace-regexp-in-string "-" " " (capitalize note-name)))
-
-;;     ;; Save note.
-;;     (save-buffer))))

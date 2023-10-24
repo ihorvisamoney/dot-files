@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: Environment Variable
+# key: ev
+# --
+
+export ${1:VARIABLE_NAME}=${0:"Value"}

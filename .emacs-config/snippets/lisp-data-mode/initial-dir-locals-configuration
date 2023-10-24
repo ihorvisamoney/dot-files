@@ -5,7 +5,8 @@
 
 (
  ;; Project Tasks
- (nil . ((project-name . "Your Project Name")
+ (nil . ((project-vc-ignores . ("./node_modules/" "./vendor/"))
+         (project-name . "Your Project Name")
          (vg-project-tasks . (
                               ("PNPM: Install" . (lambda()
                                                   (vg-shell-command-in-project-root "pnpm install")
