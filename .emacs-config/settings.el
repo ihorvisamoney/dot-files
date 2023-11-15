@@ -10,10 +10,14 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 (menu-bar-mode -1)
-;; (add-to-list 'default-frame-alist '(undecorated . nil))
 
-;; Remove gaps
+;; Remove gaps.
 (setq-default frame-resize-pixelwise t)
+
+;; Set the frames title.
+(setq-default frame-title-format
+      '((:eval (if (buffer-file-name)
+                   (abbreviate-file-name (buffer-file-name)) "%b"))))
 
 ;; TODO: Check to see if this makes sense.
 ;; Make C-k, kill the entire line (newline and all).
@@ -119,8 +123,11 @@ VAL:"
 (add-hook 'ibuffer-mode-hook (lambda () (ibuffer-auto-mode 1)))
 
 ;; Fonts.
-(setq-default line-spacing 0.35)
-(set-face-attribute 'default nil :height 150)
+;; (setq-default line-spacing 0.35)
+;; (set-face-attribute 'default nil :height 150)
+
+(setq-default line-spacing 0.20)
+(set-face-attribute 'default nil :height 135)
 
 ;; Moves Emacs customization to separate file.el
 (setq custom-file (concat user-emacs-directory ".emacs-custom.el"))
@@ -243,18 +250,16 @@ VAL:"
 ;; Whitespace color changes.
 (require 'color)
 
-(let* (
-       (ws-lighten 85) ;; Amount in percentage to lighten up black.
-       (ws-color (color-lighten-name "#7f7f7f" ws-lighten)))
+(let ((ws-color (color-lighten-name "#352718" 50)))
   (custom-set-faces
    `(fill-column-indicator ((t (:foreground ,ws-color :background nil))))
-   `(whitespace-newline                ((t (:foreground ,ws-color :background "#ffffff"))))
-   `(whitespace-missing-newline-at-eof ((t (:foreground ,ws-color :background "#ffffff"))))
-   `(whitespace-space                  ((t (:foreground ,ws-color :background "#ffffff"))))
-   `(whitespace-space-after-tab        ((t (:foreground ,ws-color :background "#ffffff"))))
-   `(whitespace-space-before-tab       ((t (:foreground ,ws-color :background "#ffffff"))))
-   `(whitespace-tab                    ((t (:foreground ,ws-color :background "#ffffff"))))
-   `(whitespace-trailing               ((t (:foreground ,ws-color :background "#ffffff"))))))
+   `(whitespace-newline                ((t (:foreground ,ws-color ))))
+   `(whitespace-missing-newline-at-eof ((t (:foreground ,ws-color ))))
+   `(whitespace-space                  ((t (:foreground ,ws-color ))))
+   `(whitespace-space-after-tab        ((t (:foreground ,ws-color ))))
+   `(whitespace-space-before-tab       ((t (:foreground ,ws-color ))))
+   `(whitespace-tab                    ((t (:foreground ,ws-color ))))
+   `(whitespace-trailing               ((t (:foreground ,ws-color ))))))
 
 ;; Enable white space mode globally.
 (global-whitespace-mode t)

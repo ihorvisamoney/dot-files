@@ -1,28 +1,44 @@
-(defun vg-find-file-other-window()
-  (interactive)
-  (if (not (null (project-current nil)))
-      (progn
-        (other-window-prefix)
-        (project-find-file))
-    (find-file-other-window)))
+;;;;;;;;;;;;;;;;;;;;;
+;; General Helpers ;;
+;;;;;;;;;;;;;;;;;;;;;
 
-(defun vg-find-buffer-other-window()
-  (interactive)
-  (if (not (null (project-current nil)))
-      (progn (other-window-prefix)
-             (call-interactively 'project-switch-to-buffer))
-    (progn (call-interactively 'switch-to-buffer-other-window))))
+(defun vg-duplicate-current-line-or-region (arg)
+  "Duplicates the current line or region ARG times.
+If there's no region, the current line will be duplicated. However, if
+there's a region, all lines that region covers will be duplicated."
+  (interactive "p")
+  (let (beg end (origin (point)))
+    (if (and mark-active (> (point) (mark)))
+        (exchange-point-and-mark))
+    (setq beg (line-beginning-position))
+    (if mark-active
+        (exchange-point-and-mark))
+    (setq end (line-end-position))
+    (let ((region (buffer-substring-no-properties beg end)))
+      (dotimes (i arg)
+        (goto-char end)
+        (newline)
+        (insert region)
+        (setq end (point)))
+      (goto-char (+ origin (* (length region) arg) arg)))))
 
-(defun vg-find-directory-other-window()
-  (interactive)
-  (when (not (null (project-current nil)))
-    (other-window-prefix)
-    (call-interactively 'project-find-dir)))
+(defun vg-quick-zap-up-to-char (p c)
+  "The same as zap up to char, but without the mini buffer prompt.
+P: The prefix argument or the count.
+C: The character to zap up to."
+  (interactive "P\nc")
+  (let ((cnt (cond ((null p) 1)
+                   ((symbolp p) -1)
+                   (t p))))
+    (zap-up-to-char cnt c)))
 
-(defun vg-find-project-other-window()
+(defun vg-kill-word-negative()
   (interactive)
-  (other-window-prefix)
-    (call-interactively 'project-switch-project))
+  (kill-word -1))
+
+(defun vg-other-window-negative()
+  (interactive)
+  (other-window -1))
 
 (defun vg-open-kitty-here ()
   (interactive)
@@ -42,10 +58,10 @@
   (if vg-presentation-mode
       (progn
         (setq vg-presentation-mode nil)
-        (set-face-attribute 'default nil :height 150))
+        (set-face-attribute 'default nil :height 135))
     (progn
       (setq vg-presentation-mode t)
-      (set-face-attribute 'default nil :height 180))))
+      (set-face-attribute 'default nil :height 165))))
 
 (defun vg-toggle-transparency ()
   (interactive)
@@ -90,6 +106,7 @@ COMMAND: The shell command."
                         (setq i (+ 32 i)) i (single-key-description i)))
         (setq i (- i 96))))))
 
+;; TODO: Rewrite this function.
 (defun vg-get-project-root ()
   "Return a project's root directory."
   (interactive)
@@ -123,7 +140,7 @@ open and unsaved."
             (call-interactively command))
           (dired-get-marked-files))))
 
-;; TODO: Can we close the shell command buffer with q?
+;; TODO: Can we close the shell command buffer with q (yes) but how to not end all processes.?
 (defun vg-shell-command-in-project-root (command &optional hidden)
   "Run the provided command in the project root directory.
 COMMAND: The shell command.
@@ -146,7 +163,7 @@ COMMAND: The shell command."
   (interactive)
   (let* ((project-root (vg-get-project-root))
          (source-zshrc "source ~/.zshrc && ")
-         (kitty-command (concat "kitty" " " "zsh -c \"" source-zshrc command "; exec zsh\""))
+         (kitty-command (concat "kitty" " " "zsh -c \"" source-zshrc command " && exit; exec zsh\""))
          (final-command (concat "cd" " " project-root " && " kitty-command)))
     (if project-root
         (vg-async-shell-command-no-window final-command)
@@ -158,6 +175,32 @@ COMMAND: The shell command."
   (shell-command-on-region (point-min) (point-max)
                            (format "pandoc -f markdown -t org -o %s"
                                    (concat (file-name-sans-extension (buffer-file-name)) ".org"))))
+
+(defun vg-run-in-docker-container (container-name cmd)
+  (vg-shell-command-in-kitty-project-root
+   (mapconcat 'identity
+              (list "docker exec -it" container-name "sh -c" (concat "'" cmd "'"))
+              " ")))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Information Helpers ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun vg-info-copy-current-position()
+  (interactive)
+  (if (buffer-file-name (current-buffer))
+      (let ((line-num (int-to-string (line-number-at-pos)))
+            (file-path (buffer-file-name)))
+        (with-temp-buffer (insert
+                           (mapconcat
+                            'identity
+                            (list
+                             (concat "Line Number: " line-num)
+                             (concat "File Path: " file-path)) "\n"))
+                          (call-interactively 'mark-whole-buffer)
+                          (kill-ring-save (point-min) (point-max)))
+        (message "Current file position information copied."))
+    (message "Buffer has no file associated with it.")))
 
 ;;;;;;;;;;;;;;;;;;;;;;
 ;; Markdown Helpers ;;
@@ -266,7 +309,8 @@ CHOICE: The command key to run."
          (eq major-mode 'typescript-mode))
     ;; Let's run a flyspell only on save, for performance reasons.
     ;; (flyspell-buffer)
-    (funcall vg-on-save-lambda)))
+    (funcall vg-on-save-lambda)
+    (message "On save function has been called")))
 
 ;; Call the before save functions.
 (add-hook 'before-save-hook #'vg-before-save-hook)

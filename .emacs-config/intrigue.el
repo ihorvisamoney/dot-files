@@ -5,7 +5,7 @@
 ;; TODO: Add function of cycling between intrigue files.
 
 ;; Open essence file in other window.
-(setq-default intrigue-use-other-window t)
+;; (setq-default intrigue-use-other-window t)
 
 (setq-default intrigue--files nil)
 
@@ -66,9 +66,11 @@ CHOICE: hello world."
          (f-path (cdr (assoc choice p-files)))
          (current? (string= f-path (buffer-file-name))))
     (when (not current?)
-      (if intrigue-use-other-window
-          (find-file-other-window f-path)
-        (find-file f-path)))))
+      (find-file f-path)
+      ;; (if intrigue-use-other-window
+      ;;     (find-file-other-window f-path)
+      ;;   (find-file f-path))
+      )))
 
 (defun intrigue-next()
   (interactive)

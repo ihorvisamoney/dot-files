@@ -1,97 +1,153 @@
-;; Function keys:
-(define-key global-map (kbd "<f12>") 'vg-presentation-toggle)
-(global-set-key (kbd "<f9>") 'vg-toggle-transparency)
+;;; package --- Keybindings
+;;
+;;; Code:
+;;
+;;; Commentary:
 
-;; This replaces the help map, but you can still use F1.
-;; Useful backspace bindings.
-(global-set-key (kbd "C-h") 'delete-backward-char)
-(global-set-key (kbd "M-h") (lambda ()
-                              (interactive)
-                              (kill-word -1)))
-(global-set-key (kbd "C-x d") 'dired-other-window)
-(global-set-key (kbd "C-x b") 'switch-to-buffer-other-window)
-(global-set-key (kbd "C-x C-f") 'find-file-other-window)
-
-;; Save the current buffer.
-(define-key global-map (kbd "<C-return>") 'save-buffer)
-
-;; Keep save binding for Latex mode.
-(eval-after-load 'tex-mode
-  '(define-key latex-mode-map (kbd "<C-return>") 'save-buffer))
-
-;; Use Ibuffer instead.
-(define-key global-map (kbd "C-x C-b") 'ibuffer-other-window)
-
-;; Add a comment box.
-(define-key global-map (kbd "C-c b") 'comment-box)
-
-;; Zap up to char quickly.
-(defun vg-quick-zap-up-to-char (p c)
-  "The same as zap up to char, but without the mini buffer prompt.
-P: The prefix argument or the count.
-C: The character to zap up to."
-  (interactive "P\nc")
-  (let ((cnt (cond ((null p) 1)
-                   ((symbolp p) -1)
-                   (t p))))
-    (zap-up-to-char cnt c)))
+;; Smarter default Emacs bindings:
+(define-key global-map (kbd "C-x f") 'find-file)
 (define-key global-map (kbd "C-z") 'vg-quick-zap-up-to-char)
 
-;; Change window backward.
-(define-key global-map (kbd "C-x O") (lambda ()
-                                       (interactive)
-                                       (other-window -1)))
+(define-key global-map (kbd "C-x D") 'dired-other-window)
+(define-key global-map (kbd "C-x B") 'switch-to-buffer-other-window)
+(define-key global-map (kbd "C-x C-b") 'ibuffer)
+(define-key global-map (kbd "C-x 4 C-b") 'ibuffer-other-window)
 
-;; Duplicate a line.
-(define-key global-map (kbd "C-c d") (lambda ()
-                                       (interactive)
-                                       (move-beginning-of-line 1)
-                                       (kill-line)
-                                       (yank)
-                                       (open-line 1)
-                                       (forward-line 1)
-                                       (yank)))
+;; Save current buffer:
+(define-key global-map (kbd "<C-return>") 'save-buffer)
+(eval-after-load 'tex-mode '(define-key latex-mode-map (kbd "<C-return>") 'save-buffer))
+
+;; Delete characters and words:
+(define-key global-map (kbd "C-h") 'delete-backward-char)
+(define-key global-map (kbd "M-h") 'vg-kill-word-negative)
+
+;; Function keys:
+(define-key global-map (kbd "<f12>") 'vg-presentation-toggle)
+(define-key global-map (kbd "<f9>") 'vg-toggle-transparency)
+
+;; Change window backward.
+(define-key global-map (kbd "C-x O") 'vg-other-window-negative)
+
+;; Duplicate things:
+(define-key global-map (kbd "C-c d") 'vg-duplicate-current-line-or-region)
 
 ;; Elfeed
-(global-set-key (kbd "s-0") 'elfeed)
+(global-set-key (kbd "<f8>") 'elfeed)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Custom Prefix Bindings ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; Finding things:
-(define-prefix-command 'vg-find-map)
-(global-set-key (kbd "s-f") 'vg-find-map)
-(define-key vg-find-map (kbd "f") 'vg-find-file-other-window)
-(define-key vg-find-map (kbd "b") 'vg-find-buffer-other-window)
-(define-key vg-find-map (kbd "p") 'vg-find-project-other-window)
-(define-key vg-find-map (kbd "B") 'switch-to-buffer-other-window)
-(define-key vg-find-map (kbd "d") 'vg-find-directory-other-window)
-(define-key vg-find-map (kbd "D") 'vg-find-directory-other-window)
-(define-key vg-find-map (kbd "s") 'project-find-regexp)
+;; TODO: Add a prefix to copy important things to the clipboard:
+;; - [x] Current line number and file path relative to the project.
+;; - [ ] Current date.
 
 ;; Add our own prefix key
 (define-prefix-command 'vg-personal-map)
-(global-set-key (kbd "s-q") 'vg-personal-map)
+(global-set-key (kbd "C-q") 'vg-personal-map)
 (define-key vg-personal-map (kbd "r") 'recentf)
-(define-key vg-personal-map (kbd "p") 'project-other-window-command)
+(define-key vg-personal-map (kbd "R") (lambda()
+                                       (interactive)
+                                       (other-window-prefix)
+                                       (call-interactively 'recentf)))
 
-;; Tasks:
-(define-prefix-command 'vg-tasks-map)
-(define-key vg-personal-map (kbd "t") 'vg-tasks-map)
-(define-key vg-tasks-map (kbd "t") 'vg-project-tasks-run)
-(define-key vg-tasks-map (kbd "r") 'vg-reload-dir-locals-for-current-buffer)
-(define-key vg-tasks-map (kbd "R") 'vg-reload-dir-locals-for-all-buffer-in-this-directory)
+;; Project:
+(define-prefix-command 'vg-project-map)
+(define-key vg-personal-map (kbd "p") 'vg-project-map)
+(define-key vg-project-map (kbd "!") 'project-shell-command)
+(define-key vg-project-map (kbd "&") 'project-async-shell-command)
+(define-key vg-project-map (kbd "k") 'project-kill-buffers)
+
+(define-key vg-project-map (kbd "f") 'project-find-file)
+(define-key vg-project-map (kbd "F") (lambda()
+                                       (interactive)
+                                       (other-window-prefix)
+                                       (call-interactively 'project-find-file)))
+
+(define-key vg-project-map (kbd "d") 'project-find-dir)
+(define-key vg-project-map (kbd "D") (lambda()
+                                       (interactive)
+                                       (other-window-prefix)
+                                       (call-interactively 'project-find-dir)))
+
+(define-key vg-project-map (kbd "h") 'project-dired)
+(define-key vg-project-map (kbd "H") (lambda()
+                                       (interactive)
+                                       (other-window-prefix)
+                                       (call-interactively 'project-dired)))
+
+(define-key vg-project-map (kbd "e") 'project-eshell)
+(define-key vg-project-map (kbd "E") (lambda()
+                                       (interactive)
+                                       (other-window-prefix)
+                                       (call-interactively 'project-eshell)))
+
+(define-key vg-project-map (kbd "s") 'project-shell)
+(define-key vg-project-map (kbd "S") (lambda()
+                                       (interactive)
+                                       (other-window-prefix)
+                                       (call-interactively 'project-shell)))
+
+(define-key vg-project-map (kbd "g") 'project-find-regexp)
+(define-key vg-project-map (kbd "G") (lambda()
+                                       (interactive)
+                                       (other-window-prefix)
+                                       (call-interactively 'project-find-regexp)))
+
+
+(define-key vg-project-map (kbd "r") 'project-query-replace-regexp)
+(define-key vg-project-map (kbd "R") (lambda()
+                                       (interactive)
+                                       (other-window-prefix)
+                                       (call-interactively 'project-query-replace-regexp)))
+
+(define-key vg-project-map (kbd "p") 'project-switch-project)
+(define-key vg-project-map (kbd "P") (lambda()
+                                       (interactive)
+                                       (other-window-prefix)
+                                       (call-interactively 'project-switch-project)))
+
+(define-key vg-project-map (kbd "b") 'project-switch-to-buffer)
+(define-key vg-project-map (kbd "B") (lambda()
+                                       (interactive)
+                                       (other-window-prefix)
+                                       (call-interactively 'project-switch-to-buffer)))
+
+;; Sidekick:
+(define-prefix-command 'vg-sidekick-map)
+(define-key vg-personal-map (kbd "k") 'vg-sidekick-map)
+(define-key vg-sidekick-map (kbd "k") 'sidekick-at-point)
+(define-key vg-sidekick-map (kbd "l") 'sidekick-search-for-literal)
+
+;; Dir Locals:
+(define-prefix-command 'vg-dir-locals-map)
+(define-key vg-personal-map (kbd ".") 'vg-dir-locals-map)
+(define-key vg-dir-locals-map (kbd ".") 'vg-project-tasks-run)
+(define-key vg-dir-locals-map (kbd "r") 'vg-reload-dir-locals-for-current-buffer)
+(define-key vg-dir-locals-map (kbd "R") 'vg-reload-dir-locals-for-all-buffer-in-this-directory)
+
+;; Information:
+(define-prefix-command 'vg-information-map)
+(define-key vg-personal-map (kbd "/") 'vg-information-map)
+(define-key vg-information-map (kbd "/") 'vg-info-copy-current-position)
 
 ;; Agenda:
 (define-prefix-command 'vg-agenda-map)
 (define-key vg-personal-map (kbd "a") 'vg-agenda-map)
 (define-key vg-agenda-map (kbd "a") 'org-agenda-list)
+(define-key vg-agenda-map (kbd "A") (lambda()
+                                        (interactive)
+                                        (other-window-prefix)
+                                        (call-interactively 'org-agenda-list)))
 
 ;; Intrigue:
 (define-prefix-command 'vg-intrigue-map)
 (define-key vg-personal-map (kbd "i") 'vg-intrigue-map)
 (define-key vg-intrigue-map (kbd "i") 'intrigue-find)
+(define-key vg-intrigue-map (kbd "I") (lambda()
+                                        (interactive)
+                                        (other-window-prefix)
+                                        (call-interactively 'intrigue-find)))
 (define-key vg-intrigue-map (kbd "a") 'intrigue-add)
 (define-key vg-intrigue-map (kbd "d") 'intrigue-remove)
 (define-key vg-intrigue-map (kbd "n") 'intrigue-next)
@@ -102,27 +158,45 @@ C: The character to zap up to."
 (define-key vg-personal-map (kbd "o") 'vg-open-map)
 (define-key vg-open-map (kbd "t") 'vg-open-kitty-here)
 (define-key vg-open-map (kbd "f") 'vg-open-finder-here)
+(define-key vg-open-map (kbd "e") 'make-frame)
 
 ;; Yas:
 (define-prefix-command 'vg-yas-map)
 (define-key vg-personal-map (kbd "y") 'vg-yas-map)
 (define-key vg-yas-map (kbd "y") 'yas-insert-snippet)
 (define-key vg-yas-map (kbd "n") 'yas-new-snippet)
+(define-key vg-yas-map (kbd "N") (lambda()
+                                        (interactive)
+                                        (other-window-prefix)
+                                        (call-interactively 'yas-new-snippet)))
 (define-key vg-yas-map (kbd "e") 'yas-visit-snippet-file)
+(define-key vg-yas-map (kbd "E") (lambda()
+                                        (interactive)
+                                        (other-window-prefix)
+                                        (call-interactively 'yas-visit-snippet-file)))
 
 ;; Bookmarks:
 (define-prefix-command 'vg-bookmark-map)
 (define-key vg-personal-map (kbd "b") 'vg-bookmark-map)
-(define-key vg-bookmark-map (kbd "b") 'bookmark-jump-other-window)
+(define-key vg-bookmark-map (kbd "b") 'bookmark-jump)
+(define-key vg-bookmark-map (kbd "B") 'bookmark-jump-other-window)
 (define-key vg-bookmark-map (kbd "m") 'bookmark-set)
 (define-key vg-bookmark-map (kbd "d") 'bookmark-delete)
 (define-key vg-bookmark-map (kbd "r") 'bookmark-rename)
 (define-key vg-bookmark-map (kbd "e") 'edit-bookmarks)
+(define-key vg-bookmark-map (kbd "E") (lambda()
+                                        (interactive)
+                                        (other-window-prefix)
+                                        (call-interactively 'edit-bookmarks)))
 
 ;; Denote:
 (define-prefix-command 'vg-denote-map)
 (define-key vg-personal-map (kbd "d") 'vg-denote-map)
 (define-key vg-denote-map (kbd "d") 'denote-open-or-create)
+(define-key vg-denote-map (kbd "D") (lambda()
+                                        (interactive)
+                                        (other-window-prefix)
+                                        (call-interactively 'denote-open-or-create)))
 (define-key vg-denote-map (kbd "c") 'denote-create-note)
 (define-key vg-denote-map (kbd "r") 'denote-rename-file)
 
@@ -132,8 +206,16 @@ C: The character to zap up to."
 (define-key vg-eglot-map (kbd "a") 'eglot-code-actions)
 (define-key vg-eglot-map (kbd "f") 'eglot-format-buffer)
 (define-key vg-eglot-map (kbd "d") 'xref-find-definitions)
+(define-key vg-eglot-map (kbd "D") (lambda()
+                                        (interactive)
+                                        (other-window-prefix)
+                                        (call-interactively 'xref-find-definitions)))
 (define-key vg-eglot-map (kbd "r") 'xref-find-references)
-(define-key vg-eglot-map (kbd "R") 'eglot-rename)
+(define-key vg-eglot-map (kbd "R") (lambda()
+                                        (interactive)
+                                        (other-window-prefix)
+                                        (call-interactively 'xref-find-references)))
+(define-key vg-eglot-map (kbd "%") 'eglot-rename)
 
 ;; Magit:
 (define-prefix-command 'vg-magit-map)
@@ -155,7 +237,11 @@ C: The character to zap up to."
 (define-key vg-smerge-map (kbd "b") 'smerge-keep-base)
 (define-key vg-smerge-map (kbd "l") 'smerge-keep-lower)
 
-;; Major search:
+;; Flycheck:
+(define-prefix-command 'vg-flycheck-map)
+(define-key vg-personal-map (kbd "f") 'vg-flycheck-map)
+(define-key vg-flycheck-map (kbd "f") 'flycheck-next-error)
+(define-key vg-flycheck-map (kbd "l") 'flycheck-list-errors)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Mode Specific Bindings ;;
@@ -167,13 +253,3 @@ C: The character to zap up to."
             ;; Easily kill shell command buffers with q.
             (when (string-match-p (regexp-quote "Async Shell Command") (buffer-name))
               (local-set-key (kbd "q") #'kill-current-buffer))))
-
-;;;;;;;;;;;;;;;;;;;;;
-;; Prefix Bindings ;;
-;;;;;;;;;;;;;;;;;;;;;
-
-;; Org agenda
-;; (global-set-key (kbd "s-1") 'org-agenda-list)
-
-;; Bookmark manager
-;; (global-set-key (kbd "s-2") 'edit-bookmarks)

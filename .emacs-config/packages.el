@@ -18,6 +18,9 @@
 ;; Packages ;;
 ;;;;;;;;;;;;;;
 
+;; TODO: Implement C-x C-F for finding files the normal way (required to create a file, maybe just manually call find file.)
+;; TODO: Implement function that will grep the word under the cursor or the region. (C-x g)
+
 (eval-when-compile
   ;; Automatically install use-package if needed.
   (unless (require 'use-package nil 'noerror) (package-install 'use-package))
@@ -38,7 +41,6 @@
 (use-package toml-mode       :ensure t)
 (use-package haskell-mode    :ensure t)
 (use-package glsl-mode       :ensure t)
-(use-package scala-mode      :ensure t)
 (use-package dotenv-mode     :ensure t)
 (use-package wrap-region     :ensure t)
 (use-package wgrep           :ensure t)
@@ -58,11 +60,6 @@
   :config
   (setq-default denote-directory "/Users/vernon/Notes/denote/"))
 
-;; TODO: Add local bindings.
-;; Clojure / Cider
-(use-package cider
-  :ensure t)
-
 ;; Bring back splits if needed.
 (use-package winner
   :ensure t
@@ -80,8 +77,10 @@
   :ensure t
   :config
   (setq-default
+   vertico-resize nil
    vertico-cycle t
-   vertico-count 15
+   vertico-count 12
+   vertico-scroll-margin 2
    read-buffer-completion-ignore-case t
    read-file-name-completion-ignore-case t
    completion-ignore-case t
@@ -118,15 +117,16 @@
 (use-package org
   :ensure t
   :config
-  (setq-default org-agenda-window-setup 'other-window
-                org-highlight-latex-and-related '(latex script entities)
-                org-html-validation-link nil
-                org-publish-use-timestamps-flag nil
-                org-src-fontify-natively t
-                org-export-with-timestamps nil
-                org-confirm-babel-evaluate nil
-                org-html-postamble t
-                org-html-postamble-format '(("en" "<p class=\"author\">Author: %a (%e)</p>
+  (setq-default
+   org-agenda-window-setup 'current-window
+   org-highlight-latex-and-related '(latex script entities)
+   org-html-validation-link nil
+   org-publish-use-timestamps-flag nil
+   org-src-fontify-natively t
+   org-export-with-timestamps nil
+   org-confirm-babel-evaluate nil
+   org-html-postamble t
+   org-html-postamble-format '(("en" "<p class=\"author\">Author: %a (%e)</p>
 <p class=\"updated\">Updated on: %C</p>
 <p class=\"creator\">%c</p>
 <p class=\"validation\">%v</p>")))
@@ -198,10 +198,10 @@
   :config
   (setq-default emmet-indent-after-insert nil))
 
-(use-package standard-themes
+(use-package ef-themes
   :ensure t
   :config
-  (load-theme 'standard-light t))
+  (load-theme 'ef-melissa-dark t))
 
 (use-package magit :ensure t)
 
@@ -238,10 +238,7 @@
 (use-package flycheck
   :ensure t
   :config
-  (global-flycheck-mode)
-  ;; :bind
-  ;; (("s-f" . flycheck-list-errors))
-  )
+  (global-flycheck-mode))
 
 (use-package eglot
   :ensure t
@@ -272,8 +269,21 @@
   (web-mode . eglot-ensure)
   (php-mode . eglot-ensure)
   (html-mode . eglot-ensure)
+  (clojure-mode . eglot-ensure)
   :config
   (setq eglot-send-changes-idle-time 0.2)
   (add-to-list 'eglot-server-programs '((php-mode :language-id "php") . ("intelephense" "--stdio" :initializationOptions (:licenseKey "00T8M9912C8LAPQ"))))
   (add-to-list 'eglot-server-programs '((web-mode :language-id "php") . ("intelephense" "--stdio" :initializationOptions (:licenseKey "00T8M9912C8LAPQ"))))
   (add-to-list 'eglot-server-programs '(html-mode . ("vscode-html-language-server" "--stdio"))))
+
+;;;;;;;;;;;;;;;;;
+;; Sidekick.el ;;
+;;;;;;;;;;;;;;;;;
+
+(add-to-list 'load-path "/Users/vernon/ProjectsP/sidekick.el/")
+(require 'sidekick)
+
+;; Customize a mode's file assosiations?
+(sidekick-set-file-associations "php-mode" '("php" "twig" "blade" "phtml" "env"))
+(sidekick-set-file-associations "phps-mode" '("php" "twig" "blade" "phtml" "env"))
+(sidekick-set-file-associations "web-mode" '("php" "html" "blade" "scss" "sass" "css"))
