@@ -21,18 +21,16 @@
 (define-key global-map (kbd "C-h") 'delete-backward-char)
 (define-key global-map (kbd "M-h") 'vg-kill-word-negative)
 
-;; Function keys:
-(define-key global-map (kbd "<f12>") 'vg-presentation-toggle)
-(define-key global-map (kbd "<f9>") 'vg-toggle-transparency)
-
 ;; Change window backward.
 (define-key global-map (kbd "C-x O") 'vg-other-window-negative)
 
 ;; Duplicate things:
 (define-key global-map (kbd "C-c d") 'vg-duplicate-current-line-or-region)
 
-;; Elfeed
-(global-set-key (kbd "<f8>") 'elfeed)
+;; Function keys:
+(define-key global-map (kbd "<f8>") 'elfeed)
+(define-key global-map (kbd "<f9>") 'vg-toggle-transparency)
+(define-key global-map (kbd "<f12>") 'vg-presentation-toggle)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Custom Prefix Bindings ;;
@@ -113,16 +111,10 @@
                                        (other-window-prefix)
                                        (call-interactively 'project-switch-to-buffer)))
 
-;; Sidekick:
-(define-prefix-command 'vg-sidekick-map)
-(define-key vg-personal-map (kbd "k") 'vg-sidekick-map)
-(define-key vg-sidekick-map (kbd "k") 'sidekick-at-point)
-(define-key vg-sidekick-map (kbd "l") 'sidekick-search-for-literal)
-
 ;; Dir Locals:
 (define-prefix-command 'vg-dir-locals-map)
-(define-key vg-personal-map (kbd ".") 'vg-dir-locals-map)
-(define-key vg-dir-locals-map (kbd ".") 'vg-project-tasks-run)
+(define-key vg-personal-map (kbd "l") 'vg-dir-locals-map)
+(define-key vg-dir-locals-map (kbd "l") 'vg-project-tasks-run)
 (define-key vg-dir-locals-map (kbd "r") 'vg-reload-dir-locals-for-current-buffer)
 (define-key vg-dir-locals-map (kbd "R") 'vg-reload-dir-locals-for-all-buffer-in-this-directory)
 
@@ -202,14 +194,14 @@
 
 ;; Eglot:
 (define-prefix-command 'vg-eglot-map)
-(define-key vg-personal-map (kbd "e") 'vg-eglot-map)
-(define-key vg-eglot-map (kbd "a") 'eglot-code-actions)
-(define-key vg-eglot-map (kbd "f") 'eglot-format-buffer)
-(define-key vg-eglot-map (kbd "d") 'xref-find-definitions)
-(define-key vg-eglot-map (kbd "D") (lambda()
+(define-key vg-personal-map (kbd ".") 'vg-eglot-map)
+(define-key vg-eglot-map (kbd ".") 'xref-find-definitions)
+(define-key vg-eglot-map (kbd ">") (lambda()
                                         (interactive)
                                         (other-window-prefix)
                                         (call-interactively 'xref-find-definitions)))
+(define-key vg-eglot-map (kbd "a") 'eglot-code-actions)
+(define-key vg-eglot-map (kbd "f") 'eglot-format-buffer)
 (define-key vg-eglot-map (kbd "r") 'xref-find-references)
 (define-key vg-eglot-map (kbd "R") (lambda()
                                         (interactive)

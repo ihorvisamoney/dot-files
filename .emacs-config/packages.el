@@ -277,13 +277,23 @@
   (add-to-list 'eglot-server-programs '(html-mode . ("vscode-html-language-server" "--stdio"))))
 
 ;;;;;;;;;;;;;;;;;
-;; Sidekick.el ;;
+;; Intrigue.el ;;
 ;;;;;;;;;;;;;;;;;
 
-(add-to-list 'load-path "/Users/vernon/ProjectsP/sidekick.el/")
-(require 'sidekick)
+(add-to-list 'load-path "/Users/vernon/ProjectsP/intrigue.el/")
+(require 'intrigue)
 
-;; Customize a mode's file assosiations?
-(sidekick-set-file-associations "php-mode" '("php" "twig" "blade" "phtml" "env"))
-(sidekick-set-file-associations "phps-mode" '("php" "twig" "blade" "phtml" "env"))
-(sidekick-set-file-associations "web-mode" '("php" "html" "blade" "scss" "sass" "css"))
+(setq-default intrigue-file-location "~/Dotfiles/.emacs-intrigue.el")
+
+;; ;; Intrigue Demo:
+;; (define-prefix-command 'vg-intrigue-map)
+;; (define-key vg-personal-map (kbd "i") 'vg-intrigue-map)
+;; (define-key vg-intrigue-map (kbd "i") 'intrigue-find)
+;; (define-key vg-intrigue-map (kbd "I") (lambda()
+;;                                         (interactive)
+;;                                         (other-window-prefix)
+;;                                         (call-interactively 'intrigue-find)))
+;; (define-key vg-intrigue-map (kbd "a") 'intrigue-add)
+;; (define-key vg-intrigue-map (kbd "d") 'intrigue-remove)
+;; (define-key vg-intrigue-map (kbd "n") 'intrigue-next)
+;; (define-key vg-intrigue-map (kbd "p") 'intrigue-prev)

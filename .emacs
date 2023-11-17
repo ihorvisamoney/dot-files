@@ -13,4 +13,3 @@
 (load-file "/Users/vernon/.emacs-config/functions.el")
 (load-file "/Users/vernon/.emacs-config/packages.el")
 (load-file "/Users/vernon/.emacs-config/keymaps.el")
-(load-file "/Users/vernon/.emacs-config/intrigue.el")
