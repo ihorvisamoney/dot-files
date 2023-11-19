@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# name: Proprietary License
+# key: plicense
+# --
+
+${1:[Your Project Name]} Proprietary License
+
+Copyright (c) `(format-time-string "%Y-%m-%d")` ${2:[Your Name]}
+
+All rights reserved. This software and its documentation are proprietary to the author ($2).
+
+For inquiries about commercial licensing options, please contact ${0:[Your Contact Information]}.
+

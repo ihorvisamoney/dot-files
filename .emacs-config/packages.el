@@ -51,6 +51,9 @@
   :config
   (setq-default web-mode-enable-auto-indentation nil))
 
+;; Clojure (Set this up, so it actually works, I wish there was a simplier solution)
+(use-package cider :ensure t)
+
 ;; Terminal emulator.
 (use-package vterm :ensure t)
 

@@ -208,6 +208,8 @@
                                         (other-window-prefix)
                                         (call-interactively 'xref-find-references)))
 (define-key vg-eglot-map (kbd "%") 'eglot-rename)
+(define-key vg-eglot-map (kbd "k") 'eglot-shutdown)
+(define-key vg-eglot-map (kbd "K") 'eglot-shutdown-all)
 
 ;; Magit:
 (define-prefix-command 'vg-magit-map)
