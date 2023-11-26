@@ -52,7 +52,11 @@
   (setq-default web-mode-enable-auto-indentation nil))
 
 ;; Clojure (Set this up, so it actually works, I wish there was a simplier solution)
-(use-package cider :ensure t)
+;; (use-package cider
+;;   :ensure t
+;;   :config
+;;   (setq-default cider-default-cljs-repl "Shadow"))
+;; (use-package inf-clojure :ensure t)
 
 ;; Terminal emulator.
 (use-package vterm :ensure t)
@@ -285,7 +289,6 @@
 
 (add-to-list 'load-path "/Users/vernon/ProjectsP/intrigue.el/")
 (require 'intrigue)
-
 (setq-default intrigue-file-location "~/Dotfiles/.emacs-intrigue.el")
 
 ;; ;; Intrigue Demo:

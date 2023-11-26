@@ -4,6 +4,15 @@
 ;;
 ;;; Commentary:
 
+;; Unfill paragraphs
+(define-key global-map (kbd "M-Q") 'vg-unfill-paragraph)
+
+;; Dired jump other window.
+(define-key global-map (kbd "C-x J") (lambda ()
+                                       (interactive)
+                                       (other-window-prefix)
+                                       (call-interactively 'dired-jump)))
+
 ;; Smarter default Emacs bindings:
 (define-key global-map (kbd "C-x f") 'find-file)
 (define-key global-map (kbd "C-z") 'vg-quick-zap-up-to-char)

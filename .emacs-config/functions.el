@@ -2,6 +2,12 @@
 ;; General Helpers ;;
 ;;;;;;;;;;;;;;;;;;;;;
 
+(defun vg-unfill-paragraph ()
+  "Takes a multi-line paragraph and makes it into a single line of text."
+  (interactive)
+  (let ((fill-column (point-max)))
+    (fill-paragraph nil)))
+
 (defun vg-duplicate-current-line-or-region (arg)
   "Duplicates the current line or region ARG times.
 If there's no region, the current line will be duplicated. However, if
