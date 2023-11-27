@@ -279,8 +279,8 @@
   (clojure-mode . eglot-ensure)
   :config
   (setq eglot-send-changes-idle-time 0.2)
-  (add-to-list 'eglot-server-programs '((php-mode :language-id "php") . ("intelephense" "--stdio" :initializationOptions (:licenseKey "00T8M9912C8LAPQ"))))
-  (add-to-list 'eglot-server-programs '((web-mode :language-id "php") . ("intelephense" "--stdio" :initializationOptions (:licenseKey "00T8M9912C8LAPQ"))))
+  (add-to-list 'eglot-server-programs '((php-mode :language-id "php") . ("intelephense" "--stdio")))
+  (add-to-list 'eglot-server-programs '((web-mode :language-id "php") . ("intelephense" "--stdio")))
   (add-to-list 'eglot-server-programs '(html-mode . ("vscode-html-language-server" "--stdio"))))
 
 ;;;;;;;;;;;;;;;;;
