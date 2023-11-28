@@ -161,6 +161,11 @@
    elfeed-show-entry-switch 'display-buffer
    elfeed-db-directory "~/.elfeed"
    elfeed-feeds '(
+                  ;; Clojure blogs:
+                  "https://metaredux.com/feed.xml"
+                  "https://dragan.rocks/feed.xml"
+
+                  ;; Other blogs:
                   "https://dnaeon.github.io/feed.xml"
                   "https://coredumped.dev/index.xm"
                   "https://zenhabits.net/feed/"
@@ -208,7 +213,7 @@
 (use-package ef-themes
   :ensure t
   :config
-  (load-theme 'ef-melissa-dark t))
+  (load-theme 'ef-melissa-light t))
 
 (use-package magit :ensure t)
 

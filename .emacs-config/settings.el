@@ -250,16 +250,17 @@ VAL:"
 ;; Whitespace color changes.
 (require 'color)
 
-(let ((ws-color (color-lighten-name "#352718" 50)))
+(let ((ws-color-light (color-lighten-name "#f5e9cb" 3))
+      (ws-color-dark (color-darken-name "#f5e9cb" 3)))
   (custom-set-faces
-   `(fill-column-indicator ((t (:foreground ,ws-color :background nil))))
-   `(whitespace-newline                ((t (:foreground ,ws-color ))))
-   `(whitespace-missing-newline-at-eof ((t (:foreground ,ws-color ))))
-   `(whitespace-space                  ((t (:foreground ,ws-color ))))
-   `(whitespace-space-after-tab        ((t (:foreground ,ws-color ))))
-   `(whitespace-space-before-tab       ((t (:foreground ,ws-color ))))
-   `(whitespace-tab                    ((t (:foreground ,ws-color ))))
-   `(whitespace-trailing               ((t (:foreground ,ws-color ))))))
+   `(fill-column-indicator ((t (:foreground ,ws-color-dark :background nil))))
+   `(whitespace-newline                ((t (:foreground ,ws-color-dark ))))
+   `(whitespace-missing-newline-at-eof ((t (:foreground ,ws-color-dark ))))
+   `(whitespace-space                  ((t (:foreground ,ws-color-dark ))))
+   `(whitespace-space-after-tab        ((t (:foreground ,ws-color-dark ))))
+   `(whitespace-space-before-tab       ((t (:foreground ,ws-color-dark ))))
+   `(whitespace-tab                    ((t (:foreground ,ws-color-dark ))))
+   `(whitespace-trailing               ((t (:foreground ,ws-color-dark ))))))
 
 ;; Enable white space mode globally.
 (global-whitespace-mode t)
