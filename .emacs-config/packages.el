@@ -51,6 +51,19 @@
   :config
   (setq-default web-mode-enable-auto-indentation nil))
 
+(use-package spacious-padding
+  :ensure t
+  :init
+  (spacious-padding-mode 1)
+  :config
+  (setq-default spacious-padding-widths
+      '( :internal-border-width 15
+         :header-line-width 4
+         :mode-line-width 4
+         :tab-width 4
+         :right-divider-width 15
+         :scroll-bar-width 8)))
+
 ;; Clojure (Set this up, so it actually works, I wish there was a simplier solution)
 ;; (use-package cider
 ;;   :ensure t
@@ -210,10 +223,10 @@
   :config
   (setq-default emmet-indent-after-insert nil))
 
-(use-package ef-themes
+(use-package zenburn-theme
   :ensure t
   :config
-  (load-theme 'ef-melissa-light t))
+  (load-theme 'zenburn t))
 
 (use-package magit :ensure t)
 
@@ -226,7 +239,6 @@
 (use-package flycheck-eglot
   :ensure t
   :after (flycheck eglot)
-
   :config
   (global-flycheck-eglot-mode 1))
 
@@ -241,9 +253,18 @@
               ("C-p" . company-select-previous))
   :config
   (setq-default
-   company-selection-wrap-around t
+   company-echo-truncate-lines t
+   company-format-margin-function #'company-text-icons-margin
+   company-icon-margin 5
+   company-idle-delay .2
    company-minimum-prefix-length 2
-   company-idle-delay 0.3)
+   company-search-regexp-function #'company-search-words-regexp
+   company-selection-wrap-around nil
+   company-show-quick-access nil
+   company-text-icons-add-background t
+   company-text-icons-format "  %s  "
+   company-tooltip-margin 5
+   company-tooltip-minimum-width 30)
   :hook (prog-mode . global-company-mode))
 
 ;; Setup of linters.
@@ -251,6 +272,23 @@
   :ensure t
   :config
   (global-flycheck-mode))
+
+(use-package treemacs
+  :ensure t
+  :config
+  ;; treemacs-root-face | Customize face to make smaller.
+  (setq-default
+   treemacs-indentation 2
+   treemacs-is-never-other-window t
+   ;; treemacs-is-never-other-window nil
+   treemacs-no-png-images t
+   treemacs-use-follow-mode t
+   treemacs-text-scale 0
+   treemacs-show-cursor t
+   treemacs-project-follow-cleanup t
+   treemacs-project-follow-into-home t
+   treemacs-hide-dot-git-directory nil)
+  :bind (("C-<tab>" . treemacs-select-window)))
 
 (use-package eglot
   :ensure t
@@ -288,6 +326,16 @@
   (add-to-list 'eglot-server-programs '((web-mode :language-id "php") . ("intelephense" "--stdio")))
   (add-to-list 'eglot-server-programs '(html-mode . ("vscode-html-language-server" "--stdio"))))
 
+(use-package eldoc-box
+  :ensure t
+  :init
+  ;; (eldoc-box-hover-mode t)
+  (eldoc-box-hover-at-point-mode t)
+  :config
+  (setq-default eldoc-box-max-pixel-height 350
+                eldoc-box-max-pixel-width 350)
+  (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-mode t))
+
 ;;;;;;;;;;;;;;;;;
 ;; Intrigue.el ;;
 ;;;;;;;;;;;;;;;;;
@@ -296,15 +344,9 @@
 (require 'intrigue)
 (setq-default intrigue-file-location "~/Dotfiles/.emacs-intrigue.el")
 
-;; ;; Intrigue Demo:
-;; (define-prefix-command 'vg-intrigue-map)
-;; (define-key vg-personal-map (kbd "i") 'vg-intrigue-map)
-;; (define-key vg-intrigue-map (kbd "i") 'intrigue-find)
-;; (define-key vg-intrigue-map (kbd "I") (lambda()
-;;                                         (interactive)
-;;                                         (other-window-prefix)
-;;                                         (call-interactively 'intrigue-find)))
-;; (define-key vg-intrigue-map (kbd "a") 'intrigue-add)
-;; (define-key vg-intrigue-map (kbd "d") 'intrigue-remove)
-;; (define-key vg-intrigue-map (kbd "n") 'intrigue-next)
-;; (define-key vg-intrigue-map (kbd "p") 'intrigue-prev)
+;;;;;;;;;;;;;;;;;;
+;; Clojure Repl ;;
+;;;;;;;;;;;;;;;;;;
+
+(add-to-list 'load-path "/Users/vernon/ProjectsP/clojure-repl.el/")
+(require 'clojure-repl)

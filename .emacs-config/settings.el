@@ -7,9 +7,9 @@
 (setq-default ring-bell-function 'ignore)
 
 ;; Remove GUI menus and scroll bars.
+;; (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
-(menu-bar-mode -1)
 
 ;; Remove gaps.
 (setq-default frame-resize-pixelwise t)
@@ -18,6 +18,10 @@
 (setq-default frame-title-format
       '((:eval (if (buffer-file-name)
                    (abbreviate-file-name (buffer-file-name)) "%b"))))
+
+;; Make the title bar transparent!
+(set-frame-parameter nil 'ns-appearance 'dark)
+(add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 
 ;; TODO: Check to see if this makes sense.
 ;; Make C-k, kill the entire line (newline and all).
@@ -122,12 +126,13 @@ VAL:"
 ;; Ibuffer.
 (add-hook 'ibuffer-mode-hook (lambda () (ibuffer-auto-mode 1)))
 
-;; Fonts.
-;; (setq-default line-spacing 0.35)
-;; (set-face-attribute 'default nil :height 150)
+;; DONE: Implement better fonts.
+;; TODO: Implement a proper tree solution.
+;; TODO: Make auto completion work better, like vs-code.
 
-(setq-default line-spacing 0.20)
-(set-face-attribute 'default nil :height 135)
+;; Fonts.
+(setq-default line-spacing 0.30)
+(set-frame-font "Menlo 13" nil nil)
 
 ;; Moves Emacs customization to separate file.el
 (setq custom-file (concat user-emacs-directory ".emacs-custom.el"))
@@ -143,8 +148,8 @@ VAL:"
 (global-hl-line-mode t)
 
 ;; Enable recent f.
-(setq-default recentf-max-saved-items 50
-              recentf-max-menu-items 50)
+(setq-default recentf-max-saved-items 100
+              recentf-max-menu-items 100)
 (recentf-mode t)
 
 ;; I Search
@@ -172,10 +177,10 @@ VAL:"
 ;; Push the node version manager path to the front so it takes presedence.
 ;; Push Scala Coursier on the our Emacs path.
 (setenv "PATH" (concat
-                ;; "/home/vernon/.cache/coursier/arc/https/github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u292-b10/OpenJDK8U-jdk_x64_linux_hotspot_8u292b10.tar.gz/jdk8u292-b10/bin:"
-                ;; "/home/vernon/.local/share/coursier/bin:"
                 "/Users/vernon/.nvm/versions/node/v18.16.0/bin:"
                 "/Users/vernon/.composer/vendor/bin:"
+                ;; "/home/vernon/.cache/coursier/arc/https/github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u292-b10/OpenJDK8U-jdk_x64_linux_hotspot_8u292b10.tar.gz/jdk8u292-b10/bin:"
+                ;; "/home/vernon/.local/share/coursier/bin:"
                 (getenv "PATH")))
 
 (setq exec-path (push
@@ -250,17 +255,17 @@ VAL:"
 ;; Whitespace color changes.
 (require 'color)
 
-(let ((ws-color-light (color-lighten-name "#f5e9cb" 3))
-      (ws-color-dark (color-darken-name "#f5e9cb" 3)))
+(let ((ws-color (color-lighten-name "#444" 15)))
   (custom-set-faces
-   `(fill-column-indicator ((t (:foreground ,ws-color-dark :background nil))))
-   `(whitespace-newline                ((t (:foreground ,ws-color-dark ))))
-   `(whitespace-missing-newline-at-eof ((t (:foreground ,ws-color-dark ))))
-   `(whitespace-space                  ((t (:foreground ,ws-color-dark ))))
-   `(whitespace-space-after-tab        ((t (:foreground ,ws-color-dark ))))
-   `(whitespace-space-before-tab       ((t (:foreground ,ws-color-dark ))))
-   `(whitespace-tab                    ((t (:foreground ,ws-color-dark ))))
-   `(whitespace-trailing               ((t (:foreground ,ws-color-dark ))))))
+   `(fill-column-indicator             ((t (:foreground ,ws-color :background nil))))
+   `(whitespace-indentation            ((t (:background nil))))
+   `(whitespace-newline                ((t (:foreground ,ws-color :background nil))))
+   `(whitespace-missing-newline-at-eof ((t (:foreground ,ws-color :background nil))))
+   `(whitespace-space                  ((t (:foreground ,ws-color :background nil))))
+   `(whitespace-space-after-tab        ((t (:foreground ,ws-color :background nil))))
+   `(whitespace-space-before-tab       ((t (:foreground ,ws-color :background nil))))
+   `(whitespace-tab                    ((t (:foreground ,ws-color :background nil))))
+   `(whitespace-trailing               ((t (:foreground ,ws-color :background nil))))))
 
 ;; Enable white space mode globally.
 (global-whitespace-mode t)

@@ -132,6 +132,12 @@
 (define-key vg-personal-map (kbd "/") 'vg-information-map)
 (define-key vg-information-map (kbd "/") 'vg-info-copy-current-position)
 
+;; Treemacs:
+(define-prefix-command 'vg-treemacs-map)
+(define-key vg-personal-map (kbd "t") 'vg-treemacs-map)
+(define-key vg-treemacs-map (kbd "a") 'treemacs-add-and-display-current-project)
+(define-key vg-treemacs-map (kbd "k") 'treemacs-remove-project-from-workspace)
+
 ;; Agenda:
 (define-prefix-command 'vg-agenda-map)
 (define-key vg-personal-map (kbd "a") 'vg-agenda-map)

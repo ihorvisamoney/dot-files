@@ -64,10 +64,10 @@ C: The character to zap up to."
   (if vg-presentation-mode
       (progn
         (setq vg-presentation-mode nil)
-        (set-face-attribute 'default nil :height 135))
+        (set-frame-font "Menlo 13" nil nil))
     (progn
       (setq vg-presentation-mode t)
-      (set-face-attribute 'default nil :height 165))))
+      (set-frame-font "Menlo 16" nil nil))))
 
 (defun vg-toggle-transparency ()
   (interactive)
@@ -320,3 +320,27 @@ CHOICE: The command key to run."
 
 ;; Call the before save functions.
 (add-hook 'before-save-hook #'vg-before-save-hook)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Company Mode WhiteSpace ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Whitespace temp fix for company mode
+(defun company--replacement-with-ws-face (str)
+  (if (and (or global-whitespace-mode whitespace-mode)
+           (memq 'space-mark whitespace-active-style)
+           (memq 'face whitespace-active-style)
+           (memq 'spaces whitespace-active-style))
+      (let ((face `(:foreground ,(face-attribute 'whitespace-space :foreground))))
+        (replace-regexp-in-string
+         " "
+         (lambda (s)
+           (setq s (copy-sequence s))
+           (add-face-text-property 0 (length s) face nil s)
+           s)
+         str))
+    str))
+
+(advice-add #'company--replacement-string
+	    :filter-return
+	    #'company--replacement-with-ws-face)
