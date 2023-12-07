@@ -107,6 +107,10 @@ alias ts="~/Dotfiles/scripts/setup-tmux-sessions.sh"
 # Media And File Manipulation #
 ###############################
 
+# brew install ffmpeg
+# brew install gifsicle
+alias video-to-gif='function video_to_gif(){ ffmpeg -itsscale 0.18 -i $1 $2 && gifsicle -O3 --scale 0.65 $2 -o $2 && say "Video is ready!"};video_to_gif'
+
 # Crop images
 # mogrify -crop 1920x840+0+80 ./*.jpg
 

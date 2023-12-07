@@ -92,6 +92,13 @@
   :config
   (desktop-save-mode 1))
 
+(use-package git-gutter
+  :ensure t
+  :init
+  (global-git-gutter-mode t)
+  :config
+  (setq-default git-gutter:window-width 1))
+
 ;; Better minibuffer completions.
 (use-package vertico
   :ensure t
@@ -223,10 +230,10 @@
   :config
   (setq-default emmet-indent-after-insert nil))
 
-(use-package zenburn-theme
+(use-package modus-themes
   :ensure t
   :config
-  (load-theme 'zenburn t))
+  (load-theme 'modus-vivendi-tinted t))
 
 (use-package magit :ensure t)
 

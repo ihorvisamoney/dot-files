@@ -126,10 +126,6 @@ VAL:"
 ;; Ibuffer.
 (add-hook 'ibuffer-mode-hook (lambda () (ibuffer-auto-mode 1)))
 
-;; DONE: Implement better fonts.
-;; TODO: Implement a proper tree solution.
-;; TODO: Make auto completion work better, like vs-code.
-
 ;; Fonts.
 (setq-default line-spacing 0.30)
 (set-frame-font "Menlo 13" nil nil)
@@ -151,6 +147,9 @@ VAL:"
 (setq-default recentf-max-saved-items 100
               recentf-max-menu-items 100)
 (recentf-mode t)
+
+;; Enable save place mode.
+(save-place-mode t)
 
 ;; I Search
 (setq-default isearch-lazy-count t
