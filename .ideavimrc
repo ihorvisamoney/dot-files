@@ -1,0 +1,61 @@
+let mapleader ="\<Space>"
+
+" set relativenumber
+set cursorline
+set colorcolumn=80
+set history=1000
+set ignorecase smartcase
+set visualbell
+set noerrorbells
+set hls
+set clipboard+=unnamed
+
+" Plugins
+set commentary
+set surround
+set NERDTree
+set sneak
+
+" Saving the current buffer using return
+nnoremap <CR> :w<CR>
+
+" Window management
+nnoremap <C-w>q :action CloseContent<CR>
+nnoremap <C-w>Q :action CloseAllEditors<CR>
+
+" Quickly exit insert mode
+inoremap jj <Esc>
+inoremap jk <Esc>
+inoremap kk <Esc>
+
+" Disable current highlight
+nnoremap <leader>/ :nohlsearch<CR>
+
+" Format code
+nnoremap = :action ReformatCode<CR>
+vnoremap = :action ReformatCode<CR>
+
+" Moving lines
+nnoremap <A-j> :action MoveLineDown<CR>
+vnoremap <A-j> :action MoveLineDown<CR>
+nnoremap <A-k> :action MoveLineUp<CR>
+vnoremap <A-k> :action MoveLineUp<CR>
+
+" Tabs
+nnoremap ] :action NextTab<CR>
+nnoremap [ :action PreviousTab<CR>
+
+" Expand selection using leader
+vnoremap <leader> :action EditorSelectWord<CR>
+
+" Commands
+nnoremap <leader>a :action GotoAction<CR>
+nnoremap <leader>f :action GotoFile<CR>
+nnoremap <leader>s :action FindInPath<CR>
+nnoremap <leader>r :action RenameElement<CR>
+nnoremap <leader>R :action ReplaceInPath<CR>
+nnoremap <leader>b :action RecentFiles<CR>
+
+" Commenting
+nnoremap gcc :action CommentByLineComment<CR>
+vnoremap gcc :action CommentByLineComment<CR>

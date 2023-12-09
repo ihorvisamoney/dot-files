@@ -46,3 +46,10 @@ ln -s $DOTFILES/.config/kitty/ $HOME/.config
 
 rm -f $HOME/.tmux.conf
 ln -s $DOTFILES/.tmux.conf $HOME/.tmux.conf
+
+############
+# INTELLIJ #
+############
+
+rm -f $HOME/.ideavimrc
+ln -s $DOTFILES/.ideavimrc $HOME/.ideavimrc

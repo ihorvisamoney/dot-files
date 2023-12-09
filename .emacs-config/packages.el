@@ -230,10 +230,10 @@
   :config
   (setq-default emmet-indent-after-insert nil))
 
-(use-package modus-themes
+(use-package zenburn-theme
   :ensure t
   :config
-  (load-theme 'modus-vivendi-tinted t))
+  (load-theme 'zenburn t))
 
 (use-package magit :ensure t)
 
