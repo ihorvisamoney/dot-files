@@ -1,3 +1,4 @@
+" Ideavim configuration
 let mapleader ="\<Space>"
 
 " set relativenumber
