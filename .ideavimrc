@@ -56,6 +56,8 @@ nnoremap <leader>s :action FindInPath<CR>
 nnoremap <leader>r :action RenameElement<CR>
 nnoremap <leader>R :action ReplaceInPath<CR>
 nnoremap <leader>b :action RecentFiles<CR>
+nnoremap <leader>i :action ShowHoverInfo<CR>
+nnoremap <leader>u :action ShowUsages<CR>
 
 " Commenting
 nnoremap gcc :action CommentByLineComment<CR>

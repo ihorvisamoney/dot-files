@@ -10,6 +10,15 @@ alias reload='. ~/.zshrc'
 # Restore permissions of everything in the current folder.
 alias reset-permissions='find . -type f -exec chmod 644 {} \; && find . -type d -exec chmod 755 {} \;'
 
+###########
+# Helpers #
+###########
+
+alias projects-p='cd ~/ProjectsP/ && ls -la'
+alias projects-t='cd ~/ProjectsT/ && ls -la'
+alias projects-r='cd ~/ProjectsR/ && ls -la'
+alias notes='cd ~/Notes/ && ls -la'
+
 #################################
 # Terminal Prompt Configuration #
 #################################
