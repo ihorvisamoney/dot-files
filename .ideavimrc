@@ -15,7 +15,6 @@ set clipboard+=unnamed
 set commentary
 set surround
 set NERDTree
-set sneak
 
 " Saving the current buffer using return
 nnoremap <CR> :w<CR>
@@ -62,3 +61,21 @@ nnoremap <leader>u :action ShowUsages<CR>
 " Commenting
 nnoremap gcc :action CommentByLineComment<CR>
 vnoremap gcc :action CommentByLineComment<CR>
+
+" Disable increment and decrement bindings
+nnoremap <C-a> <Nop>
+nnoremap <C-x> <Nop>
+
+" Reminders
+" Surround:
+" ds - to delete the surroundings
+" cs - to change the surroundings
+" ys - to add surroundings
+
+" Remove:
+" Version control
+" nnoremap <leader>gc :action ActivateCommitToolWindow<CR>
+" nnoremap <leader>gu :action GitUpdateSelectedBranchAction<CR>
+" nnoremap <leader>gP :action Vcs.Push<CR>
+" nnoremap <leader>gP :action Vcs.Push<CR>
+" nnoremap <leader>gM :action Git.Merge<CR>

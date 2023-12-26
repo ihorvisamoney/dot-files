@@ -10,6 +10,20 @@ alias reload='. ~/.zshrc'
 # Restore permissions of everything in the current folder.
 alias reset-permissions='find . -type f -exec chmod 644 {} \; && find . -type d -exec chmod 755 {} \;'
 
+#################
+# C Programming #
+#################
+
+alias c-leaks='leaks -atExit --'
+alias c-leaks-graph='leaks -atExit -outputGraph -fullContent --'
+alias c-leaks-graph-full='leaks -atExit -outputGraph -fullContent -fullStackHistory --'
+
+#########
+# Books #
+#########
+
+alias books='cd ~/Library/Mobile\ Documents/iCloud~com~apple~iBooks/Documents'
+
 ###########
 # Helpers #
 ###########
@@ -111,6 +125,16 @@ alias tka='tmux kill-server'
 
 # Setup tmux sessions. (Babashka)
 alias ts="~/Dotfiles/scripts/setup-tmux-sessions.sh"
+
+#####################
+# Universal Helpers #
+#####################
+
+function docker-exec() {
+    local -r container="${1}"
+    local -r commands="${2}"
+    docker exec -it $container sh -c $commands
+}
 
 ###############################
 # Media And File Manipulation #
