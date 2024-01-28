@@ -27,12 +27,9 @@
   (require 'use-package))
 
 (use-package markdown-mode   :ensure t)
-(use-package go-mode         :ensure t)
 (use-package php-mode        :ensure t)
 (use-package json-mode       :ensure t)
-(use-package rust-mode       :ensure t)
 (use-package composer        :ensure t)
-(use-package clojure-mode    :ensure t)
 (use-package yaml-mode       :ensure t)
 (use-package dockerfile-mode :ensure t)
 (use-package typescript-mode :ensure t)
@@ -64,17 +61,10 @@
          :right-divider-width 15
          :scroll-bar-width 8)))
 
-;; Clojure (Set this up, so it actually works, I wish there was a simplier solution)
-;; (use-package cider
-;;   :ensure t
-;;   :config
-;;   (setq-default cider-default-cljs-repl "Shadow"))
-;; (use-package inf-clojure :ensure t)
-
 ;; Terminal emulator.
 (use-package vterm :ensure t)
 
-;; Manige notes like a boss.
+;; Manage notes like a boss.
 (use-package denote
   :ensure t
   :config
@@ -86,11 +76,16 @@
   :init
   (winner-mode t))
 
-;; Keeps state across sessions.
-(use-package desktop
+(use-package ef-themes
   :ensure t
-  :config
-  (desktop-save-mode 1))
+  :init
+  (load-theme 'ef-melissa-dark t))
+
+;; Keeps state across sessions.
+;; (use-package desktop
+;;   :ensure t
+;;   :config
+;;   (desktop-save-mode 1))
 
 (use-package git-gutter
   :ensure t
@@ -116,9 +111,13 @@
   (vertico-mode))
 
 ;; Persist history over Emacs restarts. Vertico sorts by history position.
-(use-package savehist
-  :init
-  (savehist-mode))
+;; (use-package savehist
+;;   :init
+;;   (savehist-mode))
+
+;; Setup emacs configurations here.
+;; (use-package emacs
+;;   :ensure t)
 
 (use-package project
   :ensure t
@@ -136,7 +135,6 @@
               (ibuffer-do-sort-by-project-file-relative)))))
 
 ;; To execute code in org mode.
-(use-package ob-go :ensure t)
 (use-package ob-php :ensure t)
 (use-package ob-deno :ensure t)
 (use-package ob-restclient :ensure t)
@@ -162,16 +160,12 @@
    'org-babel-load-languages
    '((deno . t)
      (php . t)
-     (typescript . t)
-     (go . t))))
+     (typescript . t))))
 
 (use-package restclient
   :ensure t
   :config
   (setq-default restclient-log-request t))
-
-;; Export blog RSS:
-(use-package ox-rss :ensure t)
 
 ;; Configure Elfeed
 (use-package elfeed
@@ -181,10 +175,6 @@
    elfeed-show-entry-switch 'display-buffer
    elfeed-db-directory "~/.elfeed"
    elfeed-feeds '(
-                  ;; Clojure blogs:
-                  "https://metaredux.com/feed.xml"
-                  "https://dragan.rocks/feed.xml"
-
                   ;; Other blogs:
                   "https://dnaeon.github.io/feed.xml"
                   "https://coredumped.dev/index.xm"
@@ -229,11 +219,6 @@
   :ensure t
   :config
   (setq-default emmet-indent-after-insert nil))
-
-(use-package zenburn-theme
-  :ensure t
-  :config
-  (load-theme 'zenburn t))
 
 (use-package magit :ensure t)
 
@@ -280,22 +265,8 @@
   :config
   (global-flycheck-mode))
 
-(use-package treemacs
-  :ensure t
-  :config
-  ;; treemacs-root-face | Customize face to make smaller.
-  (setq-default
-   treemacs-indentation 2
-   treemacs-is-never-other-window t
-   ;; treemacs-is-never-other-window nil
-   treemacs-no-png-images t
-   treemacs-use-follow-mode t
-   treemacs-text-scale 0
-   treemacs-show-cursor t
-   treemacs-project-follow-cleanup t
-   treemacs-project-follow-into-home t
-   treemacs-hide-dot-git-directory nil)
-  :bind (("C-<tab>" . treemacs-select-window)))
+(use-package dired-sidebar
+  :ensure t)
 
 (use-package eglot
   :ensure t
@@ -326,7 +297,6 @@
   (web-mode . eglot-ensure)
   (php-mode . eglot-ensure)
   (html-mode . eglot-ensure)
-  (clojure-mode . eglot-ensure)
   :config
   (setq eglot-send-changes-idle-time 0.2)
   (add-to-list 'eglot-server-programs '((php-mode :language-id "php") . ("intelephense" "--stdio")))
@@ -350,10 +320,3 @@
 (add-to-list 'load-path "/Users/vernon/ProjectsP/intrigue.el/")
 (require 'intrigue)
 (setq-default intrigue-file-location "~/Dotfiles/.emacs-intrigue.el")
-
-;;;;;;;;;;;;;;;;;;
-;; Clojure Repl ;;
-;;;;;;;;;;;;;;;;;;
-
-(add-to-list 'load-path "/Users/vernon/ProjectsP/clojure-repl.el/")
-(require 'clojure-repl)

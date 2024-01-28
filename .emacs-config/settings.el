@@ -168,6 +168,7 @@ VAL:"
 (global-unset-key (kbd "C-q"))
 
 ;; (setq-default switch-to-buffer-obey-display-actions t)
+;; (setq-default custom-theme-directory "/Users/vernon/ProjectsP/volcano-theme/emacs")
 
 ;;;;;;;;;;;;;;;;
 ;; Path Setup ;;
@@ -254,7 +255,8 @@ VAL:"
 ;; Whitespace color changes.
 (require 'color)
 
-(let ((ws-color (color-lighten-name "#444" 15)))
+;; (let ((ws-color (color-lighten-name "#ccc" 15)))
+(let ((ws-color (color-lighten-name "#352718" 50)))
   (custom-set-faces
    `(fill-column-indicator             ((t (:foreground ,ws-color :background nil))))
    `(whitespace-indentation            ((t (:background nil))))

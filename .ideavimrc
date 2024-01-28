@@ -15,6 +15,7 @@ set clipboard+=unnamed
 set commentary
 set surround
 set NERDTree
+" TODO: What about multiple cursors?
 
 " Saving the current buffer using return
 nnoremap <CR> :w<CR>
@@ -25,8 +26,8 @@ nnoremap <C-w>Q :action CloseAllEditors<CR>
 
 " Quickly exit insert mode
 inoremap jj <Esc>
-inoremap jk <Esc>
-inoremap kk <Esc>
+" inoremap jk <Esc>
+" inoremap kj <Esc>
 
 " Disable current highlight
 nnoremap <leader>/ :nohlsearch<CR>
@@ -53,10 +54,10 @@ nnoremap <leader>a :action GotoAction<CR>
 nnoremap <leader>f :action GotoFile<CR>
 nnoremap <leader>s :action FindInPath<CR>
 nnoremap <leader>r :action RenameElement<CR>
-nnoremap <leader>R :action ReplaceInPath<CR>
 nnoremap <leader>b :action RecentFiles<CR>
 nnoremap <leader>i :action ShowHoverInfo<CR>
 nnoremap <leader>u :action ShowUsages<CR>
+" nnoremap <leader>R :action ReplaceInPath<CR>
 
 " Commenting
 nnoremap gcc :action CommentByLineComment<CR>

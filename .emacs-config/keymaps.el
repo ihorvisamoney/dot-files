@@ -19,6 +19,7 @@
 
 (define-key global-map (kbd "C-x D") 'dired-other-window)
 (define-key global-map (kbd "C-x B") 'switch-to-buffer-other-window)
+
 (define-key global-map (kbd "C-x C-b") 'ibuffer)
 (define-key global-map (kbd "C-x 4 C-b") 'ibuffer-other-window)
 
@@ -27,8 +28,8 @@
 (eval-after-load 'tex-mode '(define-key latex-mode-map (kbd "<C-return>") 'save-buffer))
 
 ;; Delete characters and words:
-(define-key global-map (kbd "C-h") 'delete-backward-char)
-(define-key global-map (kbd "M-h") 'vg-kill-word-negative)
+;; (define-key global-map (kbd "C-h") 'delete-backward-char)
+;; (define-key global-map (kbd "M-h") 'vg-kill-word-negative)
 
 ;; Change window backward.
 (define-key global-map (kbd "C-x O") 'vg-other-window-negative)
@@ -132,11 +133,10 @@
 (define-key vg-personal-map (kbd "/") 'vg-information-map)
 (define-key vg-information-map (kbd "/") 'vg-info-copy-current-position)
 
-;; Treemacs:
-(define-prefix-command 'vg-treemacs-map)
-(define-key vg-personal-map (kbd "t") 'vg-treemacs-map)
-(define-key vg-treemacs-map (kbd "a") 'treemacs-add-and-display-current-project)
-(define-key vg-treemacs-map (kbd "k") 'treemacs-remove-project-from-workspace)
+;; Dired Sidebar:
+(define-prefix-command 'vg-dired-sidebar-map)
+(define-key vg-personal-map (kbd "t") 'vg-dired-sidebar-map)
+(define-key vg-dired-sidebar-map (kbd "t") 'dired-sidebar-toggle-sidebar)
 
 ;; Agenda:
 (define-prefix-command 'vg-agenda-map)

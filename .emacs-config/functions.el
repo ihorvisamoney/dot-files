@@ -311,7 +311,6 @@ CHOICE: The command key to run."
          (eq major-mode 'scala-mode)
          (eq major-mode 'toml-mode)
          (eq major-mode 'php-mode)
-         (eq major-mode 'go-mode)
          (eq major-mode 'typescript-mode))
     ;; Let's run a flyspell only on save, for performance reasons.
     ;; (flyspell-buffer)
