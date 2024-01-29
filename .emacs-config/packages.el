@@ -76,10 +76,10 @@
   :init
   (winner-mode t))
 
-(use-package ef-themes
+(use-package modus-themes
   :ensure t
   :init
-  (load-theme 'ef-melissa-dark t))
+  (load-theme 'modus-operandi-tinted t))
 
 ;; Keeps state across sessions.
 ;; (use-package desktop
@@ -266,7 +266,10 @@
   (global-flycheck-mode))
 
 (use-package dired-sidebar
-  :ensure t)
+  :ensure t
+  :config
+  (setq-default dired-sidebar-theme 'ascii
+                dired-sidebar-should-follow-file t))
 
 (use-package eglot
   :ensure t

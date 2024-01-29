@@ -256,7 +256,8 @@ VAL:"
 (require 'color)
 
 ;; (let ((ws-color (color-lighten-name "#ccc" 15)))
-(let ((ws-color (color-lighten-name "#352718" 50)))
+;; (let ((ws-color (color-lighten-name "#352718" 50)))
+(let ((ws-color (color-lighten-name "#efe9dd" 0)))
   (custom-set-faces
    `(fill-column-indicator             ((t (:foreground ,ws-color :background nil))))
    `(whitespace-indentation            ((t (:background nil))))
